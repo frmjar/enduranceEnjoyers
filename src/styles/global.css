@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+@tailwind base;
+
+@theme {
+    --color-primary-header: #171915; 
+    --color-hover: #bfdbfe; 
+    --color-primary-body: #1f2937; 
+}
+
+@layer base {
+  body {
+    @apply bg-primary-body text-white font-sans;
+  }
+  h1 {
+    @apply text-3xl font-bold mb-4 text-white;
+  }
+  h2 {
+    @apply text-2xl font-semibold mb-3 text-white;
+  }
+  p {
+    @apply text-lg mb-4 text-gray-300 p-4 leading-loose;
+  }
+
+  .text-1_5xl {
+    font-size: 1.37rem;
+    line-height: 2.5rem;
+  }
+
+  .w-2px {
+    width: 2px;
+  }
+}

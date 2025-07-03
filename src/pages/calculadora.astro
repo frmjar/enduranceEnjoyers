@@ -1,0 +1,11 @@
+---
+import CalculadoraComponent from '../components/Calculadora.tsx'
+import Navbar from '../components/Navbar.astro'
+---
+  <html>
+    <body>
+      <Navbar />
+      <h1>Calculadora</h1>
+      <CalculadoraComponent client:only='react' />
+    </body>
+  </html>
