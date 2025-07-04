@@ -1,0 +1,35 @@
+---
+import { v2 as cloudinary } from 'cloudinary'
+
+// Configura Cloudinary
+cloudinary.config({
+  cloud_name: import.meta.env.CLOUD_NAME,
+  api_key: import.meta.env.API_KEY,
+  api_secret: import.meta.env.API_SECRET
+})
+
+// Pide una lista de imágenes
+const { resources } = await cloudinary.api.resources({
+  type: 'upload',
+  prefix: '', // opcional: carpeta dentro de tu media library
+  max_results: 30
+});
+---
+
+  <html>
+    <body class='bg-white p-8'>
+      <h1 class='text-2xl font-bold mb-6'>Galería de imágenes</h1>
+
+      <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+        {
+        resources.map(img => (
+          <img
+            src={`https://res.cloudinary.com/${import.meta.env.CLOUD_NAME}/image/upload/f_auto,q_auto,w_600/${img.public_id}.${img.format}`}
+            alt={img.public_id}
+            class='w-full h-auto rounded-lg shadow-md'
+          />
+        ))
+      }
+      </div>
+    </body>
+  </html>

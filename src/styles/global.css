@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@plugin '@tailwindcss/typography';
-@tailwind base;
 
 @theme {
     --color-primary-header: #171915; 

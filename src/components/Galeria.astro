@@ -1,0 +1,16 @@
+---
+import { getImages } from '../scripts/cloudinary'
+const images = await getImages()
+---
+
+  <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+    {
+        images.map(img => (
+          <img
+            src={`https://res.cloudinary.com/${import.meta.env.CLOUD_NAME}/image/upload/f_auto,q_auto,w_600/${img.public_id}.${img.format}`}
+            alt={img.public_id}
+            class='w-full h-auto rounded-lg shadow-md'
+          />
+        ))
+      }
+  </div>

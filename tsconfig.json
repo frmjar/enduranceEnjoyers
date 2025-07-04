@@ -8,10 +8,11 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "allowJs": true,
+    "noEmit": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "types": ["astro/client"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "build", "astro.config.ts"]
+  "exclude": ["node_modules", "dist", "build", "astro.config.ts"],
 }
