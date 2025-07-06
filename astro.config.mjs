@@ -13,5 +13,13 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()]
+  },
+
+  image: {
+    serviceEntryPoint: '@astrojs/image/cloudinary',
+    cloudinary: {
+      cloudName: 'enduranceenjoyers',
+      url: 'https://res.cloudinary.com/enduranceenjoyers/image/upload'
+    }
   }
 })

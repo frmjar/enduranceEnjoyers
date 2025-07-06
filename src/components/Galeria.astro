@@ -1,16 +1,91 @@
 ---
+import { Image } from 'astro:assets'
 import { getImages } from '../scripts/cloudinary'
-const images = await getImages()
+const images = await getImages({});
 ---
 
-  <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-    {
-        images.map(img => (
-          <img
-            src={`https://res.cloudinary.com/${import.meta.env.CLOUD_NAME}/image/upload/f_auto,q_auto,w_600/${img.public_id}.${img.format}`}
-            alt={img.public_id}
-            class='w-full h-auto rounded-lg shadow-md'
-          />
-        ))
+  <section>
+    <div
+      class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'
+    >
+      {
+      images.map((img) => (
+        // eslint-disable-next-line react/jsx-key
+        <Image
+          src={img.url}
+          alt={img.name}
+          data-original={img.original}
+          inferSize
+          class='rounded-lg transition-transform duration-300 hover:scale-105 clickable-img'
+        />
+      ))
+    }
+    </div>
+
+    <div
+      id='imageModal'
+      role='dialog'
+      aria-modal='true'
+      aria-hidden='true'
+      class='fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out'
+    >
+      <div class='relative max-w-[90%] max-h-[90%]'>
+        <button
+          id='closeModal'
+          class='absolute -top-4 -right-4 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center font-bold shadow-lg'
+        >
+          X
+        </button>
+        <img
+          id='modalImage'
+          src=''
+          alt=''
+          class='max-w-full max-h-screen rounded shadow-xl'
+        />
+      </div>
+    </div>
+  </section>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("imageModal")
+    const modalImg = document.getElementById("modalImage")
+    const closeBtn = document.getElementById("closeModal")
+
+    const resetModal = () => {
+      modalImg.src = "";
+      modalImg.alt = "";
+    };
+
+    document.querySelectorAll(".clickable-img").forEach((img) => {
+      img.addEventListener("click", () => {
+        modalImg.src = img.getAttribute("data-original")!;
+        modalImg.alt = (img as HTMLImageElement).alt;
+
+        modal!.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+        modal!.classList.add("opacity-100", "scale-100", "pointer-events-auto");
+        modal!.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    closeBtn!.addEventListener("click", () => {
+      modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
+      modal!.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
+      modal!.setAttribute("aria-hidden", "true");
+      resetModal();
+    });
+
+    modal!.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
+        modal!.classList.remove(
+          "opacity-100",
+          "scale-100",
+          "pointer-events-auto",
+        );
+        modal!.setAttribute("aria-hidden", "true");
+        resetModal();
       }
-  </div>
+    });
+  });
+    </script>

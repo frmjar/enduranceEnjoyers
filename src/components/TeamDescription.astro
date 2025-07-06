@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets'
+import { CloudinaryFolders, getUrl } from '../scripts/cloudinary'
+
+const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.EnduranceEnjoyers + '/skincar', format: 'png' })
 ---
   <section>
     <div class='flex gap-10 columns-2 h-full w-3/5 p-6 m-auto'>
@@ -10,8 +14,10 @@
         Whether you're a seasoned athlete or just starting your journey, we welcome you to join us in our adventures. Together, we can inspire each other to reach new heights and enjoy every step of the way.
       </p>
     </div>
-    <img
-      width='80%'
-      src='https://res.cloudinary.com/enduranceenjoyers/image/upload/v1751627209/skincar.png' alt='Team Skin Car Image' class='opacity-80 m-auto -translate-y-12'
+    <Image
+      src={teamLogoUrl}
+      alt='Endurance Enjoyers team logo'
+      class='m-auto -translate-y-12 w-[80%] opacity-80'
+      inferSize
     />
   </section>

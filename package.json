@@ -26,7 +26,10 @@
       "plugin:astro/recommended"
     ],
     "parserOptions": {
-      "project": "./endurance_enjoyers/tsconfig.json"
+      "project": "./enduranceEnjoyers/tsconfig.json"
+    },
+    "rules": {
+      "@typescript-eslint/strict-boolean-expressions": "off"
     }
   }
 }
