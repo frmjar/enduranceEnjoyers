@@ -1,5 +1,4 @@
 ---
-import '../styles/global.css'
 ---
   <div id='navbardir' class='relative w-full aspect-[3/1] bg-cover bg-[url("/banner.webp")] bg-center bg-no-repeat z-50'>
     <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-transparent transition-all duration-300'>
@@ -16,7 +15,7 @@ import '../styles/global.css'
     </nav>
   </div>
 
-    <script is:browser>
+    <script is:inline>
       const navbardir = document.getElementById('navbardir')
       const logo = document.getElementById('scroll-logo')
       const navbar = document.getElementById('navbar')

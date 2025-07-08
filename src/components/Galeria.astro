@@ -47,45 +47,45 @@ const images = await getImages({});
   </section>
 
     <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("imageModal")
-    const modalImg = document.getElementById("modalImage")
-    const closeBtn = document.getElementById("closeModal")
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('imageModal')
+  const modalImg = document.getElementById('modalImage')
+  const closeBtn = document.getElementById('closeModal')
 
-    const resetModal = () => {
-      modalImg.src = "";
-      modalImg.alt = "";
-    };
+  const resetModal = () => {
+    modalImg.src = ''
+    modalImg.alt = ''
+  }
 
-    document.querySelectorAll(".clickable-img").forEach((img) => {
-      img.addEventListener("click", () => {
-        modalImg.src = img.getAttribute("data-original")!;
-        modalImg.alt = (img as HTMLImageElement).alt;
+  document.querySelectorAll('.clickable-img').forEach((img) => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.getAttribute('data-original')
+      modalImg.alt = img.alt
 
-        modal!.classList.remove("opacity-0", "scale-95", "pointer-events-none");
-        modal!.classList.add("opacity-100", "scale-100", "pointer-events-auto");
-        modal!.setAttribute("aria-hidden", "false");
-      });
-    });
+      modal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none')
+      modal.classList.add('opacity-100', 'scale-100', 'pointer-events-auto')
+      modal.setAttribute('aria-hidden', 'false')
+    })
+  })
 
-    closeBtn!.addEventListener("click", () => {
-      modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
-      modal!.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
-      modal!.setAttribute("aria-hidden", "true");
-      resetModal();
-    });
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
+    modal.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto')
+    modal.setAttribute('aria-hidden', 'true')
+    resetModal()
+  })
 
-    modal!.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
-        modal!.classList.remove(
-          "opacity-100",
-          "scale-100",
-          "pointer-events-auto",
-        );
-        modal!.setAttribute("aria-hidden", "true");
-        resetModal();
-      }
-    });
-  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
+      modal.classList.remove(
+        'opacity-100',
+        'scale-100',
+        'pointer-events-auto'
+      )
+      modal.setAttribute('aria-hidden', 'true')
+      resetModal()
+    }
+  })
+})
     </script>
