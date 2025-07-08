@@ -1,13 +1,12 @@
 ---
 import { Image } from 'astro:assets'
 import { getImages } from '../scripts/cloudinary'
-const images = await getImages({});
----
+const images = await getImages({})
 
-  <section>
-    <div
-      class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'
-    >
+const props = Astro.props
+---
+  <section {...props}>
+    <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'>
       {
       images.map((img) => (
         // eslint-disable-next-line react/jsx-key
@@ -88,4 +87,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
-    </script>
+</script>

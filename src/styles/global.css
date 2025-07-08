@@ -7,6 +7,9 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
   body {
     @apply bg-primary-body text-white font-sans;
   }

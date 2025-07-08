@@ -8,32 +8,36 @@
 
       <div class='mx-auto flex space-x-13 text-lg font-medium text-white'>
         <a href='/' class='hover:text-hover bg-primary'>Inicio</a>
-        <a href='/galeria' class='hover:text-hover'>Galería</a>
+        <a href='#galeria' class='hover:text-hover'>Galería</a>
         <a href='/calculadora' class='hover:text-hover'>Calculadora</a>
         <a href='/contacto' class='hover:text-hover'>Contacto</a>
       </div>
     </nav>
   </div>
 
-    <script is:inline>
-      const navbardir = document.getElementById('navbardir')
-      const logo = document.getElementById('scroll-logo')
-      const navbar = document.getElementById('navbar')
+    <script>
+  window.addEventListener('scroll', () => {
+    const navbardir = document.getElementById('navbardir')
+    const logo = document.getElementById('scroll-logo')
+    const navbar = document.getElementById('navbar')
 
-      window.addEventListener('scroll', () => {
-        const style = getComputedStyle(navbardir)
-        const marginTop = parseFloat(style.marginTop)
-        const marginBottom = parseFloat(style.marginBottom)
-        const alturaConMargen = navbardir.offsetHeight + marginTop + marginBottom
+    if (!navbardir || !logo || !navbar) return
 
-        if (window.scrollY > alturaConMargen / 3) {
-          logo.classList.remove('hidden')
-          navbar.classList.remove('bg-transparent')
-          navbar.classList.add('bg-primary-header', 'shadow')
-        } else {
-          logo.classList.add('hidden')
-          navbar.classList.add('bg-transparent')
-          navbar.classList.remove('bg-primary-header', 'shadow')
-        }
-      })
-    </script>
+    const style = getComputedStyle(navbardir)
+    const marginTop = parseFloat(style.marginTop)
+    const marginBottom = parseFloat(style.marginBottom)
+    const alturaConMargen = navbardir.offsetHeight + marginTop + marginBottom
+
+    console.log(alturaConMargen)
+
+    if (window.scrollY > alturaConMargen / 3) {
+      logo.classList.remove('hidden')
+      navbar.classList.remove('bg-transparent')
+      navbar.classList.add('bg-primary-header', 'shadow')
+    } else {
+      logo.classList.add('hidden')
+      navbar.classList.add('bg-transparent')
+      navbar.classList.remove('bg-primary-header', 'shadow')
+    }
+  })
+  </script>
