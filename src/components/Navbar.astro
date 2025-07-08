@@ -1,43 +1,17 @@
 ---
+const props = Astro.props
 ---
-  <div id='navbardir' class='relative w-full aspect-[3/1] bg-cover bg-[url("/banner.webp")] bg-center bg-no-repeat z-50'>
-    <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-transparent transition-all duration-300'>
-      <div id='scroll-logo' class='absolute left-4 hidden transition-all duration-300'>
+  <div {...props}>
+    <nav id='navbar' class='relative top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-primary-header shadow'>
+      <div id='scroll-logo' class='absolute left-4'>
         <img src='/logotextclear.webp' alt='Logo' class='h-15' />
       </div>
 
       <div class='mx-auto flex space-x-13 text-lg font-medium text-white'>
         <a href='/' class='hover:text-hover bg-primary'>Inicio</a>
-        <a href='#galeria' class='hover:text-hover'>Galería</a>
+        <a href='/#galeria' class='hover:text-hover'>Galería</a>
         <a href='/calculadora' class='hover:text-hover'>Calculadora</a>
         <a href='/contacto' class='hover:text-hover'>Contacto</a>
       </div>
     </nav>
   </div>
-
-    <script>
-  window.addEventListener('scroll', () => {
-    const navbardir = document.getElementById('navbardir')
-    const logo = document.getElementById('scroll-logo')
-    const navbar = document.getElementById('navbar')
-
-    if (!navbardir || !logo || !navbar) return
-
-    const style = getComputedStyle(navbardir)
-    const marginTop = parseFloat(style.marginTop)
-    const marginBottom = parseFloat(style.marginBottom)
-    const alturaConMargen = navbardir.offsetHeight + marginTop + marginBottom
-
-    console.log(alturaConMargen)
-
-    if (window.scrollY > alturaConMargen / 3) {
-      logo.classList.remove('hidden')
-      navbar.classList.remove('bg-transparent')
-      navbar.classList.add('bg-primary-header', 'shadow')
-    } else {
-      logo.classList.add('hidden')
-      navbar.classList.add('bg-transparent')
-      navbar.classList.remove('bg-primary-header', 'shadow')
-    }
-  })
-  </script>
