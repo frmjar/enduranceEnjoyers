@@ -1,0 +1,25 @@
+---
+import Card from './Card.astro'
+const { id, class: className } = Astro.props
+---
+
+  <section id={id} class=`max-w-7xl mx-auto px-4 py-8 ${className}`>
+    <h1 class='text-3xl font-bold mb-4 text-center'>Novedades y Logros</h1>
+
+    <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10'>
+      <Card title='Actualización de Eventos'>
+        <p>¡Nos complace anunciar la próxima carrera de resistencia que se llevará a cabo el 15 de marzo!</p>
+      </Card>
+      <Card title='Logro Destacado'>
+        <p>Felicitaciones a Juan por completar su primer maratón con un tiempo impresionante de 3 horas y 30 minutos.</p>
+      </Card>
+      <Card title='24 horas de Daytona'>
+        <p>1º posición equipo blue</p>
+        <p>3º posición equipo blue</p>
+        <p>5º posición equipo blue</p>
+      </Card>
+      <Card>
+        <img src='/logo.webp' alt='Taller de Resistencia' class='w-full h-auto rounded-lg mb-4' />
+      </Card>
+    </div>
+  </section>

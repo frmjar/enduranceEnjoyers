@@ -1,9 +1,10 @@
 ---
 import '../styles/global.css'
+import Footer from './Footer.astro'
 
 const { title = 'Endurance Enjoyers', description = 'Endurance Enjoyers - A community for endurance sports enthusiasts.' } = Astro.props
 ---
-  <html>
+  <html lang="es">
     <head>
       <title>{title}</title>
       <meta charset='UTF-8' />
@@ -16,7 +17,10 @@ const { title = 'Endurance Enjoyers', description = 'Endurance Enjoyers - A comm
       <meta name='twitter:card' content='summary_large_image' />-->
       <link rel='icon' href='/logo.webp' />
     </head>
-    <body>
-      <slot />
+    <body class="flex flex-col min-h-screen">
+      <div class="flex-grow">
+        <slot />
+      </div>  
     </body>
+    <Footer>
   </html>

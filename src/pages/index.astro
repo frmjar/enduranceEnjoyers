@@ -1,11 +1,13 @@
 ---
 import Galeria from '../components/Galeria.astro'
+import HeaderExtended from '../components/HeaderExtended.astro'
 import Layaut from '../components/Layaut.astro'
-import NavbarExtended from '../components/NavbarExtended.astro'
+import NovedadesLogros from '../components/NovedadesLogros.astro'
 import TeamDescription from '../components/TeamDescription.astro'
 ---
   <Layaut>
-    <NavbarExtended id='home' />
+    <HeaderExtended id='home' />
     <TeamDescription />
+    <NovedadesLogros id='novedades' class='scroll-mt-20' />
     <Galeria id='galeria' class='scroll-mt-20 bg-black py-4' />
   </Layaut>

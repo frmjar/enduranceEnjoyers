@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets'
+import Logo from '../../public/logo.webp'
+import TwitterIcon from '../icons/Twitter.astro'
+const brandName = 'Endurance Enjoyers';
+---
+  <footer class='py-4 px-4'>
+    <div class='max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6'>
+
+      <div class='text-center md:text-left'>
+        <Image src={Logo} width={100} alt='Endurace Enjoyers Logo' class='mx-auto' />
+        <p class='text-sm text-gray-400 -mt-8'>© 2025 {brandName}. Todos los derechos reservados.</p>
+      </div>
+
+      <div />
+
+      <div class='flex gap-4'>
+        <a href='https://x.com/EnduEnjoyers' target='_blank' aria-label='Twitter' class='text-gray-400 hover:text-white transition-colors' rel='noreferrer'>
+          <TwitterIcon class='w-6 h-6 fill-current' />
+        </a>
+      </div>
+    </div>
+  </footer>
