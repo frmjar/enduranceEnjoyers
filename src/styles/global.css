@@ -4,6 +4,7 @@
     --color-primary-header: #171915; 
     --color-hover: #bfdbfe; 
     --color-primary-body: #1f2937; 
+    --color-tarjetas: #394659;
 }
 
 @layer base {
