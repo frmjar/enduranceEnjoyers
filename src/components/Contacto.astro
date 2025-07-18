@@ -7,7 +7,7 @@ const { id, class: className } = Astro.props
     <h2 class='text-3xl font-bold mb-4 text-center'>Contacto</h2>
     <p class='text-lg mb-4 text-gray-300 p-4 leading-loose text-center'>¿Estás interesado en unirte a nosotros? ¡Nos encantaría saber de ti!</p>
 
-    <form method='POST' action='/api/contacto' class='max-w-3xl mx-auto p-8 bg-tarjetas backdrop-blur-md rounded-2xl shadow-lg text-white space-y-6'>
+    <form id='contact-form' class='max-w-3xl mx-auto p-8 bg-tarjetas backdrop-blur-md rounded-2xl shadow-lg text-white space-y-6'>
       <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input id='iracing' label='Nombre en iRacing' name='iracing' required />
         <Input id='id' label='ID de iRacing' name='id' required />
@@ -34,8 +34,44 @@ const { id, class: className } = Astro.props
       </div>
     </form>
 
+    <!-- Mensaje de éxito -->
+    <p id='form-success' class='hidden text-green-500 mt-4 text-center'>Petición enviada con éxito!</p>
+    <p id='form-error' class='hidden text-red-500 mt-4 text-center'>Error al enviar la petición.</p>
+
     <p>También puedes contactarnos a través de nuestras redes sociales:</p>
     <ul class='social-links'>
       <li><a href='https://x.com/EnduEnjoyers' target='_blank' rel='noreferrer'>Twitter</a></li>
     </ul>
   </section>
+
+    <script is:browser>
+const form = document.getElementById('contact-form')
+const successMsg = document.getElementById('form-success')
+const errorMsg = document.getElementById('form-error')
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+
+  const formData = new FormData(form)
+
+  try {
+    const response = await fetch('/api/contacto', {
+      method: 'POST',
+      body: formData
+    })
+
+    const result = await response.json()
+
+    if (result.success) {
+      form.reset()
+      successMsg.classList.remove('hidden')
+      errorMsg.classList.add('hidden')
+    } else {
+      throw new Error()
+    }
+  } catch (error) {
+    successMsg.classList.add('hidden')
+    errorMsg.classList.remove('hidden')
+  }
+})
+    </script>
