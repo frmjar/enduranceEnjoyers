@@ -3,9 +3,9 @@ import { v2 as cloudinary } from 'cloudinary'
 
 // Configura Cloudinary
 cloudinary.config({
-  cloud_name: import.meta.env.CLOUD_NAME,
-  api_key: import.meta.env.API_KEY,
-  api_secret: import.meta.env.API_SECRET
+  cloud_name: import.meta.env.CLOUDINARY_CLOUD_NAME,
+  api_key: import.meta.env.CLOUDINARY_API_KEY,
+  api_secret: import.meta.env.CLOUDINARY_API_SECRET
 })
 
 // Pide una lista de imágenes
