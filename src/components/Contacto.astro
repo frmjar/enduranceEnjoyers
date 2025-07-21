@@ -26,7 +26,15 @@ const { id, class: className } = Astro.props;
               Síguenos en nuestras redes sociales
             </p>
             <div class="flex items-center text-orange-400">
-              <span class="font-medium">@EndurEnjoyars</span>
+              <a
+                href="https://x.com/EnduEnjoyers"
+                target="_blank"
+                aria-label="Twitter"
+                class="text-gray-400 hover:text-white transition-colors"
+                rel="noreferrer"
+              >
+                <span class="font-medium">@EnduEnjoyers</span>
+              </a>
             </div>
           </Card>
 
@@ -181,17 +189,7 @@ const { id, class: className } = Astro.props;
 
         const formData = new FormData(form);
 
-        // Convertir FormData a objeto para mejor visualización
-        const formObject: Record<string, any> = {};
-        formData.forEach((value, key) => {
-          formObject[key] = value;
-        });
-
         try {
-          console.log("Datos del formulario:", formObject);
-          console.log("FormData:", formData);
-
-          // Enviar datos al API
           const response = await fetch("/api/contacto", {
             method: "POST",
             body: formData,

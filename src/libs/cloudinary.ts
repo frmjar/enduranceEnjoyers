@@ -25,22 +25,28 @@ export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: s
   })
 }
 
-export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: string }): Promise<Array<{ url: string, name: string, original: string, id: string }>> => {
+export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: string }): Promise<Array<{ url: string, name: string, original: string, id: string, title?: string, description?: string, alt: string }>> => {
   try {
     const result = await cloudinary.api.resources({
       type: 'upload',
       prefix: folder ? `${folder}/` : '',
       max_results: cantidad,
-      resource_type: 'image'
+      resource_type: 'image',
+      context: true
     })
 
-    return result.resources.map((img: any): { url: string, name: string, original: string, id: string } => {
-      console.log('Image:', img)
+    return result.resources.map((img: any): { url: string, name: string, original: string, id: string, title?: string, description?: string, alt: string } => {
+
+      const context = img?.context?.custom || {}
+
       return {
         url: getUrl({ publicId: img.public_id, format: img.format, width: 600, height: 400 }),
         name: img.display_name,
         original: img.secure_url,
-        id: img.asset_id
+        id: img.asset_id,
+        title: context.caption,
+        description: context.alt,
+        alt: context.alt || context.caption || img.display_name
       }
     })
   } catch (error) {

@@ -1,91 +1,118 @@
 ---
-import { Image } from 'astro:assets'
-import { getImages, CloudinaryFolders } from '../libs/cloudinary'
-const images = await getImages({ cantidad: 30, folder: CloudinaryFolders.EnduranceEnjoyers })
+import { Image } from "astro:assets";
+import { getImages, CloudinaryFolders } from "../libs/cloudinary";
+const images = await getImages({
+  cantidad: 30,
+  folder: CloudinaryFolders.EnduranceEnjoyers,
+});
 
-const props = Astro.props
+const imagesOrdered = images.sort((a, b) => {
+  return a.name.localeCompare(b.name) * -1;
+});
+
+const props = Astro.props;
 ---
-  <section {...props}>
-    <div class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'>
-      {
+
+<section {...props}>
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10"
+  >
+    {
       images.map((img) => (
-        // eslint-disable-next-line react/jsx-key
-        <Image
-          src={img.url}
-          alt={img.name}
-          data-original={img.original}
-          inferSize
-          loading='lazy'
-          class='rounded-lg transition-transform duration-300 hover:scale-105 clickable-img'
-        />
+        <div class="relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 ">
+          <Image
+            src={img.url}
+            alt={img.alt}
+            data-original={img.original}
+            inferSize
+            loading="lazy"
+            class="rounded-lg clickable-img"
+          />
+
+          {(img.description || img.title) && (
+            <div class="absolute px-5 bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg">
+              <h3 class="text-white font-semibold text-base mb-1">
+                {img.title || img.name}
+              </h3>
+              {img.description && (
+                <p class="text-gray-200 text-sm whitespace-pre-line">
+                  {img.description}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       ))
     }
-    </div>
+  </div>
 
-    <div
-      id='imageModal'
-      role='dialog'
-      aria-modal='true'
-      aria-hidden='true'
-      class='fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out'
+  <div
+    id="imageModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-8"
+  >
+    <button
+      id="closeModal"
+      class="absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100"
     >
-      <div class='relative max-w-[90%] max-h-[90%]'>
-        <button
-          id='closeModal'
-          class='absolute -top-4 -right-4 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center font-bold shadow-lg'
-        >
-          X
-        </button>
-        <img
-          id='modalImage'
-          src=''
-          alt=''
-          class='max-w-full max-h-screen rounded shadow-xl'
-        />
-      </div>
-    </div>
-  </section>
+      ✕
+    </button>
+    <img
+      id="modalImage"
+      src=""
+      alt=""
+      class="max-w-full max-h-full object-contain rounded shadow-2xl"
+    />
+  </div>
+</section>
 
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('imageModal')
-  const modalImg = document.getElementById('modalImage') as HTMLImageElement
-  const closeBtn = document.getElementById('closeModal') as HTMLButtonElement
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage") as HTMLImageElement;
+    const closeBtn = document.getElementById("closeModal") as HTMLButtonElement;
 
-  const resetModal = () => {
-    modalImg.src = ''
-    modalImg.alt = ''
-  }
+    const openModal = (imgSrc: string, imgAlt: string) => {
+      modalImg.src = imgSrc;
+      modalImg.alt = imgAlt;
+      document.body.style.overflow = "hidden";
 
-  document.querySelectorAll('.clickable-img').forEach((img) => {
-    img.addEventListener('click', () => {
-      modalImg.src = img.getAttribute('data-original')!
-      modalImg.alt = img.alt
+      modal!.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+      modal!.classList.add("opacity-100", "scale-100", "pointer-events-auto");
+      modal!.setAttribute("aria-hidden", "false");
+    };
 
-      modal!.classList.remove('opacity-0', 'scale-95', 'pointer-events-none')
-      modal!.classList.add('opacity-100', 'scale-100', 'pointer-events-auto')
-      modal!.setAttribute('aria-hidden', 'false')
-    })
-  })
+    const closeModal = () => {
+      document.body.style.overflow = "";
 
-  closeBtn.addEventListener('click', () => {
-    modal!.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
-    modal!.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto')
-    modal!.setAttribute('aria-hidden', 'true')
-    resetModal()
-  })
-
-  modal!.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal!.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
+      modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
       modal!.classList.remove(
-        'opacity-100',
-        'scale-100',
-        'pointer-events-auto'
-      )
-      modal!.setAttribute('aria-hidden', 'true')
-      resetModal()
-    }
-  })
-})
-    </script>
+        "opacity-100",
+        "scale-100",
+        "pointer-events-auto",
+      );
+      modal!.setAttribute("aria-hidden", "true");
+
+      modalImg.src = "";
+      modalImg.alt = "";
+    };
+
+    document.querySelectorAll(".clickable-img").forEach((img) => {
+      img.addEventListener("click", () => {
+        const originalSrc = img.getAttribute("data-original")!;
+        const altText = img.getAttribute("alt") || "";
+        openModal(originalSrc, altText);
+      });
+    });
+
+    closeBtn.addEventListener("click", closeModal);
+
+    modal!.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  });
+</script>
