@@ -1,7 +1,79 @@
 ---
-const { title } = Astro.props
+export const Props = {
+  title: undefined,
+  description: undefined,
+  date: undefined,
+  icon: 'calendar',
+  iconColor: 'bg-orange-500',
+  results: [],
+  class: ''
+}
+
+const {
+  title,
+  description,
+  date,
+  icon = 'calendar',
+  iconColor = 'bg-orange-500',
+  results = [],
+  class: className = ''
+} = Astro.props
+
+const getIconSVG = (iconType) => {
+  switch (iconType) {
+    case 'calendar':
+      return '<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>'
+    case 'trophy':
+      return '<path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>'
+    case 'flag':
+      return '<path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>'
+    default:
+      return '<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>'
+  }
+}
 ---
-  <div class='bg-tarjetas p-4 rounded-lg shadow hover:shadow-lg transition-shadow'>
-    <h2 class='text-xl font-semibold mb-2 text-center'>{title}</h2>
+
+  <div class={`bg-tarjetas backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 hover:border-slate-600/50 ${className}`}>
+
+    {(icon || date) && (
+      <div class='flex items-center justify-between mb-6'>
+        {icon && (
+          <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center`}>
+            <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
+              <Fragment set:html={getIconSVG(icon)} />
+            </svg>
+          </div>
+        )}
+        {date && (
+          <span class='text-sm font-medium text-slate-400 bg-slate-700/50 px-3 py-1 rounded-full'>
+            {date}
+          </span>
+        )}
+      </div>
+    )}
+
+    {title && (
+      <h3 class='text-xl font-semibold text-white mb-4 leading-tight'>
+        {title}
+      </h3>
+    )}
+
+    {description && (
+      <p class='text-gray-400 leading-relaxed mb-6'>
+        {description}
+      </p>
+    )}
+
     <slot />
+
+    {results.length > 0 && (
+      <div class='space-y-3 mt-6'>
+        {results.map((result) => (
+          <div class='flex items-center space-x-3'>
+            <div class='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0' />
+            <span class='text-gray-300 text-sm'>{result}</span>
+          </div>
+        ))}
+      </div>
+    )}
   </div>
