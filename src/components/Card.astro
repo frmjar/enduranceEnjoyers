@@ -1,14 +1,4 @@
 ---
-export const Props = {
-  title: undefined,
-  description: undefined,
-  date: undefined,
-  icon: 'calendar',
-  iconColor: 'bg-orange-500',
-  results: [],
-  class: ''
-}
-
 const {
   title,
   description,
@@ -16,7 +6,8 @@ const {
   icon = 'calendar',
   iconColor = 'bg-orange-500',
   results = [],
-  class: className = ''
+  class: className = '',
+  titleInline = false
 } = Astro.props
 
 const getIconSVG = (iconType) => {
@@ -35,15 +26,35 @@ const getIconSVG = (iconType) => {
 
   <div class={`bg-tarjetas backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 hover:border-slate-600/50 ${className}`}>
 
-    {(icon || date) && (
+    {(icon || date || (title && titleInline)) && (
       <div class='flex items-center justify-between mb-6'>
-        {icon && (
-          <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center`}>
-            <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
-              <Fragment set:html={getIconSVG(icon)} />
-            </svg>
-          </div>
-        )}
+        {titleInline
+          ? (
+            <div class='flex items-center'>
+              {icon && (
+                <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center mr-4`}>
+                  <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
+                    <Fragment set:html={getIconSVG(icon)} />
+                  </svg>
+                </div>
+              )}
+              {title && (
+                <h3 class='text-xl font-semibold text-white leading-tight'>
+                  {title}
+                </h3>
+              )}
+            </div>
+            )
+          : (
+              icon && (
+                <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center`}>
+                  <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
+                    <Fragment set:html={getIconSVG(icon)} />
+                  </svg>
+                </div>
+              )
+            )}
+
         {date && (
           <span class='text-sm font-medium text-slate-400 bg-slate-700/50 px-3 py-1 rounded-full'>
             {date}
@@ -52,7 +63,7 @@ const getIconSVG = (iconType) => {
       </div>
     )}
 
-    {title && (
+    {title && !titleInline && (
       <h3 class='text-xl font-semibold text-white mb-4 leading-tight'>
         {title}
       </h3>
@@ -68,8 +79,8 @@ const getIconSVG = (iconType) => {
 
     {results.length > 0 && (
       <div class='space-y-3 mt-6'>
-        {results.map((result) => (
-          <div class='flex items-center space-x-3'>
+        {results.map((result, index) => (
+          <div data-key={index} class='flex items-center space-x-3'>
             <div class='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0' />
             <span class='text-gray-300 text-sm'>{result}</span>
           </div>

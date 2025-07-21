@@ -1,8 +1,19 @@
 ---
+import sample from '../assets/banner.png'
+import { getImage } from 'astro:assets'
+
+// Generar múltiples versiones optimizadas de la imagen
+const bannerImages = {
+  small: await getImage({ src: sample, width: 640, format: 'webp', quality: 80 }),
+  medium: await getImage({ src: sample, width: 1024, format: 'webp', quality: 80 }),
+  large: await getImage({ src: sample, width: 1536, format: 'webp', quality: 80 }),
+  xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 })
+}
+
 const props = Astro.props
 ---
   <div {...props}>
-    <div id='navbardir' class='relative w-full aspect-[3/1] bg-cover bg-[url("/banner.webp")] bg-center bg-no-repeat z-50'>
+    <div id='navbardir' class='relative w-full aspect-[3.5/1] bg-cover bg-center bg-no-repeat z-50'>
       <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-transparent transition-all duration-300'>
         <div id='scroll-logo' class='absolute left-4 hidden transition-all duration-300'>
           <img src='/logotextclear.webp' alt='Logo' class='h-15' />
@@ -18,11 +29,44 @@ const props = Astro.props
     </div>
   </div>
 
-    <script>
+    <script define:vars={{ bannerImages }}>
+  // URLs de las diferentes versiones de la imagen
+  const imagePaths = {
+    small: bannerImages.small.src,
+    medium: bannerImages.medium.src,
+    large: bannerImages.large.src,
+    xlarge: bannerImages.xlarge.src
+  }
 
   const navbardir = document.getElementById('navbardir')
   const logo = document.getElementById('scroll-logo')
   const navbar = document.getElementById('navbar')
+
+  // Función para establecer la imagen del banner según el ancho de la pantalla
+  function setBannerImage () {
+    if (!navbardir) return
+
+    const screenWidth = window.innerWidth
+    let imageUrl
+
+    if (screenWidth < 640) {
+      imageUrl = imagePaths.small
+    } else if (screenWidth < 1024) {
+      imageUrl = imagePaths.medium
+    } else if (screenWidth < 1536) {
+      imageUrl = imagePaths.large
+    } else {
+      imageUrl = imagePaths.xlarge
+    }
+
+    navbardir.style.backgroundImage = `url(${imageUrl})`
+  }
+
+  // Establecer la imagen inicial cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', setBannerImage)
+
+  // Actualizar la imagen cuando cambie el tamaño de la ventana
+  window.addEventListener('resize', setBannerImage)
 
   window.addEventListener('scroll', () => {
     if (!navbardir || !logo || !navbar) return
@@ -42,4 +86,4 @@ const props = Astro.props
       navbar.classList.remove('bg-primary-header', 'shadow')
     }
   })
-  </script>
+    </script>

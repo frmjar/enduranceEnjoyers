@@ -7,7 +7,8 @@ cloudinary.config({
 })
 
 export enum CloudinaryFolders {
-  EnduranceEnjoyers = 'EnduranceEnjoyers'
+  EnduranceEnjoyers = 'EnduranceEnjoyers',
+  General = 'General'
 }
 
 export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: string, format?: string, width?: number, height?: number }): string => {
@@ -17,7 +18,9 @@ export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: s
     type: 'upload',
     transformation: [
       { width, height, crop: 'fill', gravity: 'auto' },
-      { quality: 'auto', fetch_format: 'auto' }
+      { quality: 'auto:good', fetch_format: 'auto' },
+      { flags: 'progressive' }, // Mejora la carga progresiva
+      { dpr: 'auto' } // Optimización automática para dispositivos de alta densidad
     ]
   })
 }
@@ -32,6 +35,7 @@ export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, 
     })
 
     return result.resources.map((img: any): { url: string, name: string, original: string, id: string } => {
+      console.log('Image:', img)
       return {
         url: getUrl({ publicId: img.public_id, format: img.format, width: 600, height: 400 }),
         name: img.display_name,

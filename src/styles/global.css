@@ -1,28 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary-header: #171915; 
-    --color-hover: #bfdbfe; 
-    --color-primary-body: #1f2937; 
-    --color-tarjetas: #394659;
+  --color-primary-header: #171915;
+  --color-hover: #bfdbfe;
+  --color-primary-body: #1f2937;
+  --color-tarjetas: #394659;
 }
 
 @layer base {
   html {
     @apply scroll-smooth;
   }
+
   body {
     @apply bg-primary-body text-white font-sans;
+    /* Mejorar el renderizado de fuentes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   footer {
     @apply bg-primary-header text-white font-sans;
   }
+
   h1 {
     @apply text-3xl font-bold mb-4 text-white;
   }
+
   h2 {
     @apply text-2xl font-semibold mb-3 text-white;
   }
+
   p {
     @apply text-lg mb-4 text-gray-300 p-4 leading-loose;
   }
@@ -34,5 +42,20 @@
 
   .w-2px {
     width: 2px;
+  }
+
+  /* Optimización para imágenes */
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+
+  /* Mejorar el rendimiento de animaciones */
+  * {
+    will-change: auto;
+  }
+
+  .hover\\:scale-105:hover {
+    will-change: transform;
   }
 }
