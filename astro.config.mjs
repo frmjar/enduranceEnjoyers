@@ -3,6 +3,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
+  site: 'https://enduenjoyers.es',
+
   vite: {
     plugins: [tailwindcss()],
     build: {
@@ -35,5 +37,6 @@ export default defineConfig({
   },
 
   // Compresión y optimización
-  compressHTML: true
+  compressHTML: true,
+  trailingSlash: 'never'
 })

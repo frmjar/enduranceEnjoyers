@@ -4,9 +4,9 @@ import { CloudinaryFolders, getUrl } from '../libs/cloudinary'
 
 const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.General + '/skincar', format: 'png' })
 ---
-  <section>
+  <section itemscope itemtype='https://schema.org/SportsTeam'>
     <div class='flex gap-10 columns-2 h-full w-3/5 p-6 m-auto'>
-      <p class='flex-1 text-1_5xl font-bold'>
+      <p class='flex-1 text-1_5xl font-bold' itemprop='description'>
         The Endurance Enjoyers team is a group of passionate individuals who love to push their limits and explore the world of endurance sports. We believe in the power of community, support, and shared experiences to achieve our goals.
       </p>
       <div class='w-2px bg-gray-400' />
@@ -16,8 +16,9 @@ const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.General + '/skincar', f
     </div>
     <Image
       src={teamLogoUrl}
-      alt='Endurance Enjoyers team logo'
+      alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
       class='m-auto -translate-y-12 w-[80%] opacity-80'
       inferSize
+      itemprop='logo'
     />
   </section>

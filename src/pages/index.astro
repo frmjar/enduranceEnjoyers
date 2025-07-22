@@ -5,8 +5,15 @@ import HeaderExtended from '../components/HeaderExtended.astro'
 import Layaut from '../components/Layaut.astro'
 import NovedadesLogros from '../components/NovedadesLogros.astro'
 import TeamDescription from '../components/TeamDescription.astro'
+
+const seoData = {
+  title: 'Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing',
+  description: 'Únete a Endurance Enjoyers, el equipo líder en carreras de resistencia en iRacing. Participa en las 24 Horas de Daytona, Le Mans y más eventos épicos de motorsport virtual.',
+  keywords: 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras, motorsport virtual, España',
+  canonicalUrl: 'https://enduenjoyers.es/'
+}
 ---
-  <Layaut>
+  <Layaut {...seoData}>
     <HeaderExtended id='home' />
     <TeamDescription />
     <NovedadesLogros id='novedades' class='scroll-mt-20' />

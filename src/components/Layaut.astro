@@ -1,8 +1,18 @@
 ---
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from "@vercel/speed-insights/astro"
 import '../styles/global.css'
 import Footer from './Footer.astro'
 
-const { title = 'Endurance Enjoyers', description = 'Endurance Enjoyers - A community for endurance sports enthusiasts.' } = Astro.props
+const { 
+  title = 'Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing', 
+  description = 'Únete a Endurance Enjoyers, el equipo líder en carreras de resistencia en iRacing. Participa en las 24 Horas de Daytona, Le Mans y más eventos épicos.',
+  keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras',
+  ogImage = '/og-image.jpg',
+  canonicalUrl
+} = Astro.props
+
+const currentUrl = canonicalUrl || Astro.url.href
 ---
   <html lang="es">
     <head>
@@ -10,25 +20,48 @@ const { title = 'Endurance Enjoyers', description = 'Endurance Enjoyers - A comm
       <meta charset='UTF-8' />
       <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       <meta name='description' content={description} />
-      <meta property='og:title' content={title} />
-      <meta property='og:description' content={description} />
-      <meta property='og:type' content='website' />
+      <meta name='keywords' content={keywords} />
       <meta name='robots' content='index, follow' />
       <meta name='author' content='Endurance Enjoyers' />
       <meta name='theme-color' content='#171915' />
+      
+      <!-- Canonical URL -->
+      <link rel='canonical' href={currentUrl} />
+      
+      <!-- Open Graph -->
+      <meta property='og:title' content={title} />
+      <meta property='og:description' content={description} />
+      <meta property='og:type' content='website' />
+      <meta property='og:url' content={currentUrl} />
+      <meta property='og:image' content={ogImage} />
+      <meta property='og:site_name' content='Endurance Enjoyers' />
+      <meta property='og:locale' content='es_ES' />
+      
+      <!-- Twitter Cards -->
+      <meta name='twitter:card' content='summary_large_image' />
+      <meta name='twitter:site' content='@EnduEnjoyers' />
+      <meta name='twitter:title' content={title} />
+      <meta name='twitter:description' content={description} />
+      <meta name='twitter:image' content={ogImage} />
+      
       <!-- Preload critical resources -->
       <link rel='preload' href='/logotextclear.webp' as='image' type='image/webp' />
+      
       <!-- Preconnect to external domains -->
       <link rel='preconnect' href='https://res.cloudinary.com' />
       <link rel='dns-prefetch' href='https://res.cloudinary.com' />
-      <!--meta property='og:image' content='https://misitio.com/imagen.jpg' />
-      <meta property='og:url' content='https://endurance.com' />
-      <meta name='twitter:card' content='summary_large_image' />-->
+      <link rel='preconnect' href='https://fonts.googleapis.com' />
+      <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
+      
+      <!-- Icons -->
       <link rel='icon' href='/logo.webp' />
+      <link rel='apple-touch-icon' href='/logo.webp' />
     </head>
     <body class="flex flex-col min-h-screen">
       <div class="flex-grow">
         <slot />
+        <Analytics />
+        <SpeedInsights />
       </div>  
     </body>
     <Footer>
