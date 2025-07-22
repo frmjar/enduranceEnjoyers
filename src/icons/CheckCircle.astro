@@ -1,0 +1,26 @@
+---
+export interface Props {
+  class?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  fill?: string
+}
+
+const {
+  class: className = '',
+  size = 'md',
+  fill = 'currentColor',
+  stroke = 'none',
+  strokeWidth = '2'
+} = Astro.props
+
+const sizeClasses = {
+  sm: 'w-4 h-4',
+  md: 'w-6 h-6',
+  lg: 'w-8 h-8',
+  xl: 'w-10 h-10'
+}
+---
+
+  <svg class={`${sizeClasses[size]} ${className}`} fill={fill} stroke={stroke} stroke-width={strokeWidth} viewBox='0 0 20 20'>
+    <path d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+  </svg>

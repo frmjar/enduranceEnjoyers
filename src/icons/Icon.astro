@@ -1,0 +1,36 @@
+---
+import Calendar from './Calendar.astro'
+import CheckCircle from './CheckCircle.astro'
+import Close from './Close.astro'
+import Flag from './Flag.astro'
+import Trophy from './Trophy.astro'
+import Twitter from './Twitter.astro'
+
+export interface Props {
+  name: 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter'
+  class?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  fill?: string
+}
+
+const {
+  name,
+  class: className = '',
+  size = 'md',
+  fill = 'currentColor',
+  ...props
+} = Astro.props
+
+const iconComponents = {
+  calendar: Calendar,
+  trophy: Trophy,
+  flag: Flag,
+  checkCircle: CheckCircle,
+  close: Close,
+  twitter: Twitter
+}
+
+const IconComponent = iconComponents[name] || Calendar
+---
+
+  <IconComponent class={className} size={size} fill={fill} {...props} />

@@ -1,4 +1,6 @@
 ---
+import Icon from '../icons/Icon.astro'
+
 const {
   title,
   description,
@@ -6,36 +8,40 @@ const {
   icon = 'calendar',
   iconColor = 'bg-orange-500',
   results = [],
+  details = [],
   class: className = '',
-  titleInline = false
+  titleInline = false,
+  titleHoverColor = false,
+  headerDate = null,
+  headerSeason = null
 } = Astro.props
-
-const getIconSVG = (iconType) => {
-  switch (iconType) {
-    case 'calendar':
-      return '<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>'
-    case 'trophy':
-      return '<path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>'
-    case 'flag':
-      return '<path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>'
-    default:
-      return '<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>'
-  }
-}
 ---
 
-  <div class={`bg-bg-card backdrop-blur-sm rounded-2xl border border-border-dark p-6 hover:border-slate-600/50 ${className}`}>
+  <div class={`bg-bg-card backdrop-blur-sm rounded-2xl border border-border-dark p-6 hover:border-slate-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 group ${className}`}>
 
-    {(icon || date || (title && titleInline)) && (
+    {(headerDate || headerSeason) && (
+      <header class='flex items-center justify-between mb-4'>
+        {headerDate && (
+          <time class='text-sm font-semibold text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full'>
+            {headerDate}
+          </time>
+        )}
+        {headerSeason && (
+          <span class='text-sm text-text-muted bg-bg-secondary px-3 py-1 rounded-full'>
+            {headerSeason}
+          </span>
+        )}
+      </header>
+    )}
+
+    {(icon || date || (title && titleInline)) && !headerDate && !headerSeason && (
       <div class='flex items-center justify-between mb-6'>
         {titleInline
           ? (
             <div class='flex items-center'>
               {icon && (
                 <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center mr-4`}>
-                  <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                    <Fragment set:html={getIconSVG(icon)} />
-                  </svg>
+                  <Icon name={icon} class='text-white' />
                 </div>
               )}
               {title && (
@@ -48,9 +54,7 @@ const getIconSVG = (iconType) => {
           : (
               icon && (
                 <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center`}>
-                  <svg class='w-6 h-6 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                    <Fragment set:html={getIconSVG(icon)} />
-                  </svg>
+                  <Icon name={icon} class='text-white' />
                 </div>
               )
             )}
@@ -64,7 +68,7 @@ const getIconSVG = (iconType) => {
     )}
 
     {title && !titleInline && (
-      <h3 class='text-xl font-semibold text-text-primary mb-4 leading-tight'>
+      <h3 class={`text-xl font-bold mb-4 text-text-primary leading-tight ${titleHoverColor ? 'group-hover:text-orange-400 transition-colors duration-200' : ''}`}>
         {title}
       </h3>
     )}
@@ -77,10 +81,22 @@ const getIconSVG = (iconType) => {
 
     <slot />
 
+    {details.length > 0 && (
+      <div class='space-y-3'>
+        {details.map((detail) => (
+          <div class='flex items-center gap-2'>
+            <div class='w-2 h-2 bg-orange-500 rounded-full' />
+            <span class='text-sm font-medium text-orange-400'>{detail.label}:</span>
+            <span class='text-sm text-text-secondary'>{detail.value}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
     {results.length > 0 && (
       <div class='space-y-3 mt-6'>
-        {results.map((result, index) => (
-          <div data-key={index} class='flex items-center space-x-3'>
+        {results.map((result) => (
+          <div class='flex items-center space-x-3'>
             <div class='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0' />
             <span class='text-text-primary text-sm'>{result}</span>
           </div>

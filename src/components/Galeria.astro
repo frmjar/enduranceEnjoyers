@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import { getImages, CloudinaryFolders } from '../libs/cloudinary'
+import Icon from '../icons/Icon.astro'
+
 const images = await getImages({
   cantidad: 12,
   folder: CloudinaryFolders.EnduranceEnjoyers
@@ -57,7 +59,7 @@ const props = Astro.props;
         id='closeModal'
         class='absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100'
       >
-        ✕
+        <Icon name='close' size='sm' class='text-black' />
       </button>
       <img
         id='modalImage'
