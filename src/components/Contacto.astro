@@ -180,40 +180,33 @@ const { id, class: className } = Astro.props;
   </section>
 
     <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form')
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form')
 
   if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault()
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
 
-        const formData = new FormData(form)
+      const formData = new FormData(form)
 
-        try {
-          const response = await fetch('/api/contacto', {
-            method: 'POST',
-            body: formData
-          })
-          const result = await response.json()
+      try {
+        const response = await fetch('/api/contacto', {
+          method: 'POST',
+          body: formData
+        })
+        const result = await response.json()
 
-          if (result.success) {
-            form.reset()
-            alert('¡Solicitud enviada con éxito!')
-          } else {
-            throw new Error('Error en la respuesta del servidor')
-          }
-        } catch (error) {
-          console.error('Error:', error)
-          alert('Error al enviar la solicitud. Inténtalo de nuevo.')
+        if (result.success) {
+          form.reset()
+          alert('¡Solicitud enviada con éxito!')
+        } else {
+          throw new Error('Error en la respuesta del servidor')
         }
-      })
+      } catch (error) {
+        console.error('Error:', error)
+        alert('Error al enviar la solicitud. Inténtalo de nuevo.')
+      }
+    })
   }
-  })
-  </script>
-          console.error('Error:', error)
-          alert('Error al enviar la solicitud. Inténtalo de nuevo.')
-        }
-      })
-  }
-  })
-  </script>
+})
+</script>

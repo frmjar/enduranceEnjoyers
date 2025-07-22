@@ -3,7 +3,7 @@ import { sheets } from '../../libs/google'
 
 export const prerender = false
 
-const SPREADSHEET_ID = import.meta.env.SHEET_ID
+const SPREADSHEET_ID = import.meta.env.SHEET_ID_CONTACTO
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
   const data = await request.formData()
