@@ -1,6 +1,6 @@
 ---
-import Icon from '../icons/Icon.astro'
-import Card from './Card.astro'
+import Icon from "../icons/Icon.astro";
+import Card from "./Card.astro";
 
 const meses = {
   enero: 0,
@@ -14,109 +14,118 @@ const meses = {
   septiembre: 8,
   octubre: 9,
   noviembre: 10,
-  diciembre: 11
-}
+  diciembre: 11,
+};
 
-const parseRaceDate = fecha => {
-  const [d, m, y] = fecha.split(' ')
-  return new Date(y, meses[m.toLowerCase()], d)
-}
+const parseRaceDate = (fecha) => {
+  const [d, m, y] = fecha.split(" ");
+  return new Date(y, meses[m.toLowerCase()], d);
+};
 
-const getWeekNumber = date => {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
-}
+const getWeekNumber = (date) => {
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+  );
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+};
 
-let scheduleData = []
+let scheduleData = [];
 try {
-  const res = await fetch(`${Astro.url.origin}/api/resistencias`)
-  if (res.ok) scheduleData = await res.json()
-  else console.error('Error al obtener datos:', res.status)
+  const res = await fetch(`${Astro.url.origin}/api/resistencias`);
+  if (res.ok) scheduleData = await res.json();
+  else console.error("Error al obtener datos:", res.status);
 } catch (err) {
-  console.error('Error de conexión con la API:', err)
+  console.error("Error de conexión con la API:", err);
 }
 
-const today = new Date()
-const currentWeek = getWeekNumber(today)
-const nextWeek = currentWeek + 1
-const year = today.getFullYear()
+const today = new Date();
+const currentWeek = getWeekNumber(today);
+const nextWeek = currentWeek + 1;
+const year = today.getFullYear();
 
 const races = scheduleData
-  .map(r => ({ ...r, date: parseRaceDate(r.Fecha) }))
-  .filter(r => {
-    const week = getWeekNumber(r.date)
-    return r.date.getFullYear() === year && (week === currentWeek || week === nextWeek)
+  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha) }))
+  .filter((r) => {
+    console.log(
+      `Evaluando carrera: ${r.Serie} - Fecha: ${r.date.toLocaleDateString()}`,
+    );
+    const week = getWeekNumber(r.date);
+    return (
+      r.date.getFullYear() === year &&
+      (week === currentWeek || week === nextWeek)
+    );
   })
-  .sort((a, b) => a.date - b.date)
+  .sort((a, b) => a.date - b.date);
 
 const groupedRaces = races.reduce((acc, r) => {
-  const week = r.Week
-  acc[week] = acc[week] || []
-  acc[week].push(r)
-  return acc
-}, {})
+  const week = r.Week;
+  acc[week] = acc[week] || [];
+  acc[week].push(r);
+  return acc;
+}, {});
 
-const sortedWeeks = Object.keys(groupedRaces).sort((a, b) => a - b)
+const sortedWeeks = Object.keys(groupedRaces).sort((a, b) => a - b);
 
-const { class: className = '', ...props } = Astro.props
+const { class: className = "", ...props } = Astro.props;
 ---
 
-  <section class={`max-w-8xl mx-auto p-6 ${className}`} {...props}>
-    <div class='text-center mb-12'>
-      <h2 class='text-4xl font-bold text-text-primary mb-4'>
-        Próximas carreras
-      </h2>
-      <div class='w-24 h-1 bg-orange-500 mx-auto rounded-full' />
-    </div>
+<section class={`max-w-8xl mx-auto p-6 ${className}`} {...props}>
+  <div class="text-center mb-12">
+    <h2 class="text-4xl font-bold text-text-primary mb-4">Próximas carreras</h2>
+    <div class="w-24 h-1 bg-orange-500 mx-auto rounded-full"></div>
+  </div>
 
-    {sortedWeeks.length > 0
-      ? (
-        <div class='space-y-12'>
-          {sortedWeeks.map((weekNumber, index) => (
-            <div class='mb-10'>
-              <div class='flex items-center gap-4 mb-6'>
-                <div class='flex items-center justify-center w-12 h-12 bg-orange-500 rounded-xl'>
-                  <Icon name='calendar' class='text-white' />
-                </div>
-                <h3 class='text-2xl font-bold text-text-primary'>
-                  Semana {weekNumber} {index == 0 ? '(Esta semana)' : '(Próxima semana)'}
-                </h3>
-                <div class='flex-1 h-px bg-border-light' />
+  {
+    sortedWeeks.length > 0 ? (
+      <div class="space-y-12">
+        {sortedWeeks.map((weekNumber, index) => (
+          <div class="mb-10">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center justify-center w-12 h-12 bg-orange-500 rounded-xl">
+                <Icon name="calendar" class="text-white" />
               </div>
-
-              <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-8xl mx-auto'>
-                {groupedRaces[weekNumber].map((race) => {
-                  const raceDetails = [
-                    { label: 'Equipo', value: race.Team === 'SI' ? 'Sí' : 'No' },
-                    { label: 'Duración', value: race.Duracion },
-                    { label: 'Circuito', value: race.Circuito },
-                    { label: 'Prob. lluvia', value: race.Lluvia || 'N/A' },
-                    { label: 'Coches', value: race.Coches }
-                  ]
-
-                  return (
-                    <Card
-                      title={race.Serie}
-                      titleHoverColor
-                      headerDate={race.Fecha}
-                      headerSeason={race.Season}
-                      details={raceDetails}
-                    />
-                  )
-                })}
-              </div>
+              <h3 class="text-2xl font-bold text-text-primary">
+                Semana {weekNumber}{" "}
+                {index == 0 ? "(Esta semana)" : "(Próxima semana)"}
+              </h3>
+              <div class="flex-1 h-px bg-border-light" />
             </div>
-          ))}
-        </div>
-        )
-      : (
-        <div class='text-center py-12'>
-          <div class='w-16 h-16 bg-bg-secondary rounded-full flex items-center justify-center mx-auto mb-4'>
-            <Icon name='calendar' size='lg' class='text-text-muted' />
+
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-8xl mx-auto">
+              {groupedRaces[weekNumber].map((race) => {
+                const raceDetails = [
+                  { label: "Equipo", value: race.Team === "SI" ? "Sí" : "No" },
+                  { label: "Duración", value: race.Duracion },
+                  { label: "Circuito", value: race.Circuito },
+                  { label: "Prob. lluvia", value: race.Lluvia || "N/A" },
+                  { label: "Coches", value: race.Coches },
+                ];
+
+                return (
+                  <Card
+                    title={race.Serie}
+                    titleHoverColor
+                    headerDate={race.Fecha}
+                    headerSeason={race.Season}
+                    details={raceDetails}
+                  />
+                );
+              })}
+            </div>
           </div>
-          <p class='text-text-muted text-lg'>No hay carreras programadas para esta semana o la siguiente</p>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <div class="w-16 h-16 bg-bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+          <Icon name="calendar" size="lg" class="text-text-muted" />
         </div>
-        )}
-  </section>
+        <p class="text-text-muted text-lg">
+          No hay carreras programadas para esta semana o la siguiente
+        </p>
+      </div>
+    )
+  }
+</section>
