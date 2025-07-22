@@ -4,10 +4,10 @@ import { getImage } from 'astro:assets'
 
 // Generar múltiples versiones optimizadas de la imagen
 const bannerImages = {
-  small: await getImage({ src: sample, width: 640, format: 'webp', quality: 80 }),
-  medium: await getImage({ src: sample, width: 1024, format: 'webp', quality: 80 }),
-  large: await getImage({ src: sample, width: 1536, format: 'webp', quality: 80 }),
-  xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 })
+  small: await getImage({ src: sample, width: 640, format: 'webp' }),
+  medium: await getImage({ src: sample, width: 1024, format: 'webp' }),
+  large: await getImage({ src: sample, width: 1536, format: 'webp' }),
+  xlarge: await getImage({ src: sample, width: 2048, format: 'webp' })
 }
 
 const props = Astro.props
