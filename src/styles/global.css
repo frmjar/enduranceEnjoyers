@@ -5,6 +5,29 @@
   --color-hover: #bfdbfe;
   --color-primary-body: #1f2937;
   --color-tarjetas: #394659;
+  
+  /* Variables de colores de texto */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e5e5e5;
+  --color-text-muted: #d1d5db;
+  --color-text-gray-light: #9ca3af;
+  --color-text-gray-medium: #6b7280;
+  --color-text-gray-dark: #4b5563;
+  
+  /* Variables de colores de fondo */
+  --color-bg-primary: #1f2937;
+  --color-bg-secondary: #374151;
+  --color-bg-card: #394659;
+  --color-bg-input: rgba(71, 85, 105, 0.8);
+  --color-bg-overlay: rgba(0, 0, 0, 0.9);
+  
+  /* Variables de colores de borde */
+  --color-border-light: rgba(148, 163, 184, 0.4);
+  --color-border-medium: rgba(148, 163, 184, 0.6);
+  --color-border-dark: rgba(71, 85, 105, 0.5);
+  
+  /* Variables de colores de placeholder */
+  --color-placeholder: #9ca3af;
 }
 
 @layer base {
@@ -13,26 +36,26 @@
   }
 
   body {
-    @apply bg-primary-body text-white font-sans;
+    @apply bg-primary-body text-text-primary font-sans;
     /* Mejorar el renderizado de fuentes */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   footer {
-    @apply bg-primary-header text-white font-sans;
+    @apply bg-primary-header text-text-primary font-sans;
   }
 
   h1 {
-    @apply text-3xl font-bold mb-4 text-white;
+    @apply text-3xl font-bold mb-4 text-text-primary;
   }
 
   h2 {
-    @apply text-2xl font-semibold mb-3 text-white;
+    @apply text-2xl font-semibold mb-3 text-text-primary;
   }
 
   p {
-    @apply text-lg mb-4 text-gray-300 p-4 leading-loose;
+    @apply text-lg mb-4 text-text-muted p-4 leading-loose;
   }
 
   .text-1_5xl {
@@ -42,6 +65,55 @@
 
   .w-2px {
     width: 2px;
+  }
+
+  /* Clases de utilidad para colores */
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  .text-gray-light {
+    color: var(--color-text-gray-light);
+  }
+
+  .text-gray-medium {
+    color: var(--color-text-gray-medium);
+  }
+
+  .text-gray-dark {
+    color: var(--color-text-gray-dark);
+  }
+
+  .bg-card {
+    background-color: var(--color-bg-card);
+  }
+
+  .bg-input {
+    background-color: var(--color-bg-input);
+  }
+
+  .bg-secondary-custom {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .border-light {
+    border-color: var(--color-border-light);
+  }
+
+  .border-medium {
+    border-color: var(--color-border-medium);
+  }
+
+  .border-dark {
+    border-color: var(--color-border-dark);
   }
 
   /* Optimización para imágenes */

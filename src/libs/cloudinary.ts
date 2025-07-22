@@ -19,8 +19,8 @@ export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: s
     transformation: [
       { width, height, crop: 'fill', gravity: 'auto' },
       { quality: 'auto:good', fetch_format: 'auto' },
-      { flags: 'progressive' }, // Mejora la carga progresiva
-      { dpr: 'auto' } // Optimización automática para dispositivos de alta densidad
+      { flags: 'progressive' },
+      { dpr: 'auto' }
     ]
   })
 }
@@ -36,7 +36,6 @@ export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, 
     })
 
     return result.resources.map((img: any): { url: string, name: string, original: string, id: string, title?: string, description?: string, alt: string } => {
-
       const context = img?.context?.custom || {}
 
       return {
