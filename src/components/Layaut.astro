@@ -3,13 +3,15 @@ import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from "@vercel/speed-insights/astro"
 import '../styles/global.css'
 import Footer from './Footer.astro'
+import Header from './Header.astro'
 
 const { 
   title = 'Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing', 
   description = 'Únete a Endurance Enjoyers, el equipo líder en carreras de resistencia en iRacing. Participa en las 24 Horas de Daytona, Le Mans y más eventos épicos.',
   keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras',
   ogImage = '/og-image.png',
-  canonicalUrl
+  canonicalUrl,
+  showHeader = false
 } = Astro.props
 
 const currentUrl = canonicalUrl || Astro.url.href
@@ -24,6 +26,7 @@ const currentUrl = canonicalUrl || Astro.url.href
       <meta name='robots' content='index, follow' />
       <meta name='author' content='Endurance Enjoyers' />
       <meta name='theme-color' content='#171915' />
+      <meta name='generator' content={Astro.generator} />
       
       <!-- Canonical URL -->
       <link rel='canonical' href={currentUrl} />
@@ -58,11 +61,12 @@ const currentUrl = canonicalUrl || Astro.url.href
       <link rel='apple-touch-icon' href='/logo.webp' />
     </head>
     <body class="flex flex-col min-h-screen">
+      {showHeader && <Header />}
       <div class="flex-grow">
         <slot />
         <Analytics />
         <SpeedInsights />
       </div>  
+      <Footer />
     </body>
-    <Footer>
   </html>

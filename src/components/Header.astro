@@ -2,16 +2,73 @@
 const props = Astro.props
 ---
   <div {...props}>
-    <nav id='navbar' class='relative top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-primary-header shadow'>
+    <nav id='navbar' class='relative top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-primary-header shadow z-30'>
       <div id='scroll-logo' class='absolute left-4'>
-        <img src='/logotextclear.webp' alt='Logo' class='h-15' />
+        <a href='/'>
+          <img src='/logotextclear.webp' alt='Logo Endurance Enjoyers' class='h-15' width="180" height="60" />
+        </a>
       </div>
 
-      <div class='mx-auto flex space-x-13 text-lg font-medium text-white'>
-        <a href='/' class='hover:text-hover bg-primary'>Inicio</a>
-        <a href='/#novedades' class='hover:text-hover'>Novedades</a>
-        <a href='/#galeria' class='hover:text-hover'>Galería</a>
-        <a href='/#contacto' class='hover:text-hover'>Contacto</a>
+      <!-- Menú para pantallas medianas y grandes -->
+      <div class='mx-auto hidden md:flex space-x-8 text-lg font-medium text-white'>
+        <a href='/' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Inicio</a>
+        <a href='/#calendario' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Calendario</a>
+        <a href='/#novedades' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Novedades</a>
+        <a href='/#galeria' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Galería</a>
+        <a href='/#contacto' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Contacto</a>
       </div>
+
+      <!-- Botón de menú móvil -->
+      <button id="mobile-menu-button" class="md:hidden absolute right-4 text-white p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </nav>
+
+    <!-- Menú móvil desplegable -->
+    <div id="mobile-menu" class="fixed inset-0 bg-primary-header bg-opacity-95 z-20 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+      <div class="flex flex-col items-center justify-center h-full space-y-8 text-xl font-medium text-white">
+        <button id="close-menu" class="absolute top-4 right-4 text-white p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <a href='/' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Inicio</a>
+        <a href='/#calendario' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Calendario</a>
+        <a href='/#novedades' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Novedades</a>
+        <a href='/#galeria' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Galería</a>
+        <a href='/#contacto' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Contacto</a>
+      </div>
+    </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const closeMenuButton = document.getElementById('close-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuLinks = mobileMenu?.querySelectorAll('a');
+
+      // Función para abrir el menú móvil
+      const openMobileMenu = () => {
+        mobileMenu?.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+      };
+
+      // Función para cerrar el menú móvil
+      const closeMobileMenu = () => {
+        mobileMenu?.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+      };
+
+      // Event listeners
+      mobileMenuButton?.addEventListener('click', openMobileMenu);
+      closeMenuButton?.addEventListener('click', closeMobileMenu);
+
+      // Cerrar el menú al hacer clic en un enlace
+      mobileMenuLinks?.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+    });
+  </script>

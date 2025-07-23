@@ -8,6 +8,7 @@ const images = await getImages({
   folder: CloudinaryFolders.EnduranceEnjoyers
 })
 
+// Ordenar imágenes por nombre de forma descendente
 images.sort((a, b) => {
   return a.name.localeCompare(b.name) * -1
 })
@@ -16,28 +17,34 @@ const props = Astro.props;
 ---
 
   <section {...props}>
+    <h2 class="text-center text-3xl font-bold mb-8">Galería de Imágenes</h2>
     <div
-      class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'
+      class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-11/12 md:w-10/12 mx-auto my-10'
     >
       {
       images.map((img) => (
-        <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 '>
-          <Image
-            src={img.url}
-            alt={img.alt}
-            data-original={img.original}
-            inferSize
-            loading='lazy'
-            class='rounded-lg clickable-img'
-          />
+        <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 shadow-lg'>
+          <div class="aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse"> <!-- Placeholder mientras carga -->
+            <Image
+              src={img.url}
+              alt={img.alt}
+              data-original={img.original}
+              width={600}
+              height={400}
+              loading='lazy'
+              decoding="async"
+              class='rounded-lg clickable-img w-full h-full object-cover'
+              onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
+            />
+          </div>
 
           {(img.description || img.title) && (
-            <div class='absolute px-5 bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg'>
+            <div class='absolute px-5 py-3 bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg'>
               <h3 class='text-white font-semibold text-base mb-1'>
                 {img.title || img.name}
               </h3>
               {img.description && (
-                <p class='text-gray-200 text-sm whitespace-pre-line'>
+                <p class='text-gray-200 text-sm whitespace-pre-line p-0 m-0 leading-snug'>
                   {img.description}
                 </p>
               )}
@@ -53,20 +60,45 @@ const props = Astro.props;
       role='dialog'
       aria-modal='true'
       aria-hidden='true'
-      class='fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-8'
+      class='fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-4 md:p-8'
     >
       <button
         id='closeModal'
-        class='absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100'
+        class='absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100 transition-colors duration-200'
+        aria-label="Cerrar galería"
       >
         <Icon name='close' size='sm' class='text-black' />
       </button>
-      <img
-        id='modalImage'
-        src=''
-        alt=''
-        class='max-w-full max-h-full object-contain rounded shadow-2xl'
-      />
+      <button
+        id='prevImage'
+        class='absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-white transition-colors duration-200 hidden md:flex'
+        aria-label="Imagen anterior"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        id='nextImage'
+        class='absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-white transition-colors duration-200 hidden md:flex'
+        aria-label="Imagen siguiente"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <div class="relative w-full h-full flex items-center justify-center">
+        <div id="imageLoading" class="absolute inset-0 flex items-center justify-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+        </div>
+        <img
+          id='modalImage'
+          src=''
+          alt=''
+          class='max-w-full max-h-full object-contain rounded shadow-2xl'
+          onload="document.getElementById('imageLoading').style.display='none'"
+        />
+      </div>
     </div>
   </section>
 
@@ -75,8 +107,15 @@ const props = Astro.props;
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImage") as HTMLImageElement;
     const closeBtn = document.getElementById("closeModal") as HTMLButtonElement;
+    const prevBtn = document.getElementById("prevImage") as HTMLButtonElement;
+    const nextBtn = document.getElementById("nextImage") as HTMLButtonElement;
+    const loadingIndicator = document.getElementById("imageLoading");
+    const galleryImages = Array.from(document.querySelectorAll(".clickable-img"));
+    let currentImageIndex = 0;
 
-    const openModal = (imgSrc: string, imgAlt: string) => {
+    const openModal = (imgSrc: string, imgAlt: string, index: number) => {
+      currentImageIndex = index;
+      loadingIndicator!.style.display = "flex";
       modalImg.src = imgSrc;
       modalImg.alt = imgAlt;
       document.body.style.overflow = "hidden";
@@ -84,6 +123,9 @@ const props = Astro.props;
       modal!.classList.remove("opacity-0", "scale-95", "pointer-events-none");
       modal!.classList.add("opacity-100", "scale-100", "pointer-events-auto");
       modal!.setAttribute("aria-hidden", "false");
+
+      // Mostrar/ocultar botones de navegación según corresponda
+      updateNavigationButtons();
     };
 
     const closeModal = () => {
@@ -97,24 +139,109 @@ const props = Astro.props;
       );
       modal!.setAttribute("aria-hidden", "true");
 
-      modalImg.src = "";
-      modalImg.alt = "";
+      setTimeout(() => {
+        modalImg.src = "";
+        modalImg.alt = "";
+      }, 300);
     };
 
-    document.querySelectorAll(".clickable-img").forEach((img) => {
+    const showPrevImage = () => {
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+        const prevImg = galleryImages[currentImageIndex] as HTMLImageElement;
+        const originalSrc = prevImg.getAttribute("data-original")!;
+        const altText = prevImg.getAttribute("alt") || "";
+        loadingIndicator!.style.display = "flex";
+        modalImg.src = originalSrc;
+        modalImg.alt = altText;
+        updateNavigationButtons();
+      }
+    };
+
+    const showNextImage = () => {
+      if (currentImageIndex < galleryImages.length - 1) {
+        currentImageIndex++;
+        const nextImg = galleryImages[currentImageIndex] as HTMLImageElement;
+        const originalSrc = nextImg.getAttribute("data-original")!;
+        const altText = nextImg.getAttribute("alt") || "";
+        loadingIndicator!.style.display = "flex";
+        modalImg.src = originalSrc;
+        modalImg.alt = altText;
+        updateNavigationButtons();
+      }
+    };
+
+    const updateNavigationButtons = () => {
+      // Mostrar/ocultar botones según la posición actual
+      if (currentImageIndex <= 0) {
+        prevBtn.classList.add("opacity-50", "cursor-not-allowed");
+      } else {
+        prevBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+
+      if (currentImageIndex >= galleryImages.length - 1) {
+        nextBtn.classList.add("opacity-50", "cursor-not-allowed");
+      } else {
+        nextBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+    };
+
+    // Añadir event listeners a las imágenes de la galería
+    galleryImages.forEach((img, index) => {
       img.addEventListener("click", () => {
         const originalSrc = img.getAttribute("data-original")!;
         const altText = img.getAttribute("alt") || "";
-        openModal(originalSrc, altText);
+        openModal(originalSrc, altText, index);
       });
     });
 
+    // Event listeners para los botones de navegación
     closeBtn.addEventListener("click", closeModal);
+    prevBtn.addEventListener("click", showPrevImage);
+    nextBtn.addEventListener("click", showNextImage);
 
+    // Cerrar modal al hacer clic fuera de la imagen
     modal!.addEventListener("click", (e) => {
       if (e.target === modal) {
         closeModal();
       }
     });
+
+    // Navegación con teclado
+    document.addEventListener("keydown", (e) => {
+      if (modal!.getAttribute("aria-hidden") === "false") {
+        if (e.key === "Escape") {
+          closeModal();
+        } else if (e.key === "ArrowLeft") {
+          showPrevImage();
+        } else if (e.key === "ArrowRight") {
+          showNextImage();
+        }
+      }
+    });
+
+    // Soporte para gestos táctiles en dispositivos móviles
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    modalImg.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    modalImg.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    const handleSwipe = () => {
+      const swipeThreshold = 50;
+      if (touchEndX < touchStartX - swipeThreshold) {
+        // Deslizar a la izquierda (siguiente imagen)
+        showNextImage();
+      } else if (touchEndX > touchStartX + swipeThreshold) {
+        // Deslizar a la derecha (imagen anterior)
+        showPrevImage();
+      }
+    };
   });
     </script>

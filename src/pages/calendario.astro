@@ -1,0 +1,157 @@
+---
+import Layaut from '../components/Layaut.astro';
+import Icon from '../icons/Icon.astro';
+import Card from '../components/Card.astro';
+
+const meses = {
+  enero: 0,
+  febrero: 1,
+  marzo: 2,
+  abril: 3,
+  mayo: 4,
+  junio: 5,
+  julio: 6,
+  agosto: 7,
+  septiembre: 8,
+  octubre: 9,
+  noviembre: 10,
+  diciembre: 11,
+};
+
+const parseRaceDate = (fecha) => {
+  const [d, m, y] = fecha.split(" ");
+  return new Date(y, meses[m.toLowerCase()], d);
+};
+
+const getWeekNumber = (date) => {
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+  );
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+};
+
+let scheduleData = [];
+try {
+  const res = await fetch(`${Astro.url.origin}/api/resistencias`);
+  if (res.ok) scheduleData = await res.json();
+  else console.error("Error al obtener datos:", res.status);
+} catch (err) {
+  console.error("Error de conexión con la API:", err);
+}
+
+const today = new Date();
+const year = today.getFullYear();
+
+const races = scheduleData
+  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha) }))
+  .filter((r) => r.date.getFullYear() === year)
+  .sort((a, b) => a.date - b.date);
+
+// Agrupar carreras por mes
+const groupedByMonth = races.reduce((acc, race) => {
+  const month = race.date.getMonth();
+  acc[month] = acc[month] || [];
+  acc[month].push(race);
+  return acc;
+}, {});
+
+// Obtener nombres de meses en español
+const getMonthName = (monthIndex) => {
+  const monthNames = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+  return monthNames[monthIndex];
+};
+
+// Ordenar meses
+const sortedMonths = Object.keys(groupedByMonth).map(Number).sort((a, b) => a - b);
+
+const seoData = {
+  title: 'Calendario de Eventos - Endurance Enjoyers',
+  description: 'Calendario completo de eventos y carreras de Endurance Enjoyers. Mantente al día con nuestras próximas competiciones y actividades.',
+  keywords: 'calendario, eventos, carreras, competiciones, endurance, karting, Endurance Enjoyers',
+  canonicalUrl: 'https://enduenjoyers.es/calendario',
+  showHeader: true
+};
+---
+
+<Layaut {...seoData}>
+  <main class="max-w-8xl mx-auto px-4 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-text-primary mb-4">Calendario Completo</h1>
+      <p class="text-lg text-text-secondary max-w-3xl mx-auto mb-6">
+        Consulta todas nuestras carreras y eventos programados para este año. Mantente al día con nuestras actividades y no te pierdas ninguna competición.
+      </p>
+      <div class="w-24 h-1 bg-orange-500 mx-auto rounded-full"></div>
+    </div>
+
+    {sortedMonths.length > 0 ? (
+      <div class="space-y-16">
+        {sortedMonths.map((monthIndex) => (
+          <div class="mb-10">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center justify-center w-12 h-12 bg-orange-500 rounded-xl">
+                <Icon name="calendar" class="text-white" />
+              </div>
+              <h2 class="text-2xl font-bold text-text-primary">
+                {getMonthName(monthIndex)} {year}
+              </h2>
+              <div class="flex-1 h-px bg-border-light" />
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-8xl mx-auto">
+              {groupedByMonth[monthIndex].map((race) => {
+                const raceDetails = [
+                  { label: "Equipo", value: race.Team === "SI" ? "Sí" : "No" },
+                  { label: "Duración", value: race.Duracion },
+                  { label: "Circuito", value: race.Circuito },
+                  { label: "Prob. lluvia", value: race.Lluvia || "N/A" },
+                  { label: "Coches", value: race.Coches },
+                ];
+
+                return (
+                  <Card
+                    title={race.Serie}
+                    titleHoverColor
+                    headerDate={race.Fecha}
+                    headerSeason={race.Season}
+                    details={raceDetails}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12 bg-bg-secondary rounded-xl p-8">
+        <div class="w-16 h-16 bg-bg-card rounded-full flex items-center justify-center mx-auto mb-4">
+          <Icon name="calendar" size="lg" class="text-text-muted" />
+        </div>
+        <h3 class="text-xl font-semibold mb-2">No hay eventos programados</h3>
+        <p class="text-text-muted text-lg">
+          Actualmente no hay carreras o eventos programados para este año. Vuelve a consultar más adelante.
+        </p>
+      </div>
+    )}
+
+    <div class="mt-16 text-center">
+      <a 
+        href="/" 
+        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300"
+      >
+        Volver a la página principal
+      </a>
+    </div>
+  </main>
+</Layaut>
+
+<style>
+  /* Estilos adicionales para la página de calendario */
+  main {
+    min-height: calc(100vh - 200px);
+  }
+</style>

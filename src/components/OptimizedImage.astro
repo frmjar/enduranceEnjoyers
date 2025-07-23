@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'async' | 'auto' | 'sync';
+  sizes?: string;
+  originalSrc?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  decoding = 'async',
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+  originalSrc
+} = Astro.props;
+---
+
+<div class={`image-container ${className}`}>
+  <div class="aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse">
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding={decoding}
+      sizes={sizes}
+      data-original={originalSrc || src}
+      class="w-full h-full object-cover rounded-lg clickable-img"
+      onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
+    />
+  </div>
+</div>
+
+<style>
+  .image-container {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .image-container:hover {
+    transform: scale(1.02);
+  }
+
+  /* Soporte para aspect ratio en navegadores que no soportan aspect-ratio */
+  .aspect-w-4.aspect-h-3 {
+    position: relative;
+    padding-bottom: 75%; /* 3:4 aspect ratio */
+  }
+
+  .aspect-w-4.aspect-h-3 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  @supports (aspect-ratio: 4 / 3) {
+    .aspect-w-4.aspect-h-3 {
+      aspect-ratio: 4 / 3;
+      padding-bottom: 0;
+    }
+
+    .aspect-w-4.aspect-h-3 > * {
+      position: relative;
+    }
+  }
+</style>

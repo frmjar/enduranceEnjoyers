@@ -1,0 +1,75 @@
+---
+import Layaut from '../components/Layaut.astro';
+
+const seoData = {
+  title: 'Política de Privacidad - Endurance Enjoyers',
+  description: 'Política de privacidad de Endurance Enjoyers. Conoce cómo recopilamos, utilizamos y protegemos tu información personal.',
+  keywords: 'política de privacidad, privacidad, datos personales, protección de datos, Endurance Enjoyers',
+  canonicalUrl: 'https://enduenjoyers.es/privacidad',
+  showHeader: true
+};
+---
+
+<Layaut {...seoData}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8 text-center">Política de Privacidad</h1>
+    
+    <div class="prose prose-lg prose-invert max-w-none">
+      <p class="text-lg mb-6">Última actualización: {new Date().toLocaleDateString('es-ES', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">1. Introducción</h2>
+        <p>En Endurance Enjoyers, respetamos tu privacidad y nos comprometemos a proteger tus datos personales. Esta política de privacidad te informará sobre cómo cuidamos tus datos personales cuando visitas nuestro sitio web y te informará sobre tus derechos de privacidad y cómo la ley te protege.</p>
+      </section>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">2. Datos que recopilamos</h2>
+        <p>Podemos recopilar, usar, almacenar y transferir diferentes tipos de datos personales sobre ti, que hemos agrupado de la siguiente manera:</p>
+        <ul class="list-disc pl-6 mt-2 space-y-2">
+          <li><strong>Datos de identidad:</strong> incluye nombre, apellido, nombre de usuario o identificador similar.</li>
+          <li><strong>Datos de contacto:</strong> incluye dirección de correo electrónico y números de teléfono.</li>
+          <li><strong>Datos técnicos:</strong> incluye dirección de protocolo de Internet (IP), datos de inicio de sesión, tipo y versión del navegador, configuración de zona horaria y ubicación, tipos y versiones de complementos del navegador, sistema operativo y plataforma, y otra tecnología en los dispositivos que utilizas para acceder a este sitio web.</li>
+          <li><strong>Datos de uso:</strong> incluye información sobre cómo utilizas nuestro sitio web y servicios.</li>
+        </ul>
+      </section>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">3. Cómo utilizamos tus datos personales</h2>
+        <p>Solo utilizaremos tus datos personales cuando la ley nos lo permita. Más comúnmente, utilizaremos tus datos personales en las siguientes circunstancias:</p>
+        <ul class="list-disc pl-6 mt-2 space-y-2">
+          <li>Cuando necesitemos ejecutar un contrato que estamos a punto de celebrar o hemos celebrado contigo.</li>
+          <li>Cuando sea necesario para nuestros intereses legítimos (o los de un tercero) y tus intereses y derechos fundamentales no anulen esos intereses.</li>
+          <li>Cuando necesitemos cumplir con una obligación legal o regulatoria.</li>
+        </ul>
+      </section>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">4. Cookies</h2>
+        <p>Utilizamos cookies y tecnologías similares para distinguirte de otros usuarios de nuestro sitio web. Esto nos ayuda a brindarte una buena experiencia cuando navegas por nuestro sitio web y también nos permite mejorarlo.</p>
+      </section>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">5. Tus derechos legales</h2>
+        <p>Bajo ciertas circunstancias, tienes derechos bajo las leyes de protección de datos en relación con tus datos personales, que incluyen:</p>
+        <ul class="list-disc pl-6 mt-2 space-y-2">
+          <li>Solicitar acceso a tus datos personales.</li>
+          <li>Solicitar la corrección de tus datos personales.</li>
+          <li>Solicitar la eliminación de tus datos personales.</li>
+          <li>Oponerse al procesamiento de tus datos personales.</li>
+          <li>Solicitar la restricción del procesamiento de tus datos personales.</li>
+          <li>Solicitar la transferencia de tus datos personales.</li>
+          <li>Derecho a retirar el consentimiento.</li>
+        </ul>
+      </section>
+      
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">6. Contacto</h2>
+        <p>Si tienes alguna pregunta sobre esta política de privacidad o nuestras prácticas de privacidad, contáctanos a través de nuestro formulario de contacto en la página principal o envíanos un correo electrónico a info@enduenjoyers.es.</p>
+      </section>
+    </div>
+    
+    <div class="mt-12 text-center">
+      <a href="/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300">Volver a la página principal</a>
+    </div>
+  </main>
+</Layaut>
