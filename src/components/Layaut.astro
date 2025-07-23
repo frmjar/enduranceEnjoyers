@@ -1,22 +1,89 @@
 ---
 import Analytics from '@vercel/analytics/astro'
-import SpeedInsights from "@vercel/speed-insights/astro"
+import SpeedInsights from '@vercel/speed-insights/astro'
 import '../styles/global.css'
 import Footer from './Footer.astro'
 import Header from './Header.astro'
 
-const { 
-  title = 'Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing', 
-  description = 'Únete a Endurance Enjoyers, el equipo líder en carreras de resistencia en iRacing. Participa en las 24 Horas de Daytona, Le Mans y más eventos épicos.',
-  keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras',
+const {
+  title = 'Endurance Enjoyers – Equipo español de resistencia iRacing',
+  description = 'Equipo español de SimRacing especializado en carreras de resistencia (Daytona, Le Mans, Nürburgring). ¡Únete!',
+  keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras, simracing, motorsport virtual, España',
   ogImage = '/og-image.png',
   canonicalUrl,
   showHeader = false
 } = Astro.props
 
 const currentUrl = canonicalUrl || Astro.url.href
+const fullOgImage = new URL(ogImage, Astro.url.origin).href
+
+// Generar JSON-LD manualmente para evitar problemas en el build
+const logoUrl = new URL('/logo.webp', Astro.url.origin).href
+const contactUrl = new URL('/#contacto', Astro.url.origin).href
+
+const jsonLD = `{
+  "@context": "https://schema.org",
+  "@type": "SportsTeam",
+  "name": "Endurance Enjoyers",
+  "alternateName": "EnduEnjoyers",
+  "url": "${currentUrl}",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "${logoUrl}",
+    "width": 512,
+    "height": 512,
+    "contentUrl": "${logoUrl}"
+  },
+  "image": {
+    "@type": "ImageObject", 
+    "url": "${fullOgImage}",
+    "width": 1200,
+    "height": 630
+  },
+  "description": "${description.replace(/"/g, '\\"')}",
+  "sport": "Motor Racing",
+  "subOrganization": "iRacing Endurance Racing",
+  "foundingDate": "2024",
+  "memberOf": {
+    "@type": "Organization",
+    "name": "iRacing",
+    "url": "https://www.iracing.com"
+  },
+  "sameAs": [
+    "https://x.com/EnduEnjoyers"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Team Recruitment",
+    "availableLanguage": ["Spanish", "English"],
+    "url": "${contactUrl}"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Spain"
+  },
+  "knowsAbout": [
+    "iRacing",
+    "Endurance Racing", 
+    "24 Hours of Daytona",
+    "24 Hours of Le Mans",
+    "Motorsport Simulation",
+    "Sim Racing",
+    "Virtual Motorsport",
+    "Motorsport",
+    "Simracing",
+    "Carreras de Resistencia",
+    "Simulador de Carreras"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "ratingCount": "1"
+  }
+}`
 ---
-  <html lang="es">
+  <html lang='es'>
     <head>
       <title>{title}</title>
       <meta charset='UTF-8' />
@@ -30,43 +97,50 @@ const currentUrl = canonicalUrl || Astro.url.href
       
       <!-- Canonical URL -->
       <link rel='canonical' href={currentUrl} />
-      
+
       <!-- Open Graph -->
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:type' content='website' />
       <meta property='og:url' content={currentUrl} />
-      <meta property='og:image' content={ogImage} />
+      <meta property='og:image' content={fullOgImage} />
+      <meta property='og:image:width' content='1200' />
+      <meta property='og:image:height' content='630' />
+      <meta property='og:image:type' content='image/png' />
       <meta property='og:site_name' content='Endurance Enjoyers' />
       <meta property='og:locale' content='es_ES' />
-      
+
       <!-- Twitter Cards -->
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@EnduEnjoyers' />
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={ogImage} />
-      
+      <meta name='twitter:image' content={fullOgImage} />
+
       <!-- Preload critical resources -->
       <link rel='preload' href='/logotextclear.webp' as='image' type='image/webp' />
-      
+
       <!-- Preconnect to external domains -->
       <link rel='preconnect' href='https://res.cloudinary.com' />
       <link rel='dns-prefetch' href='https://res.cloudinary.com' />
       <link rel='preconnect' href='https://fonts.googleapis.com' />
       <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-      
-      <!-- Icons -->
-      <link rel='icon' href='/logo.webp' />
+
+      <!-- Icons optimizados sin favicon.ico -->
+      <link rel='icon' type='image/webp' href='/logo.webp' />
       <link rel='apple-touch-icon' href='/logo.webp' />
+      <link rel='manifest' href='/site.webmanifest' />
+
+      <!-- JSON-LD Structured Data -->
+      <script type='application/ld+json' set:html={jsonLD} />
     </head>
-    <body class="flex flex-col min-h-screen">
+    <body class='flex flex-col min-h-screen'>
       {showHeader && <Header />}
-      <div class="flex-grow">
+      <div class='flex-grow'>
         <slot />
         <Analytics />
         <SpeedInsights />
-      </div>  
+      </div>
       <Footer />
     </body>
   </html>

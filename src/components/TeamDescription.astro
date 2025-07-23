@@ -5,19 +5,19 @@ import { CloudinaryFolders, getUrl } from '../libs/cloudinary'
 const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.General + '/skincar', format: 'png' })
 ---
   <section itemscope itemtype='https://schema.org/SportsTeam'>
-    <div class='flex gap-10 columns-2 h-full w-3/5 p-6 m-auto'>
-      <p class='flex-1 text-1_5xl font-bold' itemprop='description'>
+    <div class='flex flex-col lg:flex-row gap-6 lg:gap-10 h-full w-full lg:w-4/5 xl:w-3/5 p-4 md:p-6 m-auto'>
+      <p class='flex-1 text-responsive-base font-bold text-text-primary' itemprop='description'>
         The Endurance Enjoyers team is a group of passionate individuals who love to push their limits and explore the world of endurance sports. We believe in the power of community, support, and shared experiences to achieve our goals.
       </p>
-      <div class='w-2px bg-gray-400' />
-      <p class='flex-1 text-1_5xl font-bold'>
+      <div class='hidden lg:block w-2px bg-gray-400' />
+      <p class='flex-1 text-responsive-base font-bold text-text-primary'>
         Whether you're a seasoned athlete or just starting your journey, we welcome you to join us in our adventures. Together, we can inspire each other to reach new heights and enjoy every step of the way.
       </p>
     </div>
     <Image
       src={teamLogoUrl}
       alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
-      class='m-auto -translate-y-12 w-[80%] opacity-80'
+      class='m-auto -translate-y-6 md:-translate-y-12 w-[95%] md:w-[85%] lg:w-[80%] opacity-80'
       inferSize
       itemprop='logo'
     />

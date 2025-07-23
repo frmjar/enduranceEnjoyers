@@ -13,21 +13,22 @@ const bannerImages = {
 const props = Astro.props
 ---
   <div {...props}>
-    <div id='navbardir' class='relative w-full aspect-[3.5/1] sm:aspect-[3.5/1] bg-cover bg-center bg-no-repeat z-10'>
-      <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-20 px-4 bg-transparent transition-all duration-300 z-30'>
+    <div id='navbardir' class='relative w-full aspect-[2.5/1] sm:aspect-[3/1] md:aspect-[3.5/1] bg-cover bg-center bg-no-repeat z-10'>
+      <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-16 md:h-20 px-4 md:px-6 bg-transparent transition-all duration-300 z-30'>
         <div id='scroll-logo' class='absolute left-4 hidden transition-all duration-300'>
           <a href='/'>
-            <img src='/logotextclear.webp' alt='Logo Endurance Enjoyers' class='h-15' width="180" height="60" />
+            <img src='/logotextclear.webp' alt='Logo Endurance Enjoyers' class='h-8 md:h-12 lg:h-15' width="180" height="60" />
           </a>
         </div>
 
         <!-- Menú para pantallas medianas y grandes -->
-        <div class='mx-auto hidden md:flex space-x-8 text-lg font-medium text-white'>
+        <div class='mx-auto hidden md:flex space-x-6 lg:space-x-8 text-base lg:text-lg font-medium text-white'>
           <a href='#home' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Inicio</a>
           <a href='#calendario' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Calendario</a>
           <a href='#novedades' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Novedades</a>
           <a href='#galeria' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Galería</a>
           <a href='#contacto' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Contacto</a>
+
         </div>
 
         <!-- Botón de menú móvil -->
