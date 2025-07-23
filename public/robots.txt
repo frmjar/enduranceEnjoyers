@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://enduenjoyers.es/sitemap.xml
+Sitemap: https://enduranceenjoyers.com/sitemap.xml
 
 # Crawl-delay para bots más agresivos
 User-agent: Bingbot
@@ -10,3 +10,6 @@ Crawl-delay: 1
 
 User-agent: Slurp
 Crawl-delay: 1
+
+# Información adicional para motores de búsqueda
+# Host: https://enduranceenjoyers.com
