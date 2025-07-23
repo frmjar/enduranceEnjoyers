@@ -16,28 +16,26 @@ const props = Astro.props;
 ---
 
   <section {...props}>
-    <div
-      class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-10/12 mx-auto my-10'
-    >
+    <div class='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 lg:gap-6 w-11/12 md:w-10/12 mx-auto my-6 md:my-10'>
       {
       images.map((img) => (
-        <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 '>
+        <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105'>
           <Image
             src={img.url}
             alt={img.alt}
             data-original={img.original}
             inferSize
             loading='lazy'
-            class='rounded-lg clickable-img'
+            class='rounded-lg clickable-img w-full h-auto object-cover'
           />
 
           {(img.description || img.title) && (
-            <div class='absolute px-5 bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg'>
-              <h3 class='text-white font-semibold text-base mb-1'>
+            <div class='absolute px-2 md:px-3 lg:px-5 bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg'>
+              <h3 class='text-white font-semibold text-xs md:text-sm lg:text-base mb-1'>
                 {img.title || img.name}
               </h3>
               {img.description && (
-                <p class='text-gray-200 text-sm whitespace-pre-line'>
+                <p class='text-gray-200 text-xs md:text-sm whitespace-pre-line'>
                   {img.description}
                 </p>
               )}
@@ -53,13 +51,13 @@ const props = Astro.props;
       role='dialog'
       aria-modal='true'
       aria-hidden='true'
-      class='fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-8'
+      class='fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-4 md:p-8'
     >
       <button
         id='closeModal'
-        class='absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100'
+        class='absolute top-2 md:top-4 right-2 md:right-4 bg-white text-black rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100 text-sm md:text-base'
       >
-        <Icon name='close' size='sm' class='text-black' />
+        ✕
       </button>
       <img
         id='modalImage'
