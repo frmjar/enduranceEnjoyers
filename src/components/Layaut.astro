@@ -94,12 +94,12 @@ const jsonLD = `{
       <meta name='author' content='Endurance Enjoyers' />
       <meta name='theme-color' content='#171915' />
       <meta name='generator' content={Astro.generator} />
-      
+
       <!-- Canonical URL -->
       <link rel='canonical' href={currentUrl} />
-      
+
       <!-- Forzar HTTPS -->
-      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
 
       <!-- Open Graph -->
       <meta property='og:title' content={title} />
@@ -129,8 +129,8 @@ const jsonLD = `{
       <link rel='preconnect' href='https://fonts.googleapis.com' />
       <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
 
-      <!-- Icons optimizados -->
-      <link rel='icon' href='/favicon.ico' sizes='any' />
+      <!-- Icons optimizados con favicon.ico -->
+      <link rel='icon' type='image/x-icon' href='/favicon.ico' />
       <link rel='icon' type='image/webp' href='/logo.webp' />
       <link rel='apple-touch-icon' href='/logo.webp' />
       <link rel='manifest' href='/site.webmanifest' />

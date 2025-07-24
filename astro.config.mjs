@@ -2,8 +2,6 @@ import vercel from '@astrojs/vercel'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
-// https://astro.build/config
-
 export default defineConfig({
   site: 'https://enduenjoyers.es',
 
@@ -49,22 +47,18 @@ export default defineConfig({
       cloudName: 'enduranceenjoyers',
       url: 'https://res.cloudinary.com/enduranceenjoyers/image/upload'
     },
-    // Configuración de calidad y formato
     format: ['webp', 'avif'],
     fallbackFormat: 'png',
     domains: ['res.cloudinary.com']
   },
 
-  // Optimización de construcción
   build: {
     inlineStylesheets: 'auto'
   },
 
-  // Compresión y optimización
   compressHTML: true,
   trailingSlash: 'never',
-  
-  // Configuración de rendimiento
+
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'hover'
