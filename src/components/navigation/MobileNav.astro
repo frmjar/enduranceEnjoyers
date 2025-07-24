@@ -1,0 +1,49 @@
+---
+import Icon from '../../icons/Icon.astro'
+
+const { links } = Astro.props
+---
+
+  <button id='mobile-menu-button' class='md:hidden absolute right-4 text-white p-2'>
+    <Icon name='menu' />
+  </button>
+
+    <div id='mobile-menu' class='fixed inset-0 bg-primary-header bg-opacity-95 z-20 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden'>
+      <div class='flex flex-col items-center justify-center h-full space-y-8 text-xl font-medium text-white'>
+        <button id='close-menu' class='absolute top-4 right-4 text-white p-2'>
+          <Icon name='close' />
+        </button>
+
+        {links.map(link => (
+          <a href={link.href} class='hover:text-hover transition-colors mobile-link'>
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button')
+    const closeMenuButton = document.getElementById('close-menu')
+    const mobileMenu = document.getElementById('mobile-menu')
+    const mobileMenuLinks = document.querySelectorAll('.mobile-link')
+
+    const openMobileMenu = () => {
+      mobileMenu?.classList.remove('translate-x-full')
+      document.body.style.overflow = 'hidden'
+    }
+
+    const closeMobileMenu = () => {
+      mobileMenu?.classList.add('translate-x-full')
+      document.body.style.overflow = ''
+    }
+
+    mobileMenuButton?.addEventListener('click', openMobileMenu)
+    closeMenuButton?.addEventListener('click', closeMobileMenu)
+
+    mobileMenuLinks?.forEach(link => {
+      link.addEventListener('click', closeMobileMenu)
+    })
+  })
+    </script>
