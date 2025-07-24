@@ -6,8 +6,8 @@ import Footer from './Footer.astro'
 import Header from './Header.astro'
 
 const {
-  title = 'Endurance Enjoyers – Equipo español de resistencia iRacing',
-  description = 'Equipo español de SimRacing especializado en carreras de resistencia (Daytona, Le Mans, Nürburgring). ¡Únete!',
+  title = 'Endurance Enjoyers | Equipo español de resistencia iRacing',
+  description = 'Equipo español de SimRacing especializado en carreras de resistencia (Daytona, Le Mans, Nürburgring). ¡Únete a nosotros!',
   keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras, simracing, motorsport virtual, España',
   ogImage = '/og-image.png',
   canonicalUrl,
@@ -97,6 +97,9 @@ const jsonLD = `{
       
       <!-- Canonical URL -->
       <link rel='canonical' href={currentUrl} />
+      
+      <!-- Forzar HTTPS -->
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
       <!-- Open Graph -->
       <meta property='og:title' content={title} />
@@ -126,7 +129,8 @@ const jsonLD = `{
       <link rel='preconnect' href='https://fonts.googleapis.com' />
       <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
 
-      <!-- Icons optimizados sin favicon.ico -->
+      <!-- Icons optimizados -->
+      <link rel='icon' href='/favicon.ico' sizes='any' />
       <link rel='icon' type='image/webp' href='/logo.webp' />
       <link rel='apple-touch-icon' href='/logo.webp' />
       <link rel='manifest' href='/site.webmanifest' />
