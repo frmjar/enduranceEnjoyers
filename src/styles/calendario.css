@@ -1,0 +1,32 @@
+/* Estilos específicos para la página de calendario */
+.calendario-main {
+    min-height: calc(100vh - 200px);
+}
+
+/* Estilos para eventos pasados */
+.past-event {
+    opacity: 0.6;
+    position: relative;
+}
+
+.past-event::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ef4444, transparent);
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.past-event-card {
+    filter: grayscale(20%);
+}
+
+.past-event-text {
+    text-decoration: line-through;
+    color: #9ca3af !important;
+}

@@ -2,6 +2,7 @@
 import Card from '../components/Card.astro'
 import Layaut from '../components/Layaut.astro'
 import Icon from '../icons/Icon.astro'
+import '../styles/calendario.css'
 
 const meses = {
   enero: 0,
@@ -79,7 +80,7 @@ const seoData = {
 ---
 
   <Layaut {...seoData}>
-    <main class='max-w-8xl mx-auto px-4 py-12'>
+    <main class='max-w-8xl mx-auto px-4 py-12 calendario-main'>
       <div class='text-center mb-12'>
         <h1 class='text-4xl font-bold text-text-primary mb-4'>Calendario Completo</h1>
         <p class='text-lg text-text-secondary max-w-3xl mx-auto mb-6'>
@@ -113,14 +114,20 @@ const seoData = {
                       { label: 'Coches', value: race.Coches }
                     ]
 
+                    // Detectar si el evento ya pasó
+                    const isPastEvent = race.date < today
+
                     return (
-                      <Card
-                        title={race.Serie}
-                        titleHoverColor
-                        headerDate={race.Fecha}
-                        headerSeason={race.Season}
-                        details={raceDetails}
-                      />
+                      <div class={isPastEvent ? 'past-event' : ''}>
+                        <Card
+                          title={race.Serie}
+                          titleHoverColor
+                          headerDate={race.Fecha}
+                          headerSeason={race.Season}
+                          details={raceDetails}
+                          class={isPastEvent ? 'past-event-card' : ''}
+                        />
+                      </div>
                     )
                   })}
                 </div>
@@ -150,10 +157,3 @@ const seoData = {
       </div>
     </main>
   </Layaut>
-
-    <style>
-  /* Estilos adicionales para la página de calendario */
-  main {
-    min-height: calc(100vh - 200px);
-  }
-    </style>
