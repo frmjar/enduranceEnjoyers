@@ -27,7 +27,7 @@ const { class: className = '', ...props } = Astro.props;
         <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 shadow-lg'>
           <div class='aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse'>
             <Image
-              src={img.urlDesktop}
+              src={img.urlMobile}
               alt={img.alt}
               data-original={img.urlModal}
               data-modal-mobile={img.urlModalMobile}
@@ -44,7 +44,7 @@ const { class: className = '', ...props } = Astro.props;
               height={300}
               loading='lazy'
               decoding='async'
-              class='rounded-lg clickable-img w-full h-full object-cover'
+              class='rounded-lg clickable-img w-full h-full object-cover gallery-image'
               onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
             />
           </div>
@@ -114,197 +114,162 @@ const { class: className = '', ...props } = Astro.props;
   </section>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImage");
-        const closeBtn = document.getElementById("closeModal");
-        const prevBtn = document.getElementById("prevImage");
-        const nextBtn = document.getElementById("nextImage");
-        const loadingIndicator = document.getElementById("imageLoading");
-        const galleryImages = Array.from(document.querySelectorAll(".clickable-img"));
-        let currentImageIndex = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('imageModal')
+  const modalImg = document.getElementById('modalImage')
+  const closeBtn = document.getElementById('closeModal')
+  const prevBtn = document.getElementById('prevImage')
+  const nextBtn = document.getElementById('nextImage')
+  const loadingIndicator = document.getElementById('imageLoading')
+  const galleryImages = document.querySelectorAll('.clickable-img')
+  let currentImageIndex = 0
 
-        // Función para actualizar imágenes según el tamaño de pantalla
-        const updateImagesForScreenSize = () => {
-          const screenWidth = window.innerWidth;
-          let targetSize = 'desktop';
+  // Función para obtener la URL de modal apropiada según el tamaño de pantalla
+  const getModalImageUrl = (img) => {
+    const screenWidth = window.innerWidth
 
-          if (screenWidth < 640) {
-            targetSize = 'mobile';
-          } else if (screenWidth < 768) {
-            targetSize = 'tablet';
-          } else if (screenWidth < 1024) {
-            targetSize = 'desktop';
-          } else if (screenWidth < 1440) {
-            targetSize = 'large';
-          } else {
-            targetSize = 'extralarge';
-          }
+    if (screenWidth < 640) {
+      return img.getAttribute('data-modal-mobile')
+    } else if (screenWidth < 768) {
+      return img.getAttribute('data-modal-tablet')
+    } else if (screenWidth < 1024) {
+      return img.getAttribute('data-modal-desktop')
+    } else if (screenWidth < 1440) {
+      return img.getAttribute('data-modal-large')
+    } else {
+      return img.getAttribute('data-modal-extralarge')
+    }
+  }
 
-          galleryImages.forEach((img) => {
-            const newSrc = img.getAttribute(`data-${targetSize}`);
-            if (newSrc && newSrc !== img.src) {
-              img.src = newSrc;
-            }
-          });
-        };
+  const openModal = (imgSrc, imgAlt, index) => {
+    currentImageIndex = index
+    loadingIndicator.style.display = 'flex'
+    modalImg.src = imgSrc
+    modalImg.alt = imgAlt
+    document.body.style.overflow = 'hidden'
 
-        // Actualizar imágenes al cargar la página
-        updateImagesForScreenSize();
+    modal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none')
+    modal.classList.add('opacity-100', 'scale-100', 'pointer-events-auto')
+    modal.setAttribute('aria-hidden', 'false')
 
-        // Función para obtener la URL de modal apropiada según el tamaño de pantalla
-        const getModalImageUrl = (img) => {
-          const screenWidth = window.innerWidth;
+    // Mostrar/ocultar botones de navegación según corresponda
+    updateNavigationButtons()
+  }
 
-          if (screenWidth < 640) {
-            return img.getAttribute('data-modal-mobile');
-          } else if (screenWidth < 768) {
-            return img.getAttribute('data-modal-tablet');
-          } else if (screenWidth < 1024) {
-            return img.getAttribute('data-modal-desktop');
-          } else if (screenWidth < 1440) {
-            return img.getAttribute('data-modal-large');
-          } else {
-            return img.getAttribute('data-modal-extralarge');
-          }
-        };
+  const closeModal = () => {
+    document.body.style.overflow = ''
 
-        // Actualizar imágenes cuando cambie el tamaño de ventana (con throttle)
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(updateImagesForScreenSize, 250);
-        });
+    modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
+    modal.classList.remove(
+      'opacity-100',
+      'scale-100',
+      'pointer-events-auto'
+    )
+    modal.setAttribute('aria-hidden', 'true')
 
-        const openModal = (imgSrc, imgAlt, index) => {
-      currentImageIndex = index;
-      loadingIndicator!.style.display = "flex";
-      modalImg.src = imgSrc;
-      modalImg.alt = imgAlt;
-      document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      modalImg.src = ''
+      modalImg.alt = ''
+    }, 300)
+  }
 
-      modal!.classList.remove("opacity-0", "scale-95", "pointer-events-none");
-      modal!.classList.add("opacity-100", "scale-100", "pointer-events-auto");
-      modal!.setAttribute("aria-hidden", "false");
+  const showPrevImage = () => {
+    if (currentImageIndex > 0) {
+      currentImageIndex--
+      const prevImg = galleryImages[currentImageIndex]
+      const modalSrc = getModalImageUrl(prevImg)
+      const altText = prevImg.getAttribute('alt') || ''
+      loadingIndicator.style.display = 'flex'
+      modalImg.src = modalSrc
+      modalImg.alt = altText
+      updateNavigationButtons()
+    }
+  }
 
-      // Mostrar/ocultar botones de navegación según corresponda
-      updateNavigationButtons();
-    };
+  const showNextImage = () => {
+    if (currentImageIndex < galleryImages.length - 1) {
+      currentImageIndex++
+      const nextImg = galleryImages[currentImageIndex]
+      const modalSrc = getModalImageUrl(nextImg)
+      const altText = nextImg.getAttribute('alt') || ''
+      loadingIndicator.style.display = 'flex'
+      modalImg.src = modalSrc
+      modalImg.alt = altText
+      updateNavigationButtons()
+    }
+  }
 
-    const closeModal = () => {
-      document.body.style.overflow = "";
+  const updateNavigationButtons = () => {
+    // Mostrar/ocultar botones según la posición actual
+    if (currentImageIndex <= 0) {
+      prevBtn.classList.add('opacity-50', 'cursor-not-allowed')
+    } else {
+      prevBtn.classList.remove('opacity-50', 'cursor-not-allowed')
+    }
 
-      modal!.classList.add("opacity-0", "scale-95", "pointer-events-none");
-      modal!.classList.remove(
-        "opacity-100",
-        "scale-100",
-        "pointer-events-auto",
-      );
-      modal!.setAttribute("aria-hidden", "true");
+    if (currentImageIndex >= galleryImages.length - 1) {
+      nextBtn.classList.add('opacity-50', 'cursor-not-allowed')
+    } else {
+      nextBtn.classList.remove('opacity-50', 'cursor-not-allowed')
+    }
+  }
 
-      setTimeout(() => {
-        modalImg.src = "";
-        modalImg.alt = "";
-      }, 300);
-    };
+  // Añadir event listeners a las imágenes de la galería
+  galleryImages.forEach((img, index) => {
+    img.addEventListener('click', () => {
+      const modalSrc = getModalImageUrl(img)
+      const altText = img.getAttribute('alt') || ''
+      openModal(modalSrc, altText, index)
+    })
+  })
 
-    const showPrevImage = () => {
-      if (currentImageIndex > 0) {
-        currentImageIndex--;
-        const prevImg = galleryImages[currentImageIndex] as HTMLImageElement;
-        const modalSrc = getModalImageUrl(prevImg);
-        const altText = prevImg.getAttribute("alt") || "";
-        loadingIndicator!.style.display = "flex";
-        modalImg.src = modalSrc;
-        modalImg.alt = altText;
-        updateNavigationButtons();
+  // Event listeners para los botones de navegación
+  closeBtn.addEventListener('click', closeModal)
+  prevBtn.addEventListener('click', showPrevImage)
+  nextBtn.addEventListener('click', showNextImage)
+
+  // Cerrar modal al hacer clic fuera de la imagen
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal()
+    }
+  })
+
+  // Navegación con teclado
+  document.addEventListener('keydown', (e) => {
+    if (modal.getAttribute('aria-hidden') === 'false') {
+      if (e.key === 'Escape') {
+        closeModal()
+      } else if (e.key === 'ArrowLeft') {
+        showPrevImage()
+      } else if (e.key === 'ArrowRight') {
+        showNextImage()
       }
-    };
+    }
+  })
 
-    const showNextImage = () => {
-      if (currentImageIndex < galleryImages.length - 1) {
-        currentImageIndex++;
-        const nextImg = galleryImages[currentImageIndex] as HTMLImageElement;
-        const modalSrc = getModalImageUrl(nextImg);
-        const altText = nextImg.getAttribute("alt") || "";
-        loadingIndicator!.style.display = "flex";
-        modalImg.src = modalSrc;
-        modalImg.alt = altText;
-        updateNavigationButtons();
-      }
-    };
+  // Soporte para gestos táctiles en dispositivos móviles
+  let touchStartX = 0
+  let touchEndX = 0
 
-    const updateNavigationButtons = () => {
-      // Mostrar/ocultar botones según la posición actual
-      if (currentImageIndex <= 0) {
-        prevBtn.classList.add("opacity-50", "cursor-not-allowed");
-      } else {
-        prevBtn.classList.remove("opacity-50", "cursor-not-allowed");
-      }
+  modalImg.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX
+  })
 
-      if (currentImageIndex >= galleryImages.length - 1) {
-        nextBtn.classList.add("opacity-50", "cursor-not-allowed");
-      } else {
-        nextBtn.classList.remove("opacity-50", "cursor-not-allowed");
-      }
-    };
+  modalImg.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX
+    handleSwipe()
+  })
 
-    // Añadir event listeners a las imágenes de la galería
-    galleryImages.forEach((img, index) => {
-      img.addEventListener("click", () => {
-        const modalSrc = getModalImageUrl(img);
-        const altText = img.getAttribute("alt") || "";
-        openModal(modalSrc, altText, index);
-      });
-    });
-
-    // Event listeners para los botones de navegación
-    closeBtn.addEventListener("click", closeModal);
-    prevBtn.addEventListener("click", showPrevImage);
-    nextBtn.addEventListener("click", showNextImage);
-
-    // Cerrar modal al hacer clic fuera de la imagen
-    modal!.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-
-    // Navegación con teclado
-    document.addEventListener("keydown", (e) => {
-      if (modal!.getAttribute("aria-hidden") === "false") {
-        if (e.key === "Escape") {
-          closeModal();
-        } else if (e.key === "ArrowLeft") {
-          showPrevImage();
-        } else if (e.key === "ArrowRight") {
-          showNextImage();
-        }
-      }
-    });
-
-    // Soporte para gestos táctiles en dispositivos móviles
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    modalImg.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    modalImg.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-
-    const handleSwipe = () => {
-      const swipeThreshold = 50;
-      if (touchEndX < touchStartX - swipeThreshold) {
-        // Deslizar a la izquierda (siguiente imagen)
-        showNextImage();
-      } else if (touchEndX > touchStartX + swipeThreshold) {
-        // Deslizar a la derecha (imagen anterior)
-        showPrevImage();
-      }
-    };
-  });
+  const handleSwipe = () => {
+    const swipeThreshold = 50
+    if (touchEndX < touchStartX - swipeThreshold) {
+      // Deslizar a la izquierda (siguiente imagen)
+      showNextImage()
+    } else if (touchEndX > touchStartX + swipeThreshold) {
+      // Deslizar a la derecha (imagen anterior)
+      showPrevImage()
+    }
+  }
+})
     </script>

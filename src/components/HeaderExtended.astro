@@ -111,22 +111,6 @@ const props = Astro.props
     img.src = imageUrl
   }
 
-  // Throttle function para mejorar el rendimiento en resize
-  function throttle (func, limit) {
-    let inThrottle
-    return function () {
-      const args = arguments
-      const context = this
-      if (!inThrottle) {
-        func.apply(context, args)
-        inThrottle = true
-        setTimeout(() => {
-          inThrottle = false
-        }, limit)
-      }
-    }
-  }
-
   // Función para abrir el menú móvil
   const openMobileMenu = () => {
     mobileMenu?.classList.remove('translate-x-full')
@@ -152,9 +136,6 @@ const props = Astro.props
       link.addEventListener('click', closeMobileMenu)
     })
   })
-
-  // Actualizar la imagen cuando cambie el tamaño de la ventana (con throttle)
-  window.addEventListener('resize', throttle(setBannerImage, 250))
 
   // Manejar el cambio de estilo del navbar al hacer scroll
   window.addEventListener('scroll', () => {
