@@ -27,9 +27,9 @@ const { class: className = '', ...props } = Astro.props;
         <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 shadow-lg'>
           <div class='aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse'>
             <Image
-              src={img.urlMobile}
+              src={img.urlTablet}
               alt={img.alt}
-              data-original={img.urlModal}
+              data-original={img.original}
               data-modal-mobile={img.urlModalMobile}
               data-modal-tablet={img.urlModalTablet}
               data-modal-desktop={img.urlModalDesktop}
