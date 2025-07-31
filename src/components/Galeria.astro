@@ -20,18 +20,28 @@ const { class: className = '', ...props } = Astro.props;
   <section class={`spacing-section ${className}`} {...props}>
     <SectionTitle title='Galería de Imágenes' />
     <div
-      class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-11/12 md:w-10/12 mx-auto my-10'
+      class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 w-11/12 md:w-10/12 mx-auto my-10'
     >
       {
       images.map((img) => (
         <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 shadow-lg'>
-          <div class='aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse'> <!-- Placeholder mientras carga -->
+          <div class='aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse'>
             <Image
-              src={img.url}
+              src={img.urlDesktop}
               alt={img.alt}
-              data-original={img.original}
-              width={600}
-              height={400}
+              data-original={img.urlModal}
+              data-modal-mobile={img.urlModalMobile}
+              data-modal-tablet={img.urlModalTablet}
+              data-modal-desktop={img.urlModalDesktop}
+              data-modal-large={img.urlModalLarge}
+              data-modal-extralarge={img.urlModalExtraLarge}
+              data-mobile={img.urlMobile}
+              data-tablet={img.urlTablet}
+              data-desktop={img.urlDesktop}
+              data-large={img.urlLarge}
+              data-extralarge={img.urlExtraLarge}
+              width={400}
+              height={300}
               loading='lazy'
               decoding='async'
               class='rounded-lg clickable-img w-full h-full object-cover'
@@ -114,6 +124,58 @@ const { class: className = '', ...props } = Astro.props;
         const galleryImages = Array.from(document.querySelectorAll(".clickable-img"));
         let currentImageIndex = 0;
 
+        // Función para actualizar imágenes según el tamaño de pantalla
+        const updateImagesForScreenSize = () => {
+          const screenWidth = window.innerWidth;
+          let targetSize = 'desktop';
+
+          if (screenWidth < 640) {
+            targetSize = 'mobile';
+          } else if (screenWidth < 768) {
+            targetSize = 'tablet';
+          } else if (screenWidth < 1024) {
+            targetSize = 'desktop';
+          } else if (screenWidth < 1440) {
+            targetSize = 'large';
+          } else {
+            targetSize = 'extralarge';
+          }
+
+          galleryImages.forEach((img) => {
+            const newSrc = img.getAttribute(`data-${targetSize}`);
+            if (newSrc && newSrc !== img.src) {
+              img.src = newSrc;
+            }
+          });
+        };
+
+        // Actualizar imágenes al cargar la página
+        updateImagesForScreenSize();
+
+        // Función para obtener la URL de modal apropiada según el tamaño de pantalla
+        const getModalImageUrl = (img) => {
+          const screenWidth = window.innerWidth;
+
+          if (screenWidth < 640) {
+            return img.getAttribute('data-modal-mobile');
+          } else if (screenWidth < 768) {
+            return img.getAttribute('data-modal-tablet');
+          } else if (screenWidth < 1024) {
+            return img.getAttribute('data-modal-desktop');
+          } else if (screenWidth < 1440) {
+            return img.getAttribute('data-modal-large');
+          } else {
+            return img.getAttribute('data-modal-extralarge');
+          }
+        };
+
+        // Actualizar imágenes cuando cambie el tamaño de ventana (con throttle)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(updateImagesForScreenSize, 250);
+        });
+
         const openModal = (imgSrc, imgAlt, index) => {
       currentImageIndex = index;
       loadingIndicator!.style.display = "flex";
@@ -150,10 +212,10 @@ const { class: className = '', ...props } = Astro.props;
       if (currentImageIndex > 0) {
         currentImageIndex--;
         const prevImg = galleryImages[currentImageIndex] as HTMLImageElement;
-        const originalSrc = prevImg.getAttribute("data-original")!;
+        const modalSrc = getModalImageUrl(prevImg);
         const altText = prevImg.getAttribute("alt") || "";
         loadingIndicator!.style.display = "flex";
-        modalImg.src = originalSrc;
+        modalImg.src = modalSrc;
         modalImg.alt = altText;
         updateNavigationButtons();
       }
@@ -163,10 +225,10 @@ const { class: className = '', ...props } = Astro.props;
       if (currentImageIndex < galleryImages.length - 1) {
         currentImageIndex++;
         const nextImg = galleryImages[currentImageIndex] as HTMLImageElement;
-        const originalSrc = nextImg.getAttribute("data-original")!;
+        const modalSrc = getModalImageUrl(nextImg);
         const altText = nextImg.getAttribute("alt") || "";
         loadingIndicator!.style.display = "flex";
-        modalImg.src = originalSrc;
+        modalImg.src = modalSrc;
         modalImg.alt = altText;
         updateNavigationButtons();
       }
@@ -190,9 +252,9 @@ const { class: className = '', ...props } = Astro.props;
     // Añadir event listeners a las imágenes de la galería
     galleryImages.forEach((img, index) => {
       img.addEventListener("click", () => {
-        const originalSrc = img.getAttribute("data-original")!;
+        const modalSrc = getModalImageUrl(img);
         const altText = img.getAttribute("alt") || "";
-        openModal(originalSrc, altText, index);
+        openModal(modalSrc, altText, index);
       });
     });
 

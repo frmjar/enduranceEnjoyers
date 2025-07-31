@@ -8,11 +8,11 @@
 
   /* Variables de colores de texto */
   --color-text-primary: #ffffff;
-  --color-text-secondary: #e5e5e5;
-  --color-text-muted: #d1d5db;
-  --color-text-gray-light: #9ca3af;
-  --color-text-gray-medium: #6b7280;
-  --color-text-gray-dark: #4b5563;
+  --color-text-secondary: #ffffff;
+  --color-text-muted: #f9fafb;
+  --color-text-gray-light: #f3f4f6;
+  --color-text-gray-medium: #e5e7eb;
+  --color-text-gray-dark: #d1d5db;
 
   /* Variables de colores de fondo */
   --color-bg-primary: #1f2937;
