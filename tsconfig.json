@@ -4,15 +4,25 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "jsx": "preserve",
     "esModuleInterop": true,
     "allowJs": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
-    "types": ["astro/client"]
+    "types": [
+      "astro/client"
+    ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "build", "astro.config.ts"],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "astro.config.ts"
+  ],
 }

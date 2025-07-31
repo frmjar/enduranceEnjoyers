@@ -3,22 +3,30 @@ import { Image } from 'astro:assets'
 import { CloudinaryFolders, getUrl } from '../libs/cloudinary'
 
 const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.General + '/skincar', format: 'png' })
+
+const { class: className = '', ...props } = Astro.props;
 ---
-  <section itemscope itemtype='https://schema.org/SportsTeam'>
-    <div class='flex flex-col lg:flex-row gap-6 lg:gap-10 h-full w-full lg:w-4/5 xl:w-3/5 p-4 md:p-6 m-auto'>
-      <p class='flex-1 text-responsive-base font-bold text-text-primary' itemprop='description'>
-        The Endurance Enjoyers team is a group of passionate individuals who love to push their limits and explore the world of endurance sports. We believe in the power of community, support, and shared experiences to achieve our goals.
+  <section class={className} {...props} itemscope itemtype='https://schema.org/SportsTeam'>
+    <div class='flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 xl:gap-10 2xl:gap-12 max-w-8xl px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 py-6 sm:py-8 md:py-10 mx-auto'>
+      <p class='flex-1 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium sm:font-semibold lg:font-bold text-text-primary leading-relaxed' itemprop='description'>
+        Endurance Enjoyers es un equipo de simracing enfocado en las carreras de resistencia dentro de iRacing. Combinamos la pasión por el automovilismo virtual con un entorno colaborativo, relajado y libre de presiones competitivas.
       </p>
-      <div class='hidden lg:block w-2px bg-gray-400' />
-      <p class='flex-1 text-responsive-base font-bold text-text-primary'>
-        Whether you're a seasoned athlete or just starting your journey, we welcome you to join us in our adventures. Together, we can inspire each other to reach new heights and enjoy every step of the way.
+
+      <!-- Separador visual -->
+      <div class='w-full h-px lg:w-px lg:h-auto bg-gray-300 lg:bg-gray-400 my-2 lg:my-0 lg:min-h-24' />
+
+      <p class='flex-1 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium sm:font-semibold lg:font-bold text-text-primary leading-relaxed'>
+        Priorizamos la experiencia compartida, el respeto en pista y el compañerismo. Valoramos la mejora constante y el disfrute colectivo por encima del resultado. Rechazamos el "tryhardismo" y promovemos un espacio sano donde correr bien es tan importante o más que ganar.
       </p>
     </div>
-    <Image
-      src={teamLogoUrl}
-      alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
-      class='m-auto -translate-y-6 md:-translate-y-12 w-[95%] md:w-[85%] lg:w-[80%] opacity-80'
-      inferSize
-      itemprop='logo'
-    />
+
+    <div class='px-4 sm:px-6 md:px-8'>
+      <Image
+        src={teamLogoUrl}
+        alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
+        class='mx-auto -mt-2 sm:-mt-4 md:-mt-6 lg:-mt-8 xl:-mt-12 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-3xl xl:max-w-5xl 2xl:max-w-6xl opacity-75 sm:opacity-80'
+        inferSize
+        itemprop='logo'
+      />
+    </div>
   </section>

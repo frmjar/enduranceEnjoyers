@@ -1,5 +1,6 @@
 ---
 import Card from './Card.astro'
+import SectionTitle from './SectionTitle.astro'
 
 const { id, class: className } = Astro.props;
 ---
@@ -7,12 +8,10 @@ const { id, class: className } = Astro.props;
   <section id={id} class={`spacing-section ${className || ''}`}>
     <div class='container mx-auto spacing-container'>
       <div class='max-w-7xl mx-auto'>
-        <div class='text-center mb-8 md:mb-12 lg:mb-16'>
-          <h2 class='text-responsive-xl font-bold text-text-primary mb-4'>Contacto</h2>
-          <p class='text-responsive-base text-text-secondary max-w-2xl mx-auto'>
-            ¿Estás interesado en unirte a nosotros? ¡Nos encantaría saber de ti!
-          </p>
-        </div>
+        <SectionTitle
+          title='Contacto'
+          subtitle='¿Estás interesado en unirte a nosotros? ¡Nos encantaría saber de ti!'
+        />
 
         <div class='grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8'>
           <div class='space-y-6'>
@@ -64,7 +63,7 @@ const { id, class: className } = Astro.props;
                 <div>
                   <label class='block text-sm font-medium text-text-secondary mb-2'>
                     Nombre en iRacing *
-                </label>
+                  </label>
                   <input
                     type='text'
                     name='iracingName'
@@ -76,7 +75,7 @@ const { id, class: className } = Astro.props;
                 <div>
                   <label class='block text-sm font-medium text-text-secondary mb-2'>
                     ID de iRacing *
-                </label>
+                  </label>
                   <input
                     type='text'
                     name='iracingId'
@@ -91,7 +90,7 @@ const { id, class: className } = Astro.props;
                 <div>
                   <label class='block text-sm font-medium text-text-secondary mb-2'>
                     Discord *
-                </label>
+                  </label>
                   <input
                     type='text'
                     name='discord'
@@ -103,7 +102,7 @@ const { id, class: className } = Astro.props;
                 <div>
                   <label class='block text-sm font-medium text-text-secondary mb-2'>
                     Email
-                </label>
+                  </label>
                   <input
                     type='email'
                     name='email'
@@ -133,22 +132,22 @@ const { id, class: className } = Astro.props;
                 <div class='flex space-x-6'>
                   <label class='flex items-center'>
                     <input
-                    type='radio'
-                    name='experience'
-                    value='si'
-                    class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
-                    required
-                  />
+                      type='radio'
+                      name='experience'
+                      value='si'
+                      class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
+                      required
+                    />
                     <span class='ml-2 text-text-secondary'>Sí</span>
                   </label>
                   <label class='flex items-center'>
                     <input
-                    type='radio'
-                    name='experience'
-                    value='no'
-                    class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
-                    required
-                  />
+                      type='radio'
+                      name='experience'
+                      value='no'
+                      class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
+                      required
+                    />
                     <span class='ml-2 text-text-secondary'>No</span>
                   </label>
                 </div>

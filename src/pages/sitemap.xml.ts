@@ -9,6 +9,36 @@ export const GET: APIRoute = async (): Promise<Response> => {
       lastmod: new Date().toISOString(),
       changefreq: 'weekly',
       priority: '1.0'
+    },
+    {
+      url: '/#calendario',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.8'
+    },
+    {
+      url: '/#novedades',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.8'
+    },
+    {
+      url: '/#galeria',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.8'
+    },
+    {
+      url: '/#contacto',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.8'
+    },
+    {
+      url: '/calendario',
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.8'
     }
   ]
 

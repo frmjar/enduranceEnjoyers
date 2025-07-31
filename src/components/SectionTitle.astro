@@ -1,0 +1,22 @@
+---
+const {
+  title,
+  subtitle,
+  class: className = '',
+  titleClass = '',
+  subtitleClass = '',
+  centered = true
+} = Astro.props
+---
+
+  <div class={`${centered ? 'text-center' : ''} mb-12 ${className}`}>
+    <h2 class={`text-4xl font-bold text-text-primary mb-4 ${titleClass}`}>
+      {title}
+    </h2>
+    <div class='w-24 h-1 bg-orange-500 rounded-full' class:list={[centered ? 'mx-auto' : '']} />
+    {subtitle && (
+      <p class={`text-text-secondary max-w-2xl mt-4 ${centered ? 'mx-auto' : ''} ${subtitleClass}`}>
+        {subtitle}
+      </p>
+    )}
+  </div>

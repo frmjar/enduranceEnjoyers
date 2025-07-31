@@ -9,6 +9,7 @@ export interface Props {
   rows?: number;
   isTextarea?: boolean;
   placeholder?: string;
+  class?: string;
 }
 
 const {
@@ -20,11 +21,12 @@ const {
   rows,
   isTextarea = false,
   placeholder,
-  values = []
+  values = [],
+  class: className = ''
 } = Astro.props;
 ---
 
-  <div>
+  <div class={className}>
     <label for={id} class='block mb-1 font-semibold'>{label}</label>
 
     {

@@ -1,5 +1,6 @@
 ---
 import Card from './Card.astro'
+import SectionTitle from './SectionTitle.astro'
 
 const { id, class: className } = Astro.props
 ---
@@ -8,14 +9,10 @@ const { id, class: className } = Astro.props
     <div class='container mx-auto spacing-container'>
       <div class='max-w-7xl mx-auto'>
 
-        <div class='text-center mb-8 md:mb-12 lg:mb-16'>
-          <h2 class='text-responsive-xl font-bold text-text-primary mb-4'>
-            Novedades y Logros
-          </h2>
-          <p class='text-responsive-base text-text-secondary max-w-2xl mx-auto'>
-            Mantente al día con nuestros últimos logros y próximos eventos
-          </p>
-        </div>
+        <SectionTitle
+          title='Novedades y Logros'
+          subtitle='Mantente al día con nuestros últimos logros y próximos eventos'
+        />
 
         <div class='grid-responsive'>
 

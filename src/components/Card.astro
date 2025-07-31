@@ -83,7 +83,7 @@ const {
 
     {details.length > 0 && (
       <div class='space-y-3'>
-        {details.map((detail) => (
+        {details.map((detail, detailIndex) => (
           <div class='flex items-center gap-2'>
             <div class='w-2 h-2 bg-orange-500 rounded-full' />
             <span class='text-sm font-medium text-orange-400'>{detail.label}:</span>
@@ -95,7 +95,7 @@ const {
 
     {results.length > 0 && (
       <div class='space-y-3 mt-6'>
-        {results.map((result) => (
+        {results.map((result, resultIndex) => (
           <div class='flex items-center space-x-3'>
             <div class='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0' />
             <span class='text-text-primary text-sm'>{result}</span>

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets'
 import { getImages, CloudinaryFolders } from '../libs/cloudinary'
 import Icon from '../icons/Icon.astro'
+import SectionTitle from './SectionTitle.astro'
 
 const images = await getImages({
   cantidad: 12,
@@ -13,18 +14,18 @@ images.sort((a, b) => {
   return a.name.localeCompare(b.name) * -1
 })
 
-const props = Astro.props;
+const { class: className = '', ...props } = Astro.props;
 ---
 
-  <section {...props}>
-    <h2 class="text-center text-3xl font-bold mb-8">Galería de Imágenes</h2>
+  <section class={`spacing-section ${className}`} {...props}>
+    <SectionTitle title='Galería de Imágenes' />
     <div
       class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-11/12 md:w-10/12 mx-auto my-10'
     >
       {
       images.map((img) => (
         <div class='relative group overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 shadow-lg'>
-          <div class="aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse"> <!-- Placeholder mientras carga -->
+          <div class='aspect-w-4 aspect-h-3 bg-gray-200 animate-pulse'> <!-- Placeholder mientras carga -->
             <Image
               src={img.url}
               alt={img.alt}
@@ -32,7 +33,7 @@ const props = Astro.props;
               width={600}
               height={400}
               loading='lazy'
-              decoding="async"
+              decoding='async'
               class='rounded-lg clickable-img w-full h-full object-cover'
               onload="this.parentNode.classList.remove('animate-pulse', 'bg-gray-200')"
             />
@@ -65,31 +66,31 @@ const props = Astro.props;
       <button
         id='closeModal'
         class='absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-gray-100 transition-colors duration-200'
-        aria-label="Cerrar galería"
+        aria-label='Cerrar galería'
       >
         <Icon name='close' size='sm' class='text-black' />
       </button>
       <button
         id='prevImage'
         class='absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-white transition-colors duration-200 hidden md:flex'
-        aria-label="Imagen anterior"
+        aria-label='Imagen anterior'
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7' />
         </svg>
       </button>
       <button
         id='nextImage'
         class='absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-lg z-10 hover:bg-white transition-colors duration-200 hidden md:flex'
-        aria-label="Imagen siguiente"
+        aria-label='Imagen siguiente'
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7' />
         </svg>
       </button>
-      <div class="relative w-full h-full flex items-center justify-center">
-        <div id="imageLoading" class="absolute inset-0 flex items-center justify-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <div class='relative w-full h-full flex items-center justify-center'>
+        <div id='imageLoading' class='absolute inset-0 flex items-center justify-center'>
+          <div class='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white' />
         </div>
         <img
           id='modalImage'
@@ -103,17 +104,17 @@ const props = Astro.props;
   </section>
 
     <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("modalImage") as HTMLImageElement;
-    const closeBtn = document.getElementById("closeModal") as HTMLButtonElement;
-    const prevBtn = document.getElementById("prevImage") as HTMLButtonElement;
-    const nextBtn = document.getElementById("nextImage") as HTMLButtonElement;
-    const loadingIndicator = document.getElementById("imageLoading");
-    const galleryImages = Array.from(document.querySelectorAll(".clickable-img"));
-    let currentImageIndex = 0;
+      document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const closeBtn = document.getElementById("closeModal");
+        const prevBtn = document.getElementById("prevImage");
+        const nextBtn = document.getElementById("nextImage");
+        const loadingIndicator = document.getElementById("imageLoading");
+        const galleryImages = Array.from(document.querySelectorAll(".clickable-img"));
+        let currentImageIndex = 0;
 
-    const openModal = (imgSrc: string, imgAlt: string, index: number) => {
+        const openModal = (imgSrc, imgAlt, index) => {
       currentImageIndex = index;
       loadingIndicator!.style.display = "flex";
       modalImg.src = imgSrc;

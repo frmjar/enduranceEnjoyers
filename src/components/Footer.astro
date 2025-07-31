@@ -2,8 +2,8 @@
 import { Image } from 'astro:assets'
 import Logo from '../../public/logo.webp'
 import TwitterIcon from '../icons/Twitter.astro'
-const brandName = 'Endurance Enjoyers';
-const currentYear = new Date().getFullYear();
+const brandName = 'Endurance Enjoyers'
+const currentYear = new Date().getFullYear()
 
 const siteLinks = [
   { name: 'Inicio', url: '/' },
@@ -11,80 +11,82 @@ const siteLinks = [
   { name: 'Novedades', url: '/#novedades' },
   { name: 'Galería', url: '/#galeria' },
   { name: 'Contacto', url: '/#contacto' }
-];
+]
 
 const legalLinks = [
   { name: 'Política de Privacidad', url: '/privacidad' },
   { name: 'Términos y Condiciones', url: '/terminos' }
-];
+]
+
+const { class: className = '', ...props } = Astro.props;
 ---
 
-<footer class='py-8 px-4 bg-primary-header'>
-  <div class='max-w-6xl mx-auto'>
-    <div class='grid grid-cols-1 md:grid-cols-3 gap-8 mb-8'>
-      <div class='text-center md:text-left'>
-        <a href="/" class="inline-block">
-          <Image 
-            src={Logo} 
-            width={100} 
-            height={100}
-            alt={`${brandName} Logo`} 
-            class='mx-auto md:mx-0 mb-4' 
-          />
-        </a>
-        <p class='text-sm text-gray-300 max-w-xs mx-auto md:mx-0'>
-          Equipo de carreras de resistencia en iRacing. Participamos en las principales competiciones de resistencia virtual.  
-        </p>
-      </div>
-
-      <div>
-        <h3 class='text-white font-semibold text-lg mb-4 text-center md:text-left'>Enlaces</h3>
-        <ul class='space-y-2 text-center md:text-left'>
-          {siteLinks.map(link => (
-            <li>
-              <a 
-                href={link.url} 
-                class='text-gray-300 hover:text-white transition-colors duration-300'
-              >
-                {link.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class='text-center md:text-left'>
-        <h3 class='text-white font-semibold text-lg mb-4'>Síguenos</h3>
-        <div class='flex justify-center md:justify-start gap-4 mb-4'>
-          <a 
-            href='https://x.com/EnduEnjoyers' 
-            target='_blank' 
-            aria-label='Twitter' 
-            class='text-gray-300 hover:text-white transition-colors duration-300' 
-            rel='noreferrer'
-          >
-            <TwitterIcon class='w-6 h-6 fill-current' />
+  <footer class={`py-8 px-4 bg-primary-header ${className}`} {...props}>
+    <div class='max-w-6xl mx-auto'>
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-8 mb-8'>
+        <div class='text-center md:text-left'>
+          <a href='/' class='inline-block'>
+            <Image
+              src={Logo}
+              width={100}
+              height={100}
+              alt={`${brandName} Logo`}
+              class='mx-auto md:mx-0 mb-4'
+            />
           </a>
+          <p class='text-sm text-gray-300 max-w-xs mx-auto md:mx-0'>
+            Equipo de carreras de resistencia en iRacing. Participamos en las principales competiciones de resistencia virtual.
+          </p>
         </div>
-        <p class='text-sm text-gray-300'>¿Preguntas? <a href='/#contacto' class='text-white hover:underline'>Contáctanos</a></p>
+
+        <div>
+          <h3 class='text-white font-semibold text-lg mb-4 text-center md:text-left'>Enlaces</h3>
+          <ul class='space-y-2 text-center md:text-left'>
+            {siteLinks.map(link => (
+              <li>
+                <a
+                  href={link.url}
+                  class='text-gray-300 hover:text-white transition-colors duration-300'
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class='text-center md:text-left'>
+          <h3 class='text-white font-semibold text-lg mb-4'>Síguenos</h3>
+          <div class='flex justify-center md:justify-start gap-4 mb-4'>
+            <a
+              href='https://x.com/EnduEnjoyers'
+              target='_blank'
+              aria-label='Twitter'
+              class='text-gray-300 hover:text-white transition-colors duration-300'
+              rel='noreferrer'
+            >
+              <TwitterIcon class='w-6 h-6 fill-current' />
+            </a>
+          </div>
+          <p class='text-sm text-gray-300'>¿Preguntas? <a href='/#contacto' class='text-white hover:underline'>Contáctanos</a></p>
+        </div>
+      </div>
+
+      <div class='border-t border-gray-700 my-6' />
+
+      <div class='flex flex-col md:flex-row justify-between items-center'>
+        <p class='text-sm text-gray-400 mb-4 md:mb-0'>© {currentYear} {brandName}. Todos los derechos reservados.</p>
+
+        <div class='flex flex-wrap justify-center gap-4'>
+          {/* legalLinks.map(link => (
+            <a
+              href={link.url}
+              class='text-sm text-gray-400 hover:text-white transition-colors duration-300'
+            >
+              {link.name}
+            </a>
+          )) */}
+        </div>
       </div>
     </div>
-
-    <div class='border-t border-gray-700 my-6'></div>
-
-    <div class='flex flex-col md:flex-row justify-between items-center'>
-      <p class='text-sm text-gray-400 mb-4 md:mb-0'>© {currentYear} {brandName}. Todos los derechos reservados.</p>
-      
-      <div class='flex flex-wrap justify-center gap-4'>
-        {legalLinks.map(link => (
-          <a 
-            href={link.url} 
-            class='text-sm text-gray-400 hover:text-white transition-colors duration-300'
-          >
-            {link.name}
-          </a>
-        ))}
-      </div>
-    </div>
-  </div>
-</footer>
+  </footer>
