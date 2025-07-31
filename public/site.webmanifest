@@ -1,12 +1,17 @@
 {
-  "name": "Endurance Enjoyers - Equipo de Carreras de Resistencia",
+  "name": "Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing",
   "short_name": "Endurance Enjoyers",
-  "description": "Únete a Endurance Enjoyers, el equipo líder en carreras de resistencia en iRacing. Participa en las 24 Horas de Daytona, Le Mans y más eventos épicos.",
+  "description": "Únete a Endurance Enjoyers, la comunidad de sim racing especializada en carreras de resistencia en iRacing. Experiencias únicas, eventos exclusivos y pasión por las carreras de larga duración.",
   "icons": [
     {
       "src": "/favicon.ico",
       "sizes": "16x16 32x32 48x48",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
     },
     {
       "src": "/logo.webp",
