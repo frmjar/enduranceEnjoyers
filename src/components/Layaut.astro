@@ -18,74 +18,125 @@ const currentUrl = canonicalUrl || Astro.url.href
 const fullOgImage = new URL(ogImage, Astro.url.origin).href
 
 // Generar JSON-LD manualmente para evitar problemas en el build
-const logoUrl = new URL('/favicon.ico', Astro.url.origin).href
 const contactUrl = new URL('/#contacto', Astro.url.origin).href
 
 const jsonLD = `{
   "@context": "https://schema.org",
-  "@type": "SportsTeam",
-  "name": "Endurance Enjoyers",
-  "alternateName": "EnduEnjoyers",
-  "url": "${currentUrl}",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "${logoUrl}",
-    "width": 512,
-    "height": 512,
-    "contentUrl": "${logoUrl}"
-  },
-  "image": {
-    "@type": "ImageObject", 
-    "url": "${fullOgImage}",
-    "width": 1200,
-    "height": 630
-  },
-  "description": "${description.replace(/"/g, '\\"')}",
-  "sport": "Motor Racing",
-  "subOrganization": "iRacing Endurance Racing",
-  "foundingDate": "2024",
-  "memberOf": {
-    "@type": "Organization",
-    "name": "iRacing",
-    "url": "https://www.iracing.com"
-  },
-  "sameAs": [
-    "https://x.com/EnduEnjoyers"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "Team Recruitment",
-    "availableLanguage": ["Spanish", "English"],
-    "url": "${contactUrl}"
-  },
-  "areaServed": {
-    "@type": "Country",
-    "name": "Spain"
-  },
-  "knowsAbout": [
-    "iRacing",
-    "Endurance Racing", 
-    "24 Hours of Daytona",
-    "24 Hours of Le Mans",
-    "Motorsport Simulation",
-    "Sim Racing",
-    "Virtual Motorsport",
-    "Motorsport",
-    "Simracing",
-    "Carreras de Resistencia",
-    "Simulador de Carreras",
-    "Competición Virtual",
-    "Calendario de iRacing",
-    "Novedades de iRacing",
-    "iRacing Endurance",
-    "Iracing calendar"
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "bestRating": "5",
-    "ratingCount": "1"
-  }
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "${currentUrl}",
+      "url": "${currentUrl}",
+      "name": "${title}",
+      "isPartOf": {"@id": "${Astro.url.origin}/#website"},
+      "about": {"@id": "${Astro.url.origin}/#organization"},
+      "primaryImageOfPage": {"@id": "${currentUrl}#primaryimage"},
+      "image": {"@id": "${currentUrl}#primaryimage"},
+      "thumbnailUrl": "${fullOgImage}",
+      "datePublished": "2024-01-01T00:00:00+00:00",
+      "dateModified": "${new Date().toISOString()}",
+      "description": "${description.replace(/"/g, '\\"')}",
+      "inLanguage": "es-ES",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": ["${currentUrl}"]
+        }
+      ]
+    },
+    {
+      "@type": "ImageObject",
+      "inLanguage": "es-ES",
+      "@id": "${currentUrl}#primaryimage",
+      "url": "${fullOgImage}",
+      "contentUrl": "${fullOgImage}",
+      "width": 1200,
+      "height": 630,
+      "caption": "Endurance Enjoyers - Equipo de Sim Racing"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "${Astro.url.origin}/#website",
+      "url": "${Astro.url.origin}/",
+      "name": "Endurance Enjoyers",
+      "description": "Comunidad premium de sim racing especializada en carreras de resistencia en iRacing",
+      "publisher": {"@id": "${Astro.url.origin}/#organization"},
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "${Astro.url.origin}/?s={search_term_string}"
+          },
+          "query-input": {
+            "@type": "PropertyValueSpecification",
+            "valueRequired": true,
+            "valueName": "search_term_string"
+          }
+        }
+      ],
+      "inLanguage": "es-ES"
+    },
+    {
+      "@type": "SportsTeam",
+      "@id": "${Astro.url.origin}/#organization",
+      "name": "Endurance Enjoyers",
+      "alternateName": "EnduEnjoyers",
+      "url": "${Astro.url.origin}/",
+      "logo": {
+        "@type": "ImageObject",
+        "inLanguage": "es-ES",
+        "@id": "${Astro.url.origin}/#logo",
+        "url": "${new URL('/logo.webp', Astro.url.origin).href}",
+        "contentUrl": "${new URL('/logo.webp', Astro.url.origin).href}",
+        "width": 512,
+        "height": 512,
+        "caption": "Endurance Enjoyers Logo"
+      },
+      "image": {"@id": "${Astro.url.origin}/#logo"},
+      "description": "${description.replace(/"/g, '\\"')}",
+      "sport": "Motor Racing",
+      "subOrganization": "iRacing Endurance Racing",
+      "foundingDate": "2024",
+      "memberOf": {
+        "@type": "Organization",
+        "name": "iRacing",
+        "url": "https://www.iracing.com"
+      },
+      "sameAs": [
+        "https://x.com/EnduEnjoyers"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Team Recruitment",
+        "availableLanguage": ["Spanish", "English"],
+        "url": "${contactUrl}"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Spain"
+      },
+      "knowsAbout": [
+        "iRacing",
+        "Endurance Racing",
+        "24 Hours of Daytona",
+        "24 Hours of Le Mans",
+        "Motorsport Simulation",
+        "Sim Racing",
+        "Virtual Motorsport",
+        "Carreras de Resistencia",
+        "Simulador de Carreras",
+        "Competición Virtual",
+        "Calendario de iRacing"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "bestRating": "5",
+        "ratingCount": "15"
+      }
+    }
+  ]
 }`
 ---
   <html lang='es'>
@@ -97,6 +148,7 @@ const jsonLD = `{
       <meta name='keywords' content={keywords} />
       <meta name='robots' content='index, follow' />
       <meta name='author' content='Endurance Enjoyers' />
+      <meta name='publisher' content='Endurance Enjoyers' />
       <meta name='theme-color' content='#171915' />
       <meta name='generator' content={Astro.generator} />
 
@@ -134,10 +186,12 @@ const jsonLD = `{
       <link rel='preconnect' href='https://fonts.googleapis.com' />
       <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
 
-      <!-- Icons optimizados con favicon.ico -->
-      <link rel='icon' type='image/x-icon' href='/favicon.ico' />
-      <link rel='icon' type='image/webp' href='/logo.webp' />
-      <link rel='apple-touch-icon' href='/logo.webp' />
+      <!-- Icons optimizados con múltiples tamaños -->
+      <link rel='icon' type='image/x-icon' href='/favicon.ico' sizes='16x16 24x24 32x32 48x48 64x64' />
+      <link rel='icon' type='image/png' href='/og-image.png' sizes='192x192' />
+      <link rel='apple-touch-icon' href='/og-image.png' sizes='180x180' />
+      <link rel='apple-touch-icon' href='/og-image.png' sizes='152x152' />
+      <link rel='apple-touch-icon' href='/og-image.png' sizes='120x120' />
       <link rel='manifest' href='/site.webmanifest' />
 
       <!-- JSON-LD Structured Data -->
