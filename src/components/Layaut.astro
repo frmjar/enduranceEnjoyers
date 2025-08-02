@@ -87,8 +87,8 @@ const jsonLD = `{
         "@type": "ImageObject",
         "inLanguage": "es-ES",
         "@id": "${Astro.url.origin}/#logoconfondo",
-        "url": "${new URL('/logoconfondo.png', Astro.url.origin).href}",
-        "contentUrl": "${new URL('/logoconfondo.png', Astro.url.origin).href}",
+        "url": "${new URL('/logoconfondo.webp', Astro.url.origin).href}",
+        "contentUrl": "${new URL('/logoconfondo.webp', Astro.url.origin).href}",
         "width": 512,
         "height": 512,
         "caption": "Endurance Enjoyers Logo"
@@ -176,6 +176,8 @@ const jsonLD = `{
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:image' content={fullOgImage} />
+      <meta name='twitter:creator' content='@EnduEnjoyers' />
+      <meta name='twitter:image:alt' content='Endurance Enjoyers - Comunidad de Simracing' />
 
       <!-- Preload critical resources -->
       <link rel='preload' href='/logotextclear.webp' as='image' type='image/webp' />
