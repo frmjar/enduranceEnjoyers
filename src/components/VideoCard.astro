@@ -1,0 +1,118 @@
+---
+const { video, class: className = '' } = Astro.props
+
+// Formatear duración de ISO 8601 a formato legible
+const formatDuration = (duration) => {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+  if (!match) return '0:00'
+
+  const hours = parseInt(match[1] || '0')
+  const minutes = parseInt(match[2] || '0')
+  const seconds = parseInt(match[3] || '0')
+
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
+
+// Formatear número de visualizaciones
+const formatViews = (views) => {
+  const num = parseInt(views)
+  if (num >= 1000000) {
+    return `${(num / 1000000).toFixed(1)}M`
+  } else if (num >= 1000) {
+    return `${(num / 1000).toFixed(1)}K`
+  }
+  return `${num}`
+}
+
+// Formatear fecha
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+---
+
+  <div class={`relative bg-bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col h-full ${className}`}>
+    <!-- Contenedor de video/thumbnail -->
+    <div class='relative aspect-[4/3] bg-gray-800 overflow-hidden flex-shrink-0'>
+      <!-- Thumbnail (se oculta cuando se reproduce el video) -->
+      <div class='video-thumbnail w-full h-full relative'>
+        <img
+          src={video?.thumbnail}
+          alt={video?.title}
+          class='w-full h-full object-cover'
+        />
+
+        <!-- Overlay de play -->
+        <div class='absolute inset-0 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center'>
+          <button
+            class='play-button w-16 h-16 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transform hover:scale-110 transition-all duration-300'
+            onclick={`playVideo('${video?.id}', this)`}
+            aria-label='Reproducir video'
+          >
+            <svg class='w-6 h-6 text-white ml-1' fill='currentColor' viewBox='0 0 24 24'>
+              <path d='M8 5v14l11-7z' />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Duración -->
+        <div class='absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded'>
+          {formatDuration(video?.duration || 'PT0S')}
+        </div>
+      </div>
+
+      <!-- Iframe del video (oculto inicialmente) -->
+      <div class='video-player w-full h-full absolute inset-0' style='display: none;'>
+        <!-- El iframe se insertará aquí dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Contenido principal que ocupa el espacio disponible -->
+    <div class='flex flex-col flex-grow'>
+      <!-- Título y descripción -->
+      <div class='p-4 pb-2 flex-grow'>
+        <h3 class='text-lg font-semibold text-text-primary mb-2 group-hover:text-orange-400 transition-colors duration-300'>
+          {video?.title || 'Título del video no disponible'}
+        </h3>
+
+        <p class='text-text-secondary text-sm'>
+          {video?.description || 'Descripción del video no disponible'}
+        </p>
+      </div>
+
+      <!-- Información inferior siempre en la parte de abajo -->
+      <div class='px-4 pb-4 mt-auto'>
+        <div class='flex items-center justify-between text-xs text-text-muted border-t border-gray-700 pt-3'>
+          <span>{formatViews(video?.viewCount || '0')} vistas</span>
+          <span>{formatDate(video?.publishedAt || new Date().toISOString())}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script is:inline>
+      function playVideo (videoId, button) {
+        const card = button.closest('.group')
+        const thumbnail = card.querySelector('.video-thumbnail')
+        const playerContainer = card.querySelector('.video-player')
+
+        if (thumbnail && playerContainer) {
+          thumbnail.style.display = 'none'
+          playerContainer.style.display = 'block'
+          playerContainer.innerHTML =
+            '<iframe src="https://www.youtube.com/embed/' + videoId +
+            '?autoplay=1&rel=0&modestbranding=1" frameborder="0" ' +
+            'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+            'allowfullscreen class="w-full h-full"></iframe>'
+        }
+      }
+
+      window.playVideo = playVideo
+    </script>

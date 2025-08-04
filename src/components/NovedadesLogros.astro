@@ -1,8 +1,23 @@
 ---
 import Card from './Card.astro'
 import SectionTitle from './SectionTitle.astro'
+import VideoCard from './VideoCard.astro'
 
 const { id, class: className } = Astro.props
+
+let youtubeVideos = []
+try {
+  const response = await fetch(`${Astro.url.origin}/api/youtube`)
+  if (response.ok) {
+    const data = await response.json()
+    youtubeVideos = data.videos || []
+  }
+} catch (error) {
+  console.error('Error fetching YouTube videos:', error)
+}
+
+// Mostrar máximo 4 videos
+const displayVideos = youtubeVideos.slice(0, 4)
 ---
 
   <section id={id} class={`spacing-section ${className || ''}`}>
@@ -10,66 +25,59 @@ const { id, class: className } = Astro.props
       <div class='max-w-7xl mx-auto'>
 
         <SectionTitle
-          title='Novedades y Logros'
-          subtitle='Mantente al día con nuestros últimos logros y próximos eventos'
+          title='Novedades y Videos'
+          subtitle='Mantente al día con nuestros últimos videos y contenido del canal'
         />
 
         <div class='grid-responsive'>
 
-          <Card
-            title='Próxima Carrera de Resistencia'
-            description='¡Nos complace anunciar la próxima carrera de resistencia que se llevará a cabo el 15 de marzo!'
-            date='15 Mar 2024'
-            icon='calendar'
-            iconColor='bg-orange-500'
-          />
+          {displayVideos.length > 0
+            ? displayVideos.map((video) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                class='col-span-1'
+              />
+            ))
+            : (
+              <>
+                <!-- Contenido de fallback si no hay videos -->
+                <Card
+                  title='Próxima Carrera de Resistencia'
+                  description='¡Nos complace anunciar la próxima carrera de resistencia que se llevará a cabo pronto!'
+                  date='Próximamente'
+                  icon='calendar'
+                  iconColor='bg-orange-500'
+                />
 
-          <Card
-            title='Logro Destacado'
-            description='Felicitaciones a Juan por completar su primer maratón con un tiempo impresionante de 3 horas y 30 minutos.'
-            date='10 Mar 2024'
-            icon='trophy'
-            iconColor='bg-orange-500'
-          />
+                <Card
+                  title='Contenido de YouTube'
+                  description='Suscríbete a nuestro canal de YouTube para ver los últimos videos sobre sim racing y carreras de resistencia.'
+                  date='Videos semanales'
+                  icon='trophy'
+                  iconColor='bg-red-500'
+                />
+              </>
+              )}
 
-          <Card
-            title='24 Horas de Daytona'
-            description='Resultados excepcionales en las 24 horas de Daytona con múltiples posiciones en el podio.'
-            date='28 Feb 2024'
-            icon='flag'
-            iconColor='bg-orange-500'
-            results={[
-              '1º posición equipo azul',
-              '3º posición equipo azul',
-              '5º posición equipo azul'
-            ]}
-          />
-
-          <Card
-            title='Contenido Personalizado'
-            date='01 Mar 2024'
-            icon='trophy'
-            iconColor='bg-green-500'
-            class='md:col-span-2 lg:col-span-1'
-          >
-            <div class='mt-4'>
-              <p class='text-text-secondary mb-4'>Este es contenido personalizado usando el slot:</p>
-              <img src='/logo.webp' alt='Logo' class='w-full h-32 object-contain opacity-80 rounded-lg bg-slate-700/30' />
-            </div>
-          </Card>
-
+          <!-- Card de suscripción siempre visible -->
           <Card class='sm:col-span-2 lg:col-span-1'>
             <div class='text-center py-4 md:py-6 lg:py-8'>
-              <div class='w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4'>
-                <svg class='w-6 h-6 md:w-8 md:h-8 text-text-primary' fill='currentColor' viewBox='0 0 20 20'>
-                  <path d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+              <div class='w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4'>
+                <svg class='w-6 h-6 md:w-8 md:h-8 text-white' fill='currentColor' viewBox='0 0 24 24'>
+                  <path d='M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z' />
                 </svg>
               </div>
-              <h3 class='text-lg md:text-xl font-semibold text-text-primary mb-2'>¡Únete al Equipo!</h3>
-              <p class='text-sm md:text-base text-text-secondary mb-4'>¿Listo para formar parte de Endurance Enjoyers?</p>
-              <button class='bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold px-4 md:px-6 py-2 text-sm md:text-base rounded-lg transition-all duration-300 transform hover:scale-105'>
-                Contactar
-              </button>
+              <h3 class='text-lg md:text-xl font-semibold text-text-primary mb-2'>¡Suscríbete!</h3>
+              <p class='text-sm md:text-base text-text-secondary mb-4'>No te pierdas nuestros últimos videos</p>
+              <a
+                href='https://www.youtube.com/@Sayk365'
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-block bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-4 md:px-6 py-2 text-sm md:text-base rounded-lg transition-all duration-300 transform hover:scale-105'
+              >
+                Ver Canal
+              </a>
             </div>
           </Card>
 

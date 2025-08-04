@@ -9,13 +9,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/logo.webp",
+      "src": "/logoconfondo.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "/logo.webp",
+      "src": "/logoconfondo.webp",
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any maskable"
