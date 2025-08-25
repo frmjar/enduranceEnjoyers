@@ -71,7 +71,7 @@ const { class: className = '', ...props } = Astro.props;
       role='dialog'
       aria-modal='true'
       aria-hidden='true'
-      class='fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-4 md:p-8'
+      class='hidden fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out p-4 md:p-8'
     >
       <button
         id='closeModal'
@@ -111,6 +111,7 @@ const { class: className = '', ...props } = Astro.props;
         />
       </div>
     </div>
+
   </section>
 
     <script>
@@ -148,11 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modalImg.alt = imgAlt
     document.body.style.overflow = 'hidden'
 
-    modal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none')
+    // quitar hidden y aria-hidden
+    modal.classList.remove('hidden', 'opacity-0', 'scale-95', 'pointer-events-none')
     modal.classList.add('opacity-100', 'scale-100', 'pointer-events-auto')
-    modal.setAttribute('aria-hidden', 'false')
+    modal.removeAttribute('aria-hidden')
 
-    // Mostrar/ocultar botones de navegación según corresponda
     updateNavigationButtons()
   }
 
@@ -160,14 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = ''
 
     modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
-    modal.classList.remove(
-      'opacity-100',
-      'scale-100',
-      'pointer-events-auto'
-    )
-    modal.setAttribute('aria-hidden', 'true')
+    modal.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto')
 
+    // poner aria-hidden y ocultar modal tras animación
+    modal.setAttribute('aria-hidden', 'true')
     setTimeout(() => {
+      modal.classList.add('hidden')
       modalImg.src = ''
       modalImg.alt = ''
     }, 300)
