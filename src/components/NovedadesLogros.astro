@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+import { CloudinaryFolders, getImages } from '../libs/cloudinary'
 import Card from './Card.astro'
 import SectionTitle from './SectionTitle.astro'
 import VideoCard from './VideoCard.astro'
@@ -16,6 +18,8 @@ try {
   console.error('Error fetching YouTube videos:', error)
 }
 
+const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedades })
+
 ---
 
   <section id={id} class={`spacing-section ${className || ''}`}>
@@ -23,10 +27,33 @@ try {
 
       <SectionTitle
         title='Novedades y Videos'
-        subtitle='Mantente al día con nuestros últimos videos y contenido del canal'
+        subtitle='Mantente al día con nuestras últimas novedades, videos y contenido del canal'
       />
 
       <div class='grid-responsive'>
+
+        {images.length > 0 &&
+        images.map((image) => (
+          <Card key={image.id} class='flex items-center justify-center !p-0'>
+            <Image
+              src={image.original}
+              alt={image.alt}
+              inferSize
+            />
+          </Card>
+        ))}
+
+        <VideoCard
+          video={{
+            id: 'k9ewVCfSfKw',
+            channelTitle: 'iRacingOfficial',
+            publishedAt: '2025-08-16T00:00:00Z',
+            url: 'https://www.youtube.com/watch?v=k9ewVCfSfKw',
+            title: 'Clip histórico: Retransmisión oficial iRacing',
+            description: 'Este clip recoge uno de los momentos históricos del equipo Endurance Enjoyers. ¡Revívelo y compártelo!',
+            thumbnail: 'https://img.youtube.com/vi/k9ewVCfSfKw/hqdefault.jpg'
+          }} start={4112} end={4172}
+        />
 
         {youtubeVideos.length > 0
           ? youtubeVideos.map((video) => (
@@ -72,7 +99,15 @@ try {
               rel='noopener noreferrer'
               class='inline-block bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-4 md:px-6 py-2 text-sm md:text-base rounded-lg transition-all duration-300 transform hover:scale-105'
             >
-              Ver Canal Principal
+              Ver Canal de Sayk
+            </a>
+            <a
+              href='https://www.youtube.com/@thejerbo2250'
+              target='_blank'
+              rel='noopener noreferrer'
+              class='mt-3 inline-block bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-4 md:px-6 py-2 text-sm md:text-base rounded-lg transition-all duration-300 transform hover:scale-105'
+            >
+              Ver Canal de Jerbo
             </a>
           </div>
         </Card>

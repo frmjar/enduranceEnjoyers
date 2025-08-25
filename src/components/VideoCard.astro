@@ -1,7 +1,23 @@
 ---
 import Youtube from '../icons/Youtube.astro'
 
-const { video, class: className = '' } = Astro.props
+interface VideoCardProps {
+  video: {
+    id: string
+    title: string
+    description: string
+    thumbnail: string
+    duration: string
+    viewCount: string
+    channelTitle: string
+    publishedAt: string
+  }
+  start?: number
+  end?: number
+  class?: string
+}
+
+const { video, start, end, class: className = '' } = Astro.props as VideoCardProps
 
 // Formatear duración de ISO 8601 a formato legible
 const formatDuration = (duration) => {
@@ -55,7 +71,7 @@ const formatDate = (dateString) => {
         <div class='absolute inset-0 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center'>
           <button
             class='play-button w-16 h-16 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transform hover:scale-110 transition-all duration-300'
-            onclick={`playVideo('${video?.id}', this)`}
+            onclick={`playVideo('${video?.id}', ${start}, ${end}, this)`}
             aria-label='Reproducir video'
           >
             <svg class='w-6 h-6 text-white ml-1' fill='currentColor' viewBox='0 0 24 24'>
@@ -109,7 +125,7 @@ const formatDate = (dateString) => {
   </div>
 
     <script is:inline>
-      function playVideo (videoId, button) {
+      function playVideo (videoId, start, end, button) {
         const card = button.closest('.group')
         const thumbnail = card.querySelector('.video-thumbnail')
         const playerContainer = card.querySelector('.video-player')
@@ -119,9 +135,11 @@ const formatDate = (dateString) => {
           playerContainer.style.display = 'block'
           playerContainer.innerHTML =
             '<iframe src="https://www.youtube.com/embed/' + videoId +
-            '?autoplay=1&rel=0&modestbranding=1" frameborder="0" ' +
+            `?${start !== undefined ? `&start=${start}` : ''}${end !== undefined ? `&end=${end}` : ''}&autoplay=1&rel=0&modestbranding=1"` +
+            ' frameborder="0" ' +
             'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
-            'allowfullscreen class="w-full h-full"></iframe>'
+            'allowfullscreen ' +
+            'class="w-full h-full"></iframe>'
         }
       }
 

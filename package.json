@@ -1,5 +1,5 @@
 {
-  "name": "mi-calculadora-astro",
+  "name": "enduranceEnjoyers",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -7,11 +7,11 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/vercel": "^8.2.2",
+    "@astrojs/vercel": "^8.2.6",
     "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.12.0",
+    "astro": "^5.13.2",
     "cloudinary": "^2.7.0",
     "googleapis": "^153.0.0",
     "react": "^19.1.0",

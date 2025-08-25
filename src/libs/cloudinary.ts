@@ -7,8 +7,9 @@ cloudinary.config({
 })
 
 export enum CloudinaryFolders {
-  EnduranceEnjoyers = 'EnduranceEnjoyers',
-  General = 'General'
+  EnduranceEnjoyers = 'EnduranceEnjoyers/Galeria',
+  General = 'EnduranceEnjoyers/General',
+  Novedades = 'EnduranceEnjoyers/Novedades'
 }
 
 export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: string, format?: string, width?: number, height?: number }): string => {
@@ -26,19 +27,19 @@ export const getUrl = ({ publicId, format, width = 1920, height }: { publicId: s
 }
 
 // Función para generar URL optimizada basada en el contexto de uso
-export const getOptimizedUrl = ({ 
-  publicId, 
-  format, 
+export const getOptimizedUrl = ({
+  publicId,
+  format,
   context = 'gallery',
-  deviceSize = 'desktop' 
-}: { 
-  publicId: string, 
-  format?: string, 
-  context?: 'gallery' | 'modal' | 'thumbnail',
+  deviceSize = 'desktop'
+}: {
+  publicId: string
+  format?: string
+  context?: 'gallery' | 'modal' | 'thumbnail'
   deviceSize?: 'mobile' | 'tablet' | 'desktop' | 'large' | 'extraLarge'
 }): string => {
   const extension = (typeof format === 'string' && format.trim() !== '') ? `.${format}` : ''
-  
+
   // Tamaños optimizados por contexto y dispositivo
   const sizeMap = {
     gallery: {
@@ -63,9 +64,9 @@ export const getOptimizedUrl = ({
       extraLarge: { width: 250, height: 188 }
     }
   }
-  
+
   const sizeConfig = sizeMap[context][deviceSize]
-  
+
   // Para modal, solo limitamos el ancho y mantenemos la relación de aspecto
   if (context === 'modal') {
     return cloudinary.url(publicId + extension, {
@@ -79,10 +80,10 @@ export const getOptimizedUrl = ({
       ]
     })
   }
-  
+
   // Para gallery y thumbnails usamos crop fill para mantener dimensiones consistentes
   const { width, height } = sizeConfig as { width: number, height: number }
-  
+
   return cloudinary.url(publicId + extension, {
     resource_type: 'image',
     type: 'upload',
@@ -95,30 +96,29 @@ export const getOptimizedUrl = ({
   })
 }
 
-export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: string }): Promise<Array<{ 
-  url: string, 
-  urlMobile: string,
-  urlTablet: string,
-  urlDesktop: string,
-  urlLarge: string,
-  urlExtraLarge: string,
-  urlModal: string,
-  urlModalMobile: string,
-  urlModalTablet: string,
-  urlModalDesktop: string,
-  urlModalLarge: string,
-  urlModalExtraLarge: string,
-  name: string, 
-  original: string, 
-  id: string, 
-  title?: string, 
-  description?: string, 
-  alt: string 
+export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: CloudinaryFolders }): Promise<Array<{
+  url: string
+  urlMobile: string
+  urlTablet: string
+  urlDesktop: string
+  urlLarge: string
+  urlExtraLarge: string
+  urlModal: string
+  urlModalMobile: string
+  urlModalTablet: string
+  urlModalDesktop: string
+  urlModalLarge: string
+  urlModalExtraLarge: string
+  name: string
+  original: string
+  id: string
+  title?: string
+  description?: string
+  alt: string
 }>> => {
   try {
-    const result = await cloudinary.api.resources({
+    const result = await cloudinary.api.resources_by_asset_folder(folder || '', {
       type: 'upload',
-      prefix: folder ? `${folder}/` : '',
       max_results: cantidad,
       resource_type: 'image',
       context: true

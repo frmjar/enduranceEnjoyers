@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets'
-import { CloudinaryFolders, getUrl } from '../libs/cloudinary'
+import { getUrl } from '../libs/cloudinary'
 
-const teamLogoUrl = getUrl({ publicId: CloudinaryFolders.General + '/skincar', format: 'png' })
+const teamLogoUrl = getUrl({ publicId: 'General/skincar', format: 'png' })
 
 const { class: className = '', ...props } = Astro.props;
 ---
