@@ -7,7 +7,7 @@ const headers = ['Season', 'Week', 'Fecha', 'Serie', 'Team', 'Duracion', 'Circui
 export const GET: APIRoute = async (): Promise<Response> => {
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: 'B181:J237'
+    range: 'B239:J294'
   })
 
   const rows = response.data.values ?? []
