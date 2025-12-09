@@ -100,10 +100,17 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
     return { tweets: [], error: 'Token no configurado' }
   }
 
-  console.log('Iniciando fetch a Twitter API...')
-  console.log('KV_REST_API_URL configurado:', !!import.meta.env.KV_REST_API_URL)
-  console.log('KV_REST_API_TOKEN configurado:', !!import.meta.env.KV_REST_API_TOKEN)
-  console.log('TWITTER_BEARER_TOKEN configurado:', !!TWITTER_BEARER_TOKEN)
+  // Debug: mostrar info del token (solo primeros/últimos caracteres por seguridad)
+  const tokenPreview = TWITTER_BEARER_TOKEN.length > 10
+    ? `${TWITTER_BEARER_TOKEN.substring(0, 5)}...${TWITTER_BEARER_TOKEN.substring(TWITTER_BEARER_TOKEN.length - 5)}`
+    : '[token muy corto]'
+  console.log('Token preview:', tokenPreview)
+  console.log('Token length:', TWITTER_BEARER_TOKEN.length)
+  console.log('Token has spaces:', TWITTER_BEARER_TOKEN.includes(' '))
+  console.log('Token has newlines:', TWITTER_BEARER_TOKEN.includes('\n'))
+
+  // Limpiar el token por si tiene espacios o saltos de línea
+  const cleanToken = TWITTER_BEARER_TOKEN.trim()
 
   try {
     // Primero obtener el ID del usuario
@@ -111,7 +118,7 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
       `https://api.twitter.com/2/users/by/username/${TWITTER_USERNAME}?user.fields=profile_image_url`,
       {
         headers: {
-          Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`
+          Authorization: `Bearer ${cleanToken}`
         }
       }
     )
@@ -135,7 +142,7 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
       `https://api.twitter.com/2/users/${user.id}/tweets?max_results=6&tweet.fields=created_at,public_metrics&exclude=retweets,replies`,
       {
         headers: {
-          Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`
+          Authorization: `Bearer ${cleanToken}`
         }
       }
     )
