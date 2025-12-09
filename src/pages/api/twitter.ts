@@ -1,9 +1,13 @@
+import { Redis } from '@upstash/redis'
 import type { APIRoute } from 'astro'
-import { existsSync } from 'fs'
-import { mkdir, readFile, writeFile } from 'fs/promises'
-import { join } from 'path'
 
 export const prerender = false
+
+// Crear cliente Redis con las credenciales de Upstash
+const redis = new Redis({
+  url: import.meta.env.KV_REST_API_URL,
+  token: import.meta.env.KV_REST_API_TOKEN
+})
 
 interface TwitterUser {
   id: string
@@ -48,41 +52,31 @@ interface CachedData {
 
 const TWITTER_BEARER_TOKEN = import.meta.env.TWITTER_BEARER_TOKEN
 const TWITTER_USERNAME = 'EnduEnjoyers'
-const CACHE_FILE = join(process.cwd(), '.cache', 'twitter-cache.json')
+const CACHE_KEY = 'twitter:cache'
 const CACHE_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
 
-// Funciones de caché
-async function ensureCacheDir(): Promise<void> {
-  const cacheDir = join(process.cwd(), '.cache')
-  if (!existsSync(cacheDir)) {
-    await mkdir(cacheDir, { recursive: true })
-  }
-}
-
+// Funciones de caché usando Upstash Redis
 async function readCache(): Promise<CachedData | null> {
   try {
-    if (!existsSync(CACHE_FILE)) {
-      return null
-    }
-    const data = await readFile(CACHE_FILE, 'utf-8')
-    return JSON.parse(data)
+    const data = await redis.get<CachedData>(CACHE_KEY)
+    return data
   } catch (error) {
-    console.error('Error reading cache:', error)
+    console.error('Error reading cache from Redis:', error)
     return null
   }
 }
 
 async function writeCache(tweets: Tweet[]): Promise<void> {
   try {
-    await ensureCacheDir()
     const cacheData: CachedData = {
       tweets,
       lastFetch: Date.now(),
       lastSuccessfulFetch: Date.now()
     }
-    await writeFile(CACHE_FILE, JSON.stringify(cacheData, null, 2))
+    // TTL de 24 horas para mantener los datos incluso si no hay tráfico
+    await redis.set(CACHE_KEY, cacheData, { ex: 86400 })
   } catch (error) {
-    console.error('Error writing cache:', error)
+    console.error('Error writing cache to Redis:', error)
   }
 }
 
@@ -91,7 +85,7 @@ async function updateCacheTimestamp(): Promise<void> {
     const cache = await readCache()
     if (cache) {
       cache.lastFetch = Date.now()
-      await writeFile(CACHE_FILE, JSON.stringify(cache, null, 2))
+      await redis.set(CACHE_KEY, cache, { ex: 86400 })
     }
   } catch (error) {
     console.error('Error updating cache timestamp:', error)
