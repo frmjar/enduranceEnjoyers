@@ -56,9 +56,11 @@ const CACHE_KEY = 'twitter:cache'
 const CACHE_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
 
 // Funciones de caché usando Upstash Redis
-async function readCache(): Promise<CachedData | null> {
+async function readCache (): Promise<CachedData | null> {
   try {
+    console.log('Intentando leer caché de Redis...')
     const data = await redis.get<CachedData>(CACHE_KEY)
+    console.log('Caché leído:', data ? `${data.tweets.length} tweets` : 'vacío')
     return data
   } catch (error) {
     console.error('Error reading cache from Redis:', error)
@@ -66,7 +68,7 @@ async function readCache(): Promise<CachedData | null> {
   }
 }
 
-async function writeCache(tweets: Tweet[]): Promise<void> {
+async function writeCache (tweets: Tweet[]): Promise<void> {
   try {
     const cacheData: CachedData = {
       tweets,
@@ -80,7 +82,7 @@ async function writeCache(tweets: Tweet[]): Promise<void> {
   }
 }
 
-async function updateCacheTimestamp(): Promise<void> {
+async function updateCacheTimestamp (): Promise<void> {
   try {
     const cache = await readCache()
     if (cache) {
@@ -92,11 +94,16 @@ async function updateCacheTimestamp(): Promise<void> {
   }
 }
 
-async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: string }> {
+async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: string }> {
   if (!TWITTER_BEARER_TOKEN) {
     console.error('TWITTER_BEARER_TOKEN no está configurado')
     return { tweets: [], error: 'Token no configurado' }
   }
+
+  console.log('Iniciando fetch a Twitter API...')
+  console.log('KV_REST_API_URL configurado:', !!import.meta.env.KV_REST_API_URL)
+  console.log('KV_REST_API_TOKEN configurado:', !!import.meta.env.KV_REST_API_TOKEN)
+  console.log('TWITTER_BEARER_TOKEN configurado:', !!TWITTER_BEARER_TOKEN)
 
   try {
     // Primero obtener el ID del usuario
@@ -104,7 +111,7 @@ async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: s
       `https://api.twitter.com/2/users/by/username/${TWITTER_USERNAME}?user.fields=profile_image_url`,
       {
         headers: {
-          'Authorization': `Bearer ${TWITTER_BEARER_TOKEN}`
+          Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`
         }
       }
     )
@@ -112,7 +119,7 @@ async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: s
     if (!userResponse.ok) {
       const errorText = await userResponse.text()
       console.error('Error fetching user:', errorText)
-      
+
       // Detectar error de rate limit
       if (userResponse.status === 429) {
         return { tweets: [], error: 'Rate limit excedido' }
@@ -128,7 +135,7 @@ async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: s
       `https://api.twitter.com/2/users/${user.id}/tweets?max_results=6&tweet.fields=created_at,public_metrics&exclude=retweets,replies`,
       {
         headers: {
-          'Authorization': `Bearer ${TWITTER_BEARER_TOKEN}`
+          Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`
         }
       }
     )
@@ -136,7 +143,7 @@ async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: s
     if (!tweetsResponse.ok) {
       const errorText = await tweetsResponse.text()
       console.error('Error fetching tweets:', errorText)
-      
+
       if (tweetsResponse.status === 429) {
         return { tweets: [], error: 'Rate limit excedido' }
       }
@@ -156,11 +163,13 @@ async function fetchTweetsFromTwitterAPI(): Promise<{ tweets: Tweet[], error?: s
         username: user.username,
         avatar: user.profile_image_url?.replace('_normal', '_200x200') || '/logo.webp'
       },
-      metrics: tweet.public_metrics ? {
-        likes: tweet.public_metrics.like_count,
-        retweets: tweet.public_metrics.retweet_count,
-        replies: tweet.public_metrics.reply_count
-      } : undefined
+      metrics: tweet.public_metrics
+        ? {
+            likes: tweet.public_metrics.like_count,
+            retweets: tweet.public_metrics.retweet_count,
+            replies: tweet.public_metrics.reply_count
+          }
+        : undefined
     }))
 
     return { tweets: formattedTweets }
@@ -179,13 +188,13 @@ export const GET: APIRoute = async (): Promise<Response> => {
     // Si el caché es válido (menos de 15 min), devolver caché
     if (cache && (now - cache.lastFetch) < CACHE_DURATION) {
       console.log('Devolviendo tweets desde caché (aún válido)')
-      return new Response(JSON.stringify({ 
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
         cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60) // minutos
       }), {
         status: 200,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=300'
         }
@@ -199,13 +208,13 @@ export const GET: APIRoute = async (): Promise<Response> => {
       // Éxito: guardar en caché y devolver
       await writeCache(tweets)
       console.log('Tweets obtenidos de la API y guardados en caché')
-      
-      return new Response(JSON.stringify({ 
+
+      return new Response(JSON.stringify({
         tweets,
         fromCache: false
       }), {
         status: 200,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=300'
         }
@@ -217,15 +226,15 @@ export const GET: APIRoute = async (): Promise<Response> => {
       // Actualizar timestamp para no reintentar inmediatamente
       await updateCacheTimestamp()
       console.log('Error en API, devolviendo tweets desde caché antiguo')
-      
-      return new Response(JSON.stringify({ 
+
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
         cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60),
         warning: error || 'Usando datos en caché debido a límite de API'
       }), {
         status: 200,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=300'
         }
@@ -233,21 +242,20 @@ export const GET: APIRoute = async (): Promise<Response> => {
     }
 
     // No hay caché ni tweets nuevos
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       tweets: [],
       error: error || 'No se pudieron obtener los tweets y no hay caché disponible'
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     })
-
   } catch (error) {
     console.error('Error en endpoint de Twitter:', error)
-    
+
     // Último recurso: intentar devolver caché
     const cache = await readCache()
     if (cache && cache.tweets.length > 0) {
-      return new Response(JSON.stringify({ 
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
         error: 'Error del servidor, usando caché'
@@ -257,7 +265,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
       })
     }
 
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       tweets: [],
       error: 'Error al obtener tweets'
     }), {

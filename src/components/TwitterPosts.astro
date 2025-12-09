@@ -22,11 +22,33 @@ let tweets: Tweet[] = []
 let error: string | null = null
 
 try {
-  const response = await fetch(`${Astro.url.origin}/api/twitter`)
+  // Usar URL absoluta para evitar problemas en build/SSR
+  const baseUrl = import.meta.env.PROD 
+    ? 'https://enduenjoyers.es' 
+    : Astro.url.origin
+  
+  const response = await fetch(`${baseUrl}/api/twitter`, {
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+  
   if (response.ok) {
     const data = await response.json()
     tweets = data.tweets || []
     error = data.error || null
+    
+    // Log para debugging en producción
+    if (import.meta.env.DEV) {
+      console.log('Twitter API response:', { 
+        tweetsCount: tweets.length, 
+        fromCache: data.fromCache,
+        error: data.error 
+      })
+    }
+  } else {
+    console.error('Twitter API error status:', response.status)
+    error = `Error HTTP: ${response.status}`
   }
 } catch (e) {
   console.error('Error fetching tweets:', e)
