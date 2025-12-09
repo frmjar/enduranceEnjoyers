@@ -1,5 +1,5 @@
 {
-  "name": "enduranceEnjoyers",
+  "name": "endurance_enjoyers",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -7,11 +7,11 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/vercel": "^8.2.6",
+    "@astrojs/vercel": "^9.0.2",
     "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.13.2",
+    "astro": "^5.16.4",
     "cloudinary": "^2.7.0",
     "googleapis": "^153.0.0",
     "react": "^19.1.0",
@@ -29,10 +29,21 @@
       "plugin:astro/recommended"
     ],
     "parserOptions": {
-      "project": "./endurance_enjoyers/tsconfig.json"
+      "project": "./tsconfig.json"
     },
     "rules": {
-      "@typescript-eslint/strict-boolean-expressions": "off"
-    }
+      "@typescript-eslint/strict-boolean-expressions": "off",
+      "react/jsx-key": "off"
+    },
+    "overrides": [
+      {
+        "files": ["*.astro"],
+        "rules": {
+          "react/jsx-key": "off",
+          "react/no-unknown-property": "off",
+          "react/react-in-jsx-scope": "off"
+        }
+      }
+    ]
   }
 }

@@ -5,6 +5,7 @@ import Close from './Close.astro'
 import Flag from './Flag.astro'
 import Menu from './Menu.astro'
 import Trophy from './Trophy.astro'
+import Twitch from './Twitch.astro'
 import Twitter from './Twitter.astro'
 
 export interface Props {
@@ -29,7 +30,8 @@ const iconComponents = {
   checkCircle: CheckCircle,
   close: Close,
   twitter: Twitter,
-  menu: Menu
+  menu: Menu,
+  twitch: Twitch
 }
 
 const IconComponent = iconComponents[name] || Calendar

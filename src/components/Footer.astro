@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import Logo from '../../public/logo.webp'
+import TwitchIcon from '../icons/Twitch.astro'
 import TwitterIcon from '../icons/Twitter.astro'
 const brandName = 'Endurance Enjoyers'
 const currentYear = new Date().getFullYear()
@@ -67,10 +68,22 @@ const { class: className = '', ...props } = Astro.props;
             >
               <TwitterIcon class='w-6 h-6 fill-current' />
             </a>
+
+            <a
+              href='https://www.twitch.tv/enduranceenjoyers'
+              target='_blank'
+              aria-label='Twitch'
+              class='text-gray-300 hover:text-white transition-colors duration-300'
+              rel='noreferrer'
+            >
+              <TwitchIcon class='w-6 h-6 fill-current' />
+            </a>
           </div>
           <p class='text-sm text-gray-300'>¿Preguntas? <a href='/#contacto' class='text-white hover:underline'>Contáctanos</a></p>
         </div>
       </div>
+      <a class='twitter-timeline' href='https://twitter.com/X'>Tweets by X</a>
+      <script async src='https://platform.twitter.com/widgets.js' />
 
       <div class='border-t border-gray-700 my-6' />
 
