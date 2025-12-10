@@ -1,5 +1,4 @@
 import { Redis } from '@upstash/redis'
-import type { APIRoute } from 'astro'
 
 export const prerender = false
 
@@ -97,7 +96,12 @@ async function updateCacheTimestamp (): Promise<void> {
 async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: string }> {
   if (!TWITTER_BEARER_TOKEN) {
     console.error('TWITTER_BEARER_TOKEN no está configurado')
-    return { tweets: [], error: 'Token no configurado' }
+    return { tweets: [], error: 'TWITTER_BEARER_TOKEN no configurado en variables de entorno' }
+  }
+
+  // Verificar que las credenciales de Redis estén configuradas
+  if (!import.meta.env.KV_REST_API_URL || !import.meta.env.KV_REST_API_TOKEN) {
+    console.warn('Variables de Redis no configuradas - KV_REST_API_URL o KV_REST_API_TOKEN')
   }
 
   // Debug: mostrar info del token (solo primeros/últimos caracteres por seguridad)
@@ -126,12 +130,20 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
     if (!userResponse.ok) {
       const errorText = await userResponse.text()
       console.error('Error fetching user:', errorText)
+      console.error('Status:', userResponse.status)
+      console.error('Headers:', Object.fromEntries(userResponse.headers.entries()))
 
       // Detectar error de rate limit
       if (userResponse.status === 429) {
-        return { tweets: [], error: 'Rate limit excedido' }
+        return { tweets: [], error: 'Rate limit excedido - espera 15 minutos' }
       }
-      return { tweets: [], error: `Error API: ${userResponse.status}` }
+      if (userResponse.status === 403) {
+        return { tweets: [], error: 'Error 403: Token inválido o sin permisos. Verifica tu plan de Twitter API (necesitas Basic o superior para leer tweets)' }
+      }
+      if (userResponse.status === 401) {
+        return { tweets: [], error: 'Error 401: Token no autorizado. Regenera el Bearer Token en Twitter Developer Portal' }
+      }
+      return { tweets: [], error: `Error API Twitter: ${userResponse.status} - ${errorText}` }
     }
 
     const userData = await userResponse.json()
@@ -186,7 +198,7 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
   }
 }
 
-export const GET: APIRoute = async (): Promise<Response> => {
+export async function GET() {
   try {
     // Leer caché existente
     const cache = await readCache()
