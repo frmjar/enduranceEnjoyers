@@ -52,7 +52,7 @@ interface CachedData {
 const TWITTER_BEARER_TOKEN = import.meta.env.TWITTER_BEARER_TOKEN
 const TWITTER_USERNAME = 'EnduEnjoyers'
 const CACHE_KEY = 'twitter:cache'
-const CACHE_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
+const CACHE_DURATION = 12 * 60 * 60 * 1000 // 12 horas en milisegundos
 
 // Funciones de caché usando Upstash Redis
 async function readCache (): Promise<CachedData | null> {
