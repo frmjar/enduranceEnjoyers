@@ -48,6 +48,7 @@ try {
     
   } else {
     console.error('Twitter API error status:', response.status)
+    console.error('Twitter API error status:', response)
     error = `Error HTTP: ${response.status}`
   }
 } catch (e) {
