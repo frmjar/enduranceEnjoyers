@@ -4,166 +4,172 @@ import SectionTitle from './SectionTitle.astro'
 import TwitterIcon from '../icons/Twitter.astro'
 
 const { id, class: className } = Astro.props
-
-interface Tweet {
-  id: string
-  text: string
-  created_at: string
-  url: string
-  author: {
-    name: string
-    username: string
-    avatar: string
-  }
-}
-
-// Obtener tweets desde la API
-let tweets: Tweet[] = []
-let error: string | null = null
-
-try {
-  // Usar URL absoluta para evitar problemas en build/SSR
-  const baseUrl = import.meta.env.PROD 
-    ? 'https://enduenjoyers.es' 
-    : Astro.url.origin
-  
-  const response = await fetch(`${baseUrl}/api/twitter`, {
-    headers: {
-      'Accept': 'application/json'
-    }
-  })
-  
-  if (response.ok) {
-    const data = await response.json()
-    tweets = data.tweets || []
-    error = data.error || null
-    
-    // Log para debugging en producción
-    
-      console.log('Twitter API response:', { 
-        tweetsCount: tweets.length, 
-        fromCache: data.fromCache,
-        error: data.error 
-      })
-    
-  } else {
-    console.error('Twitter API error status:', response.status)
-    console.error('Twitter API error status:', response)
-    error = `Error HTTP: ${response.status}`
-  }
-} catch (e) {
-  console.error('Error fetching tweets:', e)
-  error = 'No se pudieron cargar los tweets'
-}
-
-// Formatear fecha relativa
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-  const diffHours = Math.floor(diffMs / 3600000)
-  const diffDays = Math.floor(diffMs / 86400000)
-
-  if (diffMins < 60) return `${diffMins}m`
-  if (diffHours < 24) return `${diffHours}h`
-  if (diffDays < 7) return `${diffDays}d`
-  
-  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-}
 ---
 
-<section id={id} class={`spacing-section ${className || ''}`}>
-  <div class='mx-auto gap-6 w-11/12 md:w-10/12 3xl:w-7/12'>
-    <SectionTitle
-      title='Síguenos en X'
-      subtitle='Mantente al día con nuestras últimas novedades y resultados'
-    />
+  <section id={id} class={`spacing-section ${className || ''}`}>
+    <div class='mx-auto gap-6 w-11/12 md:w-10/12 3xl:w-7/12'>
+      <SectionTitle
+        title='Síguenos en X'
+        subtitle='Mantente al día con nuestras últimas novedades y resultados'
+      />
 
-    <div class='grid grid-cols-1 lg:grid-cols-4 gap-6'>
-      <!-- Tweets -->
-      <div class='lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-        {tweets.length > 0 ? (
-          tweets.map((tweet) => (
-            <a 
-              href={tweet.url}
-              target='_blank'
-              rel='noopener noreferrer'
-              class='block bg-bg-card rounded-2xl border border-border-dark p-4 hover:border-gray-600 transition-all duration-300 hover:shadow-lg group'
-            >
-              <div class='flex items-start gap-3 mb-3'>
-                <img 
-                  src={tweet.author.avatar} 
-                  alt={tweet.author.name}
-                  class='w-10 h-10 rounded-full'
-                />
-                <div class='flex-1 min-w-0'>
-                  <div class='flex items-center gap-2'>
-                    <span class='font-bold text-text-primary text-sm truncate'>{tweet.author.name}</span>
-                    <svg class='w-4 h-4 text-blue-400 flex-shrink-0' viewBox='0 0 24 24' fill='currentColor'>
-                      <path d='M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z' />
-                    </svg>
-                  </div>
-                  <span class='text-text-muted text-xs'>@{tweet.author.username} · {formatDate(tweet.created_at)}</span>
-                </div>
-                <TwitterIcon class='w-5 h-5 text-gray-500 group-hover:text-blue-400 transition-colors' />
-              </div>
-              <p class='text-text-secondary text-sm leading-relaxed line-clamp-4'>
-                {tweet.text}
-              </p>
-            </a>
-          ))
-        ) : (
-          <!-- Fallback si no hay tweets -->
-          <div class='md:col-span-2 lg:col-span-3 bg-bg-card rounded-2xl border border-border-dark p-8 text-center'>
-            <TwitterIcon class='w-12 h-12 text-gray-500 mx-auto mb-4' />
-            <p class='text-text-muted mb-2'>
-              {error || 'No hay tweets disponibles en este momento'}
-            </p>
-            <a 
-              href='https://x.com/EnduEnjoyers'
-              target='_blank'
-              rel='noopener noreferrer'
-              class='text-blue-400 hover:underline text-sm'
-            >
-              Ver en X →
-            </a>
-          </div>
-        )}
-      </div>
-      
-      <!-- Panel lateral con CTA -->
-      <div class='lg:col-span-1'>
-        <Card class='h-full'>
-          <div class='text-center py-4'>
-            <div class='w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-700'>
-              <TwitterIcon class='w-8 h-8 text-white fill-current' />
+      <div class='grid grid-cols-1 lg:grid-cols-4 gap-6'>
+      <!-- Tweets - se cargan dinámicamente -->
+        <div id='tweets-container' class='lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+        <!-- Loading skeleton -->
+          <div class='md:col-span-2 lg:col-span-3 flex justify-center items-center py-12' id='tweets-loading'>
+            <div class='animate-pulse flex flex-col items-center gap-4'>
+              <div class='w-12 h-12 bg-gray-700 rounded-full' />
+              <div class='h-4 bg-gray-700 rounded w-48' />
+              <p class='text-text-muted text-sm'>Cargando tweets...</p>
             </div>
-            <h3 class='text-xl font-bold text-text-primary mb-2'>@EnduEnjoyers</h3>
-            <p class='text-text-secondary text-sm mb-6'>
-              Síguenos en X para no perderte ninguna novedad sobre carreras, resultados y contenido exclusivo del equipo.
-            </p>
-            <a
-              href='https://x.com/EnduEnjoyers'
-              target='_blank'
-              rel='noopener noreferrer'
-              class='inline-flex items-center gap-2 bg-black hover:bg-gray-900 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 border border-gray-700'
-            >
-              <TwitterIcon class='w-5 h-5 fill-current' />
-              Seguir
-            </a>
           </div>
-        </Card>
+        </div>
+
+      <!-- Panel lateral con CTA -->
+        <div class='lg:col-span-1'>
+          <Card class='h-full'>
+            <div class='text-center py-4'>
+              <div class='w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-700'>
+                <TwitterIcon class='w-8 h-8 text-white fill-current' />
+              </div>
+              <h3 class='text-xl font-bold text-text-primary mb-2'>@EnduEnjoyers</h3>
+              <p class='text-text-secondary text-sm mb-6'>
+                Síguenos en X para no perderte ninguna novedad sobre carreras, resultados y contenido exclusivo del equipo.
+              </p>
+              <a
+                href='https://x.com/EnduEnjoyers'
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-flex items-center gap-2 bg-black hover:bg-gray-900 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 border border-gray-700'
+              >
+                <TwitterIcon class='w-5 h-5 fill-current' />
+                Seguir
+              </a>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<style>
+    <script>
+  // Formatear fecha relativa
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 60) return `${diffMins}m`
+    if (diffHours < 24) return `${diffHours}h`
+    if (diffDays < 7) return `${diffDays}d`
+
+    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+  }
+
+  interface Tweet {
+    id: string
+    text: string
+    created_at: string
+    url: string
+    author: {
+      name: string
+      username: string
+      avatar: string
+    }
+  }
+
+  function renderTweet(tweet: Tweet): string {
+    return `
+      <a
+        href="${tweet.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block bg-bg-card rounded-2xl border border-border-dark p-4 hover:border-gray-600 transition-all duration-300 hover:shadow-lg group"
+      >
+        <div class="flex items-start gap-3 mb-3">
+          <img
+            src="${tweet.author.avatar}"
+            alt="${tweet.author.name}"
+            class="w-10 h-10 rounded-full"
+            onerror="this.src='/logo.webp'"
+          />
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-text-primary text-sm truncate">${tweet.author.name}</span>
+              <svg class="w-4 h-4 text-blue-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z" />
+              </svg>
+            </div>
+            <span class="text-text-muted text-xs">@${tweet.author.username} · ${formatDate(tweet.created_at)}</span>
+          </div>
+          <svg class="w-5 h-5 text-gray-500 group-hover:text-blue-400 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </div>
+        <p class="text-text-secondary text-sm leading-relaxed line-clamp-4">
+          ${tweet.text}
+        </p>
+      </a>
+    `
+  }
+
+  function renderFallback(errorMsg?: string): string {
+    return `
+      <div class="md:col-span-2 lg:col-span-3 bg-bg-card rounded-2xl border border-border-dark p-8 text-center">
+        <svg class="w-12 h-12 text-gray-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        <p class="text-text-muted mb-2">
+          ${errorMsg || 'No hay tweets disponibles en este momento'}
+        </p>
+        <a
+          href="https://x.com/EnduEnjoyers"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-blue-400 hover:underline text-sm"
+        >
+          Ver en X →
+        </a>
+      </div>
+    `
+  }
+
+  async function loadTweets() {
+    const container = document.getElementById('tweets-container')
+    if (!container) return
+
+    try {
+      const response = await fetch('/api/twitter')
+      const data = await response.json()
+
+      if (data.tweets && data.tweets.length > 0) {
+        container.innerHTML = data.tweets.map(renderTweet).join('')
+      } else {
+        container.innerHTML = renderFallback(data.error)
+      }
+    } catch (error) {
+      console.error('Error loading tweets:', error)
+      container.innerHTML = renderFallback('Error al cargar los tweets')
+    }
+  }
+
+  // Cargar tweets cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTweets)
+  } else {
+    loadTweets()
+  }
+    </script>
+
+    <style>
   .line-clamp-4 {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-</style>
+    </style>
