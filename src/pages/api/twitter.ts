@@ -49,7 +49,7 @@ interface CachedData {
   lastFetch: number
   lastSuccessfulFetch: number
 }
-
+                             
 const TWITTER_BEARER_TOKEN = import.meta.env.TWITTER_BEARER_TOKEN
 const TWITTER_USERNAME = 'EnduEnjoyers'
 const CACHE_KEY = 'twitter:cache'
@@ -137,7 +137,7 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
     const userData = await userResponse.json()
     const user: TwitterUser = userData.data
 
-    // Obtener los tweets del usuario
+    // Obtener   tweets del usuario
     const tweetsResponse = await fetch(
       `https://api.twitter.com/2/users/${user.id}/tweets?max_results=6&tweet.fields=created_at,public_metrics&exclude=retweets,replies`,
       {
@@ -207,6 +207,8 @@ export const GET: APIRoute = async (): Promise<Response> => {
         }
       })
     }
+
+    console.log('Caché expirado o no existe, obteniendo tweets nuevos...')
 
     // Intentar obtener tweets frescos
     const { tweets, error } = await fetchTweetsFromTwitterAPI()

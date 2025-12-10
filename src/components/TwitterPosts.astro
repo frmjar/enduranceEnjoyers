@@ -39,13 +39,13 @@ try {
     error = data.error || null
     
     // Log para debugging en producción
-    if (import.meta.env.DEV) {
+    
       console.log('Twitter API response:', { 
         tweetsCount: tweets.length, 
         fromCache: data.fromCache,
         error: data.error 
       })
-    }
+    
   } else {
     console.error('Twitter API error status:', response.status)
     error = `Error HTTP: ${response.status}`
