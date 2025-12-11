@@ -11,7 +11,7 @@ let youtubeVideos = []
 try {
   console.log('Fetching YouTube videos from API...')
   console.log(`API URL: ${Astro.url.origin}/api/youtube`)
-  const response = await fetch('/api/youtube')
+  const response = await fetch(`${Astro.url.origin}/api/youtube`)
   if (response.ok) {
     const data = await response.json()
     console.log('YouTube videos fetched successfully:', data)
