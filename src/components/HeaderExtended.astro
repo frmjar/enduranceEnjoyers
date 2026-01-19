@@ -8,64 +8,127 @@ const bannerImages = {
   medium: await getImage({ src: sample, width: 1024, format: 'webp', quality: 80 }),
   large: await getImage({ src: sample, width: 1536, format: 'webp', quality: 80 }),
   xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 }),
-  // Imagen pequeña para placeholder inicial
   placeholder: await getImage({ src: sample, width: 640, format: 'webp', quality: 100 })
 }
 
 const props = Astro.props
+
+const links = [
+  { href: '#home', label: 'Inicio' },
+  { href: '#calendario', label: 'Calendario' },
+  { href: '#novedades', label: 'Novedades' },
+  { href: '#twitter', label: 'Twitter' },
+  { href: '#galeria', label: 'Galería' },
+  { href: '#contacto', label: 'Contacto' }
+]
 ---
+
   <div {...props}>
-    <!-- Preload de imágenes críticas -->
+  <!-- Preload de imágenes críticas -->
     <link rel='preload' as='image' href={bannerImages.medium.src} media='(min-width: 640px) and (max-width: 1023px)' />
     <link rel='preload' as='image' href={bannerImages.large.src} media='(min-width: 1024px) and (max-width: 1535px)' />
     <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' />
     <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' />
 
+  <!-- Hero Banner -->
     <div
       id='navbardir'
       class='relative w-full aspect-[2.5/1] sm:aspect-[3/1] md:aspect-[3.5/1] bg-cover bg-center bg-no-repeat z-10 transition-all duration-500'
       style={`background-image: url(${bannerImages.placeholder.src}); background-size: cover;`}
     >
-      <nav id='navbar' class='fixed top-0 left-0 w-full flex items-center justify-between h-16 md:h-20 px-4 md:px-6 bg-transparent transition-all duration-300 z-30'>
-        <div id='scroll-logo' class='absolute left-4 hidden transition-all duration-300'>
-          <a href='/'>
-            <img src='/logotextclear.webp' alt='Logo Endurance Enjoyers' class='h-8 md:h-12 lg:h-15 w-auto' />
+    <!-- Overlay gradiente sutil para mejor legibilidad -->
+      <div class='absolute inset-0 bg-gradient-to-b from-racing-black/60 via-transparent to-racing-black/40' />
+    </div>
+
+  <!-- Navbar Fixed -->
+    <nav id='navbar' class='fixed top-0 left-0 w-full z-50 transition-all duration-300'>
+    <!-- Fondo con glassmorphism (aparece en scroll) -->
+      <div id='navbar-bg' class='absolute inset-0 bg-racing-dark/0 backdrop-blur-none border-b border-transparent transition-all duration-300' />
+
+    <!-- Línea accent naranja (aparece en scroll) -->
+      <div id='navbar-accent' class='absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-orange to-transparent opacity-0 transition-opacity duration-300' />
+
+    <!-- Contenido del nav -->
+      <div class='relative flex items-center justify-between h-18 md:h-24 px-4 md:px-8 max-w-8xl mx-auto'>
+      <!-- Logo (aparece en scroll) -->
+        <div id='scroll-logo' class='flex-shrink-0 opacity-0 -translate-x-4 transition-all duration-300'>
+          <a href='/' class='block group'>
+            <img
+              src='/logotextclear.webp'
+              alt='Logo Endurance Enjoyers'
+              class='h-12 md:h-16 w-auto transition-transform duration-300 group-hover:scale-105'
+            />
           </a>
         </div>
 
-        <!-- Menú para pantallas medianas y grandes -->
-        <div class='mx-auto hidden md:flex space-x-6 lg:space-x-8 text-base lg:text-lg font-medium text-white'>
-          <a href='#home' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Inicio</a>
-          <a href='#calendario' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Calendario</a>
-          <a href='#novedades' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Novedades</a>
-          <a href='#twitter' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Twitter</a>
-          <a href='#galeria' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Galería</a>
-          <a href='#contacto' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Contacto</a>
-
+      <!-- Menú Desktop -->
+        <div id='desktop-nav' class='hidden md:flex items-center gap-2 mx-auto'>
+          {links.map(link => (
+            <a
+              href={link.href}
+              class='nav-link relative px-5 py-2 text-base lg:text-lg font-medium text-white/90 hover:text-white transition-colors duration-200 group'
+            >
+              <span class='relative z-10'>{link.label}</span>
+            <!-- Línea accent inferior en hover -->
+              <span class='absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-3/4' />
+            </a>
+          ))}
         </div>
 
-        <!-- Botón de menú móvil -->
-        <button id='mobile-menu-button' class='md:hidden absolute right-4 text-white p-2'>
+      <!-- Botón menú móvil -->
+        <button
+          id='mobile-menu-button'
+          class='md:hidden relative z-10 p-2 text-white/80 hover:text-white transition-colors duration-200'
+          aria-label='Abrir menú'
+        >
           <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
             <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16M4 18h16' />
           </svg>
         </button>
-      </nav>
+      </div>
+    </nav>
 
-      <!-- Menú móvil desplegable -->
-      <div id='mobile-menu' class='fixed inset-0 bg-primary-header bg-opacity-95 z-20 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden'>
-        <div class='flex flex-col items-center justify-center h-full space-y-8 text-xl font-medium text-white'>
-          <button id='close-menu' class='absolute top-4 right-4 text-white p-2'>
-            <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-              <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' />
-            </svg>
-          </button>
-          <a href='#home' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Inicio</a>
-          <a href='#calendario' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Calendario</a>
-          <a href='#novedades' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Novedades</a>
-          <a href='#twitter' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Twitter</a>
-          <a href='#galeria' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Galería</a>
-          <a href='#contacto' class='hover:text-hover transition-colors duration-300 py-2 px-3 rounded'>Contacto</a>
+  <!-- Menú móvil fullscreen -->
+    <div
+      id='mobile-menu'
+      class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
+    >
+    <!-- Fondo con blur -->
+      <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
+
+    <!-- Línea accent superior -->
+      <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange' />
+
+    <!-- Contenido -->
+      <div class='relative flex flex-col items-center justify-center h-full px-8'>
+      <!-- Botón cerrar -->
+        <button
+          id='close-menu'
+          class='absolute top-4 right-4 p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200'
+          aria-label='Cerrar menú'
+        >
+          <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' />
+          </svg>
+        </button>
+
+      <!-- Links de navegación -->
+        <nav class='flex flex-col items-center gap-6'>
+          {links.map(link => (
+            <a
+              href={link.href}
+              class='mobile-link group relative text-2xl font-medium text-white/70 hover:text-white transition-all duration-300'
+            >
+              <span class='relative z-10'>{link.label}</span>
+            <!-- Línea accent -->
+              <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-full' />
+            </a>
+          ))}
+        </nav>
+
+      <!-- Logo decorativo en la parte inferior -->
+        <div class='absolute bottom-8 opacity-20'>
+          <img src='/logotextclear.webp' alt='' class='h-8 w-auto' aria-hidden='true' />
         </div>
       </div>
     </div>
@@ -83,10 +146,12 @@ const props = Astro.props
   const navbardir = document.getElementById('navbardir')
   const logo = document.getElementById('scroll-logo')
   const navbar = document.getElementById('navbar')
+  const navbarBg = document.getElementById('navbar-bg')
+  const navbarAccent = document.getElementById('navbar-accent')
   const mobileMenuButton = document.getElementById('mobile-menu-button')
   const closeMenuButton = document.getElementById('close-menu')
   const mobileMenu = document.getElementById('mobile-menu')
-  const mobileMenuLinks = mobileMenu?.querySelectorAll('a')
+  const mobileMenuLinks = mobileMenu?.querySelectorAll('.mobile-link')
 
   // Función para establecer la imagen del banner según el ancho de la pantalla
   function setBannerImage () {
@@ -105,7 +170,6 @@ const props = Astro.props
       imageUrl = imagePaths.xlarge
     }
 
-    // Precargar la imagen antes de aplicarla
     const img = new Image()
     img.onload = function () {
       navbardir.style.backgroundImage = `url(${imageUrl})`
@@ -113,35 +177,39 @@ const props = Astro.props
     img.src = imageUrl
   }
 
-  // Función para abrir el menú móvil
+  // Funciones del menú móvil
   const openMobileMenu = () => {
     mobileMenu?.classList.remove('translate-x-full')
     document.body.style.overflow = 'hidden'
   }
 
-  // Función para cerrar el menú móvil
   const closeMobileMenu = () => {
     mobileMenu?.classList.add('translate-x-full')
     document.body.style.overflow = ''
   }
 
-  // Establecer la imagen inicial cuando el DOM esté listo
+  // Inicialización
   document.addEventListener('DOMContentLoaded', () => {
     setBannerImage()
 
-    // Event listeners para el menú móvil
     mobileMenuButton?.addEventListener('click', openMobileMenu)
     closeMenuButton?.addEventListener('click', closeMobileMenu)
 
-    // Cerrar el menú al hacer clic en un enlace
     mobileMenuLinks?.forEach(link => {
       link.addEventListener('click', closeMobileMenu)
     })
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileMenu?.classList.contains('translate-x-full')) {
+        closeMobileMenu()
+      }
+    })
   })
 
-  // Manejar el cambio de estilo del navbar al hacer scroll
+  // Cambiar navbar en scroll con efectos premium
   window.addEventListener('scroll', () => {
-    if (!navbardir || !logo || !navbar) return
+    if (!navbardir || !logo || !navbar || !navbarBg || !navbarAccent) return
 
     const style = getComputedStyle(navbardir)
     const marginTop = parseFloat(style.marginTop)
@@ -149,13 +217,21 @@ const props = Astro.props
     const alturaConMargen = navbardir.offsetHeight + marginTop + marginBottom
 
     if (window.scrollY > alturaConMargen / 3) {
-      logo.classList.remove('hidden')
-      navbar.classList.remove('bg-transparent')
-      navbar.classList.add('bg-primary-header', 'shadow')
+      // Navbar con fondo
+      logo.classList.remove('opacity-0', '-translate-x-4')
+      logo.classList.add('opacity-100', 'translate-x-0')
+      navbarBg.classList.remove('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.add('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarAccent.classList.remove('opacity-0')
+      navbarAccent.classList.add('opacity-60')
     } else {
-      logo.classList.add('hidden')
-      navbar.classList.add('bg-transparent')
-      navbar.classList.remove('bg-primary-header', 'shadow')
+      // Navbar transparente
+      logo.classList.add('opacity-0', '-translate-x-4')
+      logo.classList.remove('opacity-100', 'translate-x-0')
+      navbarBg.classList.add('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.remove('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarAccent.classList.add('opacity-0')
+      navbarAccent.classList.remove('opacity-60')
     }
   })
-    </script>
+  </script>

@@ -5,28 +5,39 @@
 
 /* Estilos para eventos pasados */
 .past-event {
-    opacity: 0.6;
+    opacity: 0.5;
     position: relative;
 }
 
 .past-event::after {
-    content: '';
+    content: 'FINALIZADO';
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #ef4444, transparent);
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #ff6b00;
+    background: rgba(10, 10, 11, 0.9);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(255, 107, 0, 0.5);
     z-index: 10;
     pointer-events: none;
+    backdrop-filter: blur(4px);
 }
 
 .past-event-card {
-    filter: grayscale(20%);
+    filter: grayscale(30%);
+    transition: all 0.3s ease;
+}
+
+.past-event-card:hover {
+    filter: grayscale(10%);
 }
 
 .past-event-text {
     text-decoration: line-through;
-    color: #9ca3af !important;
+    color: #71717a !important;
 }

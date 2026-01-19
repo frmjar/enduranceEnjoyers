@@ -68,7 +68,7 @@ const { id, class: className } = Astro.props;
                     type='text'
                     name='iracingName'
                     placeholder='Tu nombre en iRacing'
-                    class='w-full px-3 md:px-4 py-2 md:py-3 text-sm md:text-base bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all'
+                    class='w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all'
                     required
                   />
                 </div>
@@ -80,7 +80,7 @@ const { id, class: className } = Astro.props;
                     type='text'
                     name='iracingId'
                     placeholder='Tu ID de iRacing'
-                    class='w-full px-4 py-3 bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all'
+                    class='w-full px-4 py-2.5 md:py-3 bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all'
                     required
                   />
                 </div>
@@ -95,7 +95,7 @@ const { id, class: className } = Astro.props;
                     type='text'
                     name='discord'
                     placeholder='Tu usuario de Discord'
-                    class='w-full px-4 py-3 bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all'
+                    class='w-full px-4 py-2.5 md:py-3 bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all'
                     required
                   />
                 </div>
@@ -107,7 +107,7 @@ const { id, class: className } = Astro.props;
                     type='email'
                     name='email'
                     placeholder='tu@email.com'
-                    class='w-full px-4 py-3 bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all'
+                    class='w-full px-4 py-2.5 md:py-3 bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all'
                   />
                 </div>
               </div>
@@ -120,7 +120,7 @@ const { id, class: className } = Astro.props;
                   type='text'
                   name='iracingSafety'
                   placeholder='ej: 2000 iR A 4.0'
-                  class='w-full px-4 py-3 bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all'
+                  class='w-full px-4 py-2.5 md:py-3 bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all'
                   required
                 />
               </div>
@@ -130,25 +130,25 @@ const { id, class: className } = Astro.props;
                   ¿Tienes experiencia en iRacing? *
                 </label>
                 <div class='flex space-x-6'>
-                  <label class='flex items-center'>
+                  <label class='flex items-center cursor-pointer group'>
                     <input
                       type='radio'
                       name='experience'
                       value='si'
-                      class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
+                      class='w-4 h-4 text-accent-orange bg-racing-surface border-white/20 focus:ring-accent-orange/50 focus:ring-2'
                       required
                     />
-                    <span class='ml-2 text-text-secondary'>Sí</span>
+                    <span class='ml-2 text-text-secondary group-hover:text-text-primary transition-colors'>Sí</span>
                   </label>
-                  <label class='flex items-center'>
+                  <label class='flex items-center cursor-pointer group'>
                     <input
                       type='radio'
                       name='experience'
                       value='no'
-                      class='w-4 h-4 text-blue-400 bg-slate-500 border-slate-400 focus:ring-blue-400 focus:ring-2'
+                      class='w-4 h-4 text-accent-orange bg-racing-surface border-white/20 focus:ring-accent-orange/50 focus:ring-2'
                       required
                     />
-                    <span class='ml-2 text-text-secondary'>No</span>
+                    <span class='ml-2 text-text-secondary group-hover:text-text-primary transition-colors'>No</span>
                   </label>
                 </div>
               </div>
@@ -161,13 +161,13 @@ const { id, class: className } = Astro.props;
                   rows='4'
                   name='additionalInfo'
                   placeholder='Cuéntanos más sobre ti...'
-                  class='w-full px-4 py-3 bg-bg-input border border-border-medium rounded-lg text-text-primary placeholder-text-gray-light focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all resize-none'
+                  class='w-full px-4 py-2.5 md:py-3 bg-racing-surface border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all resize-none'
                 />
               </div>
 
               <button
                 type='submit'
-                class='w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-2 md:py-3 px-4 md:px-6 text-sm md:text-base rounded-lg transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-tarjetas'
+                class='w-full bg-accent-orange hover:bg-accent-orange-light text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent-orange/20 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:ring-offset-2 focus:ring-offset-racing-dark'
               >
                 Enviar Solicitud
               </button>

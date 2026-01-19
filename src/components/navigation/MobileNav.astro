@@ -1,28 +1,72 @@
 ---
 import Icon from '../../icons/Icon.astro'
 
-const { links } = Astro.props
+interface Link {
+  href: string
+  label: string
+}
+
+interface Props {
+  links: Link[]
+}
+
+const { links } = Astro.props as Props
 ---
 
-  <button id='mobile-menu-button' class='md:hidden absolute right-4 text-white p-2'>
-    <Icon name='menu' />
-  </button>
+<!-- Botón hamburguesa -->
+<button 
+  id='mobile-menu-button' 
+  class='md:hidden relative z-10 p-2 text-text-secondary hover:text-text-primary transition-colors duration-200'
+  aria-label='Abrir menú'
+>
+  <Icon name='menu' />
+</button>
 
-    <div id='mobile-menu' class='fixed inset-0 bg-primary-header bg-opacity-95 z-20 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden'>
-      <div class='flex flex-col items-center justify-center h-full space-y-8 text-xl font-medium text-white'>
-        <button id='close-menu' class='absolute top-4 right-4 text-white p-2'>
-          <Icon name='close' />
-        </button>
+<!-- Menú móvil fullscreen -->
+<div 
+  id='mobile-menu' 
+  class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
+>
+  <!-- Fondo con blur -->
+  <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl'></div>
+  
+  <!-- Decoración: línea accent superior -->
+  <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange'></div>
+  
+  <!-- Contenido -->
+  <div class='relative flex flex-col items-center justify-center h-full px-8'>
+    <!-- Botón cerrar -->
+    <button 
+      id='close-menu' 
+      class='absolute top-4 right-4 p-3 text-text-secondary hover:text-text-primary hover:bg-white/5 rounded-full transition-all duration-200'
+      aria-label='Cerrar menú'
+    >
+      <Icon name='close' />
+    </button>
 
-        {links.map(link => (
-          <a href={link.href} class='hover:text-hover transition-colors mobile-link'>
-            {link.label}
-          </a>
-        ))}
-      </div>
+    <!-- Links de navegación -->
+    <nav class='flex flex-col items-center gap-6'>
+      {links.map((link: Link, index: number) => (
+        <a 
+          href={link.href} 
+          class='mobile-link group relative text-2xl font-medium text-text-secondary hover:text-text-primary transition-all duration-300'
+          style={`animation-delay: ${index * 50}ms`}
+        >
+          <span class='relative z-10'>{link.label}</span>
+          <!-- Línea accent -->
+          <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-full'></span>
+        </a>
+      ))}
+    </nav>
+    
+    <!-- Logo decorativo en la parte inferior -->
+    <div class='absolute bottom-8 opacity-20'>
+      <img src='/logotextclear.webp' alt='' class='h-8 w-auto' aria-hidden='true' />
     </div>
+  </div>
+</div>
 
-    <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuButton = document.getElementById('mobile-menu-button')
     const closeMenuButton = document.getElementById('close-menu')
@@ -45,5 +89,12 @@ const { links } = Astro.props
     mobileMenuLinks?.forEach(link => {
       link.addEventListener('click', closeMobileMenu)
     })
+    
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileMenu?.classList.contains('translate-x-full')) {
+        closeMobileMenu()
+      }
+    })
   })
-    </script>
+</script>
