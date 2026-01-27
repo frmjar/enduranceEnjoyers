@@ -7,12 +7,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/vercel": "^9.0.2",
+    "@astrojs/vercel": "^9.0.4",
     "@tailwindcss/vite": "^4.1.11",
     "@upstash/redis": "^1.35.7",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.16.4",
+    "astro": "^5.16.11",
     "cloudinary": "^2.7.0",
     "googleapis": "^153.0.0",
     "react": "^19.1.0",

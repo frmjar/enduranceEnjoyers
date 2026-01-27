@@ -49,9 +49,9 @@ const links = [
       <div id='navbar-accent' class='absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-orange to-transparent opacity-0 transition-opacity duration-300' />
 
     <!-- Contenido del nav -->
-      <div class='relative flex items-center justify-between h-18 md:h-24 px-4 md:px-8 max-w-8xl mx-auto'>
-      <!-- Logo (aparece en scroll) -->
-        <div id='scroll-logo' class='flex-shrink-0 opacity-0 -translate-x-4 transition-all duration-300'>
+      <div class='relative flex items-center justify-center h-18 md:h-24 px-4 md:px-8 max-w-8xl mx-auto'>
+      <!-- Logo (aparece en scroll) - posicionado absolutamente para no afectar el layout -->
+        <div id='scroll-logo' class='absolute left-4 md:left-16 flex-shrink-0 opacity-0 -translate-x-4 transition-all duration-300'>
           <a href='/' class='block group'>
             <img
               src='/logotextclear.webp'
@@ -62,7 +62,10 @@ const links = [
         </div>
 
       <!-- Menú Desktop -->
-        <div id='desktop-nav' class='hidden md:flex items-center gap-2 mx-auto'>
+        <div
+          id='desktop-nav'
+          class='hidden md:flex items-center gap-2 transition-all duration-300 ease-out'
+        >
           {links.map(link => (
             <a
               href={link.href}
@@ -78,7 +81,7 @@ const links = [
       <!-- Botón menú móvil -->
         <button
           id='mobile-menu-button'
-          class='md:hidden relative z-10 p-2 text-white/80 hover:text-white transition-colors duration-200'
+          class='absolute right-4 md:right-8 md:hidden z-10 p-2 text-white/80 hover:text-white transition-colors duration-200'
           aria-label='Abrir menú'
         >
           <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -148,6 +151,7 @@ const links = [
   const navbar = document.getElementById('navbar')
   const navbarBg = document.getElementById('navbar-bg')
   const navbarAccent = document.getElementById('navbar-accent')
+  const desktopNav = document.getElementById('desktop-nav')
   const mobileMenuButton = document.getElementById('mobile-menu-button')
   const closeMenuButton = document.getElementById('close-menu')
   const mobileMenu = document.getElementById('mobile-menu')
@@ -224,6 +228,7 @@ const links = [
       navbarBg.classList.add('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
       navbarAccent.classList.remove('opacity-0')
       navbarAccent.classList.add('opacity-60')
+      desktopNav?.classList.add('md:ml-32')
     } else {
       // Navbar transparente
       logo.classList.add('opacity-0', '-translate-x-4')
@@ -232,6 +237,7 @@ const links = [
       navbarBg.classList.remove('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
       navbarAccent.classList.add('opacity-0')
       navbarAccent.classList.remove('opacity-60')
+      desktopNav?.classList.remove('md:ml-32')
     }
   })
   </script>

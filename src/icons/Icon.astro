@@ -4,12 +4,14 @@ import CheckCircle from './CheckCircle.astro'
 import Close from './Close.astro'
 import Flag from './Flag.astro'
 import Menu from './Menu.astro'
+import MultiPerson from './MultiPerson.astro'
+import SinglePerson from './SinglePerson.astro'
 import Trophy from './Trophy.astro'
 import Twitch from './Twitch.astro'
 import Twitter from './Twitter.astro'
 
 export interface Props {
-  name: 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter' | 'menu'
+  name: 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter' | 'menu' | 'singlePerson' | 'multiPerson' | 'twitch'
   class?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
   fill?: string
@@ -31,7 +33,9 @@ const iconComponents = {
   close: Close,
   twitter: Twitter,
   menu: Menu,
-  twitch: Twitch
+  twitch: Twitch,
+  singlePerson: SinglePerson,
+  multiPerson: MultiPerson
 }
 
 const IconComponent = iconComponents[name] || Calendar

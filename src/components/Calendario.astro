@@ -1,5 +1,6 @@
 ---
 import Icon from '../icons/Icon.astro'
+import CardCalendario from './CardCalendario.astro'
 import SectionTitle from './SectionTitle.astro'
 
 const meses = {
@@ -54,213 +55,55 @@ const allRaces = scheduleData
 const thisWeekRaces = allRaces.filter(r => r.weekNum === currentWeek)
 const nextWeekRaces = allRaces.filter(r => r.weekNum === nextWeek)
 
+const sections = [
+  {
+    title: 'Esta semana',
+    week: `Semana ${thisWeekRaces[0]?.Week || ''}`,
+    iconClasses: 'bg-gradient-to-br from-accent-orange to-accent-orange-light text-white shadow-lg shadow-accent-orange/20',
+    subtitleClasses: 'text-accent-orange',
+    races: thisWeekRaces
+  },
+  {
+    title: 'Próxima semana',
+    week: `Semana ${nextWeekRaces[0]?.Week || ''}`,
+    iconClasses: 'bg-racing-elevated border border-white/10 text-text-secondary',
+    subtitleClasses: 'text-text-muted',
+    races: nextWeekRaces
+  }
+]
+
 const { class: className = '', ...props } = Astro.props;
 ---
 
   <section class={`spacing-section ${className}`} {...props}>
     <div class='max-w-8xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12'>
       <SectionTitle title='Próximas carreras iRacing' subtitle='No te pierdas ningún evento de resistencia' />
-
+<!--<CardEventoDestacado /> -->
       {allRaces.length > 0
         ? (
           <div class='space-y-12'>
-
-        <!-- Esta semana -->
-            {thisWeekRaces.length > 0 && (
-              <div>
-                <div class='flex items-center gap-4 mb-6'>
-                  <div class='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-accent-orange to-accent-orange-light rounded-xl shadow-lg shadow-accent-orange/20'>
-                    <Icon name='calendar' class='text-white w-6 h-6' />
-                  </div>
-                  <div>
-                    <h3 class='text-xl md:text-2xl font-bold text-text-primary'>Esta semana</h3>
-                    <span class='text-sm text-accent-orange'>Semana {currentWeek}</span>
-                  </div>
-                  <div class='flex-1 h-px bg-gradient-to-r from-accent-orange/50 via-border-light to-transparent' />
-                </div>
-
-                <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                  {thisWeekRaces.map((race, index) => {
-                    const isFirst = index === 0
-
-                    return (
-                    <div class={`
-                    relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface
-                    rounded-2xl overflow-hidden
-                    border-2 ${isFirst ? 'border-accent-orange/50' : 'border-white/10 hover:border-accent-orange/30'}
-                    transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1
-                    group
-                  `}
-                    >
-
-                      <div class={`
-                      relative h-28 flex items-end p-5
-                      ${isFirst
-                        ? 'bg-gradient-to-br from-accent-orange via-accent-orange-light to-accent-orange'
-                        : 'bg-gradient-to-br from-racing-elevated via-racing-card to-racing-elevated'
-                      }
-                    `}
-                >
-                  <div class='absolute inset-0 opacity-10'>
-                        <div class='absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-1/2 translate-x-1/2' />
-                        <div class='absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-1/2 -translate-x-1/2' />
-                      </div>
-
-                  {isFirst && (
-                        <div class='absolute top-4 left-4'>
-                          <span class='inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-full uppercase tracking-wider'>
-                            <span class='w-2 h-2 bg-white rounded-full animate-pulse' />
-                            Próximo
-                          </span>
-                        </div>
-                      )}
-
-                  <div class='absolute top-4 right-4'>
-                        <span class={`text-4xl font-black opacity-30 ${isFirst ? 'text-white' : 'text-text-primary'}`}>
-                          #{index + 1}
-                        </span>
-                      </div>
-
-                  <div class={`relative z-10 ${isFirst ? 'text-white' : 'text-text-primary'}`}>
-                        <span class='text-4xl font-black'>{race.Fecha.split(' ')[0]}</span>
-                        <span class='text-lg font-medium ml-2 opacity-80'>{race.Fecha.split(' ')[1]}</span>
-                      </div>
-                </div>
-
-                      <div class='p-6 space-y-5'>
-                  <div>
-                        <h3 class='text-xl font-bold text-text-primary mb-1 line-clamp-2'>{race.Serie}</h3>
-                        <p class='text-accent-orange font-medium flex items-center gap-2'>
-                          <Icon name='flag' class='w-4 h-4' />
-                          <span class='line-clamp-1'>{race.Circuito}</span>
-                        </p>
-                      </div>
-
-                  <div class='grid grid-cols-2 gap-3'>
-                        <div class='bg-racing-black/30 rounded-xl p-3'>
-                          <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Duración</span>
-                          <span class='text-text-primary font-semibold text-sm'>{race.Duracion}</span>
-                        </div>
-                        <div class='bg-racing-black/30 rounded-xl p-3'>
-                          <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Coches</span>
-                          <span class='text-text-primary font-semibold text-sm'>{race.Coches}</span>
-                        </div>
-                        <div class='bg-racing-black/30 rounded-xl p-3'>
-                          <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Temporada</span>
-                          <span class='text-text-primary font-semibold text-sm'>S{race.Season}</span>
-                        </div>
-                        <div class='bg-racing-black/30 rounded-xl p-3'>
-                          <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Lluvia</span>
-                          <span class='text-text-primary font-semibold text-sm'>{race.Lluvia || 'N/A'}</span>
-                        </div>
-                      </div>
-
-                  <div class='flex items-center justify-between pt-2 border-t border-white/5'>
-                        {race.Team === 'SI'
-                          ? (
-                            <span class='inline-flex items-center gap-2 px-3 py-1.5 bg-accent-orange/20 text-accent-orange rounded-lg text-sm font-medium'>
-                              <Icon name='trophy' class='w-4 h-4' />
-                              Evento de equipo
-                            </span>
-                            )
-                          : (
-                            <span class='text-text-muted text-sm'>Evento individual</span>
-                            )}
-                        <span class='text-text-muted text-xs'>Semana {race.Week}</span>
-                      </div>
-                </div>
-
-                      <div class={`h-1 ${isFirst ? 'bg-white/30' : 'bg-gradient-to-r from-transparent via-accent-orange/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity'}`} />
+            {sections.map(section => (
+              section.races.length > 0 && (
+                <div> 
+                  <div class='flex items-center gap-4 mb-6'>
+                    <div class={`flex items-center justify-center w-12 h-12 rounded-xl ${section.iconClasses}`}>
+                      <Icon name='calendar' class='w-6 h-6' />
                     </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-        <!-- Próxima semana -->
-            {nextWeekRaces.length > 0 && (
-              <div>
-                <div class='flex items-center gap-4 mb-6'>
-                  <div class='flex items-center justify-center w-12 h-12 bg-racing-elevated rounded-xl border border-white/10'>
-                    <Icon name='calendar' class='text-text-secondary w-6 h-6' />
-                  </div>
-                  <div>
-                    <h3 class='text-xl md:text-2xl font-bold text-text-primary'>Próxima semana</h3>
-                    <span class='text-sm text-text-muted'>Semana {nextWeek}</span>
-                  </div>
-                  <div class='flex-1 h-px bg-gradient-to-r from-white/20 via-border-light to-transparent' />
-                </div>
-
-                <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                  {nextWeekRaces.map((race, index) => (
-                    <div class='relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface rounded-2xl overflow-hidden border-2 border-white/10 hover:border-accent-orange/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1 group'>
-
-                    <div class='relative h-28 flex items-end p-5 bg-gradient-to-br from-racing-elevated via-racing-card to-racing-elevated'>
-                      <div class='absolute inset-0 opacity-10'>
-                  <div class='absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-1/2 translate-x-1/2' />
-                  <div class='absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-1/2 -translate-x-1/2' />
-                </div>
-
-                      <div class='absolute top-4 right-4'>
-                  <span class='text-4xl font-black opacity-30 text-text-primary'>#{index + 1}</span>
-                </div>
-
-                      <div class='relative z-10 text-text-primary'>
-                  <span class='text-4xl font-black'>{race.Fecha.split(' ')[0]}</span>
-                  <span class='text-lg font-medium ml-2 opacity-80'>{race.Fecha.split(' ')[1]}</span>
-                </div>
+                    <div>
+                      <h3 class='text-xl md:text-2xl font-bold text-text-primary'>{section.title}</h3>
+                      <span class={`text-sm ${section.subtitleClasses}`}>{section.week}</span>
                     </div>
-
-                    <div class='p-6 space-y-5'>
-                      <div>
-                  <h3 class='text-xl font-bold text-text-primary mb-1 line-clamp-2'>{race.Serie}</h3>
-                  <p class='text-accent-orange font-medium flex items-center gap-2'>
-                        <Icon name='flag' class='w-4 h-4' />
-                        <span class='line-clamp-1'>{race.Circuito}</span>
-                      </p>
-                </div>
-
-                      <div class='grid grid-cols-2 gap-3'>
-                  <div class='bg-racing-black/30 rounded-xl p-3'>
-                        <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Duración</span>
-                        <span class='text-text-primary font-semibold text-sm'>{race.Duracion}</span>
-                      </div>
-                  <div class='bg-racing-black/30 rounded-xl p-3'>
-                        <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Coches</span>
-                        <span class='text-text-primary font-semibold text-sm'>{race.Coches}</span>
-                      </div>
-                  <div class='bg-racing-black/30 rounded-xl p-3'>
-                        <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Temporada</span>
-                        <span class='text-text-primary font-semibold text-sm'>S{race.Season}</span>
-                      </div>
-                  <div class='bg-racing-black/30 rounded-xl p-3'>
-                        <span class='text-xs text-text-muted uppercase tracking-wider block mb-1'>Lluvia</span>
-                        <span class='text-text-primary font-semibold text-sm'>{race.Lluvia || 'N/A'}</span>
-                      </div>
-                </div>
-
-                      <div class='flex items-center justify-between pt-2 border-t border-white/5'>
-                  {race.Team === 'SI'
-                        ? (
-                          <span class='inline-flex items-center gap-2 px-3 py-1.5 bg-accent-orange/20 text-accent-orange rounded-lg text-sm font-medium'>
-                            <Icon name='trophy' class='w-4 h-4' />
-                            Evento de equipo
-                          </span>
-                          )
-                        : (
-                          <span class='text-text-muted text-sm'>Evento individual</span>
-                          )}
-                  <span class='text-text-muted text-xs'>Semana {race.Week}</span>
-                </div>
-                    </div>
-
-                    <div class='h-1 bg-gradient-to-r from-transparent via-accent-orange/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
+                    <div class='flex-1 h-px bg-gradient-to-r from-accent-orange  to-transparent' />
                   </div>
-                  ))}
+
+                  <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+                    {section.races.map((race) => (
+                      <CardCalendario race={race} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            ))}
           </div>
           )
         : (

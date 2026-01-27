@@ -6,12 +6,12 @@
      Sistema de diseño con estética motorsport premium
   ═══════════════════════════════════════════════════════════ */
 
-  /* Colores primarios - Oscuros profundos */
-  --color-racing-black: #0a0a0b;
-  --color-racing-dark: #111114;
-  --color-racing-surface: #18181b;
-  --color-racing-elevated: #1f1f23;
-  --color-racing-card: #27272a;
+  /* Colores primarios - Oscuros pero más claros */
+  --color-racing-black: #151519;
+  --color-racing-dark: #212127;
+  --color-racing-surface: #2a2a31;
+  --color-racing-elevated: #35353d;
+  --color-racing-card: #404049;
 
   /* Acentos neón racing */
   --color-accent-orange: #ff6b00;
@@ -32,13 +32,13 @@
   --color-border-subtle: rgba(255, 255, 255, 0.06);
   --color-border-default: rgba(255, 255, 255, 0.1);
   --color-border-hover: rgba(255, 107, 0, 0.5);
-  --color-glass-bg: rgba(24, 24, 27, 0.8);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+  --color-glass-bg: rgba(33, 33, 39, 0.85);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
 
   /* Gradientes */
   --gradient-racing: linear-gradient(135deg, #ff6b00 0%, #ff8533 50%, #ffab66 100%);
-  --gradient-dark: linear-gradient(180deg, #0a0a0b 0%, #18181b 100%);
-  --gradient-card: linear-gradient(145deg, rgba(39, 39, 42, 0.9) 0%, rgba(24, 24, 27, 0.95) 100%);
+  --gradient-dark: linear-gradient(180deg, #151519 0%, #2a2a31 100%);
+  --gradient-card: linear-gradient(145deg, rgba(64, 64, 73, 0.9) 0%, rgba(42, 42, 49, 0.95) 100%);
   --gradient-glow: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
 
   /* Sombras premium */
@@ -60,7 +60,7 @@
   --color-bg-primary: var(--color-racing-black);
   --color-bg-secondary: var(--color-racing-surface);
   --color-bg-card: var(--color-racing-card);
-  --color-bg-input: rgba(39, 39, 42, 0.8);
+  --color-bg-input: rgba(48, 48, 56, 0.85);
   --color-border-light: var(--color-border-subtle);
   --color-border-medium: var(--color-border-default);
   --color-text-gray-light: #d4d4d8;

@@ -1,5 +1,5 @@
 ---
-import Card from '../components/Card.astro'
+import CardCalendario from '../components/CardCalendario.astro'
 import Layaut from '../components/Layaut.astro'
 import Icon from '../icons/Icon.astro'
 import '../styles/calendario.css'
@@ -114,28 +114,13 @@ const seoData = {
                   <div class='flex-1 h-px bg-gradient-to-r from-accent-orange/50 via-border-light to-transparent' />
                 </div>
 
-                <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-8xl mx-auto'>
+                <div class='grid gap-6 md:grid-cols-3 lg:grid-cols-4 max-w-8xl mx-auto'>
                   {groupedByMonth[monthIndex].map((race) => {
-                    const raceDetails = [
-                      { label: 'Equipo', value: race.Team === 'SI' ? 'Sí' : 'No' },
-                      { label: 'Duración', value: race.Duracion },
-                      { label: 'Circuito', value: race.Circuito },
-                      { label: 'Prob. lluvia', value: race.Lluvia || 'N/A' },
-                      { label: 'Coches', value: race.Coches }
-                    ]
-
-                    // Detectar si el evento ya pasó
                     const isPastEvent = race.date < today
 
                     return (
                       <div class={isPastEvent ? 'past-event' : ''}>
-                        <Card
-                          title={race.Serie}
-                          headerDate={race.Fecha}
-                          headerSeason={race.Season}
-                          details={raceDetails}
-                          class={isPastEvent ? 'past-event-card' : ''}
-                        />
+                        <CardCalendario race={race} />
                       </div>
                     )
                   })}
