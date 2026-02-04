@@ -1,0 +1,97 @@
+---
+const links = Astro.props.links;
+---
+
+  <nav id='navbar' class='fixed top-0 left-0 w-full z-50 transition-all duration-300'>
+    <div id='navbar-bg' class='absolute inset-0 bg-racing-dark/0 backdrop-blur-none border-b border-transparent transition-all duration-300' />
+    <div id='navbar-accent' class='absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-orange to-transparent opacity-0 transition-opacity duration-300' />
+
+    <div class='relative flex items-center justify-center h-18 md:h-20 px-4 md:px-8 max-w-8xl mx-auto'>
+      <div id='scroll-logo' class='absolute left-4 md:left-16 flex-shrink-0 opacity-0 -translate-x-4 transition-all duration-300'>
+        <a href='/' class='block group'>
+          <img
+            src='/logotextclear.webp'
+            alt='Logo Endurance Enjoyers'
+            class='h-12 md:h-16 w-auto transition-transform duration-300 group-hover:scale-105'
+          />
+        </a>
+      </div>
+
+      <div
+        id='desktop-nav'
+        class='hidden md:flex items-center gap-2 transition-all duration-300 ease-out'
+      >
+        {links.map(link => (
+          <a
+            href={link.href}
+            class='nav-link relative px-5 py-2 text-base lg:text-lg font-medium text-white/90 hover:text-white transition-colors duration-200 group'
+          >
+            <span class='relative z-10'>{link.label}</span>
+            <span class='absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-3/4' />
+          </a>
+        ))}
+      </div>
+
+      <!-- Botón menú móvil -->
+      <button
+        id='mobile-menu-button'
+        class='absolute right-4 md:right-8 md:hidden z-10 p-2 text-white/80 hover:text-white transition-colors duration-200'
+        aria-label='Abrir menú'
+      >
+        <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16M4 18h16' />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+    <script define:vars={{}}>
+  const navbardir = document.getElementById('navbardir')
+  const logo = document.getElementById('scroll-logo')
+  const navbarBg = document.getElementById('navbar-bg')
+  const navbarAccent = document.getElementById('navbar-accent')
+  const desktopNav = document.getElementById('desktop-nav')
+  const mobileMenuButton = document.getElementById('mobile-menu-button')
+
+  const openMobileMenu = () => {
+    const mobileMenu = document.getElementById('mobile-menu')
+    if (!mobileMenu) return
+    mobileMenu.classList.remove('translate-x-full')
+    mobileMenu.classList.add('translate-x-0')
+    document.body.style.overflow = 'hidden'
+  }
+
+  const updateNavbarOnScroll = () => {
+    if (!navbardir || !logo || !navbarBg || !navbarAccent) return
+
+    const style = getComputedStyle(navbardir)
+    const marginTop = parseFloat(style.marginTop)
+    const marginBottom = parseFloat(style.marginBottom)
+    const alturaConMargen = navbardir.offsetHeight + marginTop + marginBottom
+
+    if (window.scrollY > alturaConMargen / 3) {
+      logo.classList.remove('opacity-0', '-translate-x-4')
+      logo.classList.add('opacity-100', 'translate-x-0')
+      navbarBg.classList.remove('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.add('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarAccent.classList.remove('opacity-0')
+      navbarAccent.classList.add('opacity-60')
+      desktopNav?.classList.add('md:ml-32')
+    } else {
+      logo.classList.add('opacity-0', '-translate-x-4')
+      logo.classList.remove('opacity-100', 'translate-x-0')
+      navbarBg.classList.add('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.remove('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarAccent.classList.add('opacity-0')
+      navbarAccent.classList.remove('opacity-60')
+      desktopNav?.classList.remove('md:ml-32')
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    mobileMenuButton?.addEventListener('click', openMobileMenu)
+    updateNavbarOnScroll()
+  })
+
+  window.addEventListener('scroll', updateNavbarOnScroll)
+    </script>
