@@ -10,8 +10,10 @@ import Trophy from './Trophy.astro'
 import Twitch from './Twitch.astro'
 import Twitter from './Twitter.astro'
 
+export type IconTypes = 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter' | 'menu' | 'singlePerson' | 'multiPerson' | 'twitch'
+
 export interface Props {
-  name: 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter' | 'menu' | 'singlePerson' | 'multiPerson' | 'twitch'
+  name: IconTypes
   class?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
   fill?: string

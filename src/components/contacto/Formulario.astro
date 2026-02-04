@@ -1,0 +1,159 @@
+---
+---
+  <div class='relative overflow-hidden bg-gradient-to-br from-racing-card/90 to-racing-card/40 backdrop-blur-md rounded-2xl border border-white/5 p-8 lg:p-10'>
+    <div class='relative'>
+              <!-- Header del formulario -->
+      <div class='mb-8'>
+        <h3 class='text-2xl lg:text-3xl font-bold text-text-primary mb-2'>Formulario de Solicitud</h3>
+        <p class='text-text-secondary text-sm'>Cuéntanos sobre ti y nos pondremos en contacto pronto</p>
+      </div>
+
+              <!-- Formulario -->
+      <form id='contactForm' class='space-y-6'>
+
+                <!-- Fila 1 -->
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-5'>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block'>Nombre en iRacing <span class='text-accent-orange'>*</span></label>
+            <input
+              type='text'
+              name='iracingName'
+              placeholder='Tu nombre'
+              class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all'
+              required
+            />
+          </div>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block'>ID iRacing <span class='text-accent-orange'>*</span></label>
+            <input
+              type='text'
+              name='iracingId'
+              placeholder='123456'
+              class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all'
+              required
+            />
+          </div>
+        </div>
+
+                <!-- Fila 2 -->
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-5'>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block'>Discord <span class='text-accent-orange'>*</span></label>
+            <input
+              type='text'
+              name='discord'
+              placeholder='usuario#0000'
+              class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all'
+              required
+            />
+          </div>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block'>Email</label>
+            <input
+              type='email'
+              name='email'
+              placeholder='tu@email.com'
+              class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all'
+            />
+          </div>
+        </div>
+
+                <!-- iRating -->
+        <div>
+          <label class='text-sm font-semibold text-text-primary mb-2.5 block'>iRating / Safety Rating <span class='text-accent-orange'>*</span></label>
+          <input
+            type='text'
+            name='iracingSafety'
+            placeholder='ej: 3500 iR / 4.50 SR'
+            class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all'
+            required
+          />
+        </div>
+
+                <!-- Experiencia -->
+        <div>
+          <label class='text-sm font-semibold text-text-primary mb-3.5 block'>¿Experiencia en iRacing? <span class='text-accent-orange'>*</span></label>
+          <div class='flex gap-3'>
+            <label class='flex-1 relative group cursor-pointer'>
+              <input type='radio' name='experience' value='si' required class='sr-only peer' />
+              <div class='p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/50 group-hover:border-accent-orange/30 transition-all text-center'>
+                <span class='text-sm font-medium text-text-primary'>Sí</span>
+              </div>
+            </label>
+            <label class='flex-1 relative group cursor-pointer'>
+              <input type='radio' name='experience' value='no' required class='sr-only peer' />
+              <div class='p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/50 group-hover:border-accent-orange/30 transition-all text-center'>
+                <span class='text-sm font-medium text-text-primary'>No</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+                <!-- Mensaje -->
+        <div>
+          <label class='text-sm font-semibold text-text-primary mb-2.5 block'>Cuéntanos más</label>
+          <textarea
+            name='additionalInfo'
+            rows='3'
+            placeholder='Tu experiencia, logros, expectativas...'
+            class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/50 focus:bg-white/10 transition-all resize-none'
+          />
+        </div>
+
+                <!-- Botón -->
+        <button
+          type='submit'
+          class='w-full py-3.5 px-6 bg-accent-orange text-white font-semibold rounded-lg hover:bg-accent-orange-light transition-all duration-300 hover:shadow-lg hover:shadow-accent-orange/30 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:ring-offset-2 focus:ring-offset-racing-dark'
+        >
+          Enviar Solicitud
+        </button>
+
+                <!-- Mensaje feedback -->
+        <div id='formMessage' class='hidden p-4 rounded-lg text-sm font-medium text-center' />
+      </form>
+    </div>
+  </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm')
+    const messageDiv = document.getElementById('formMessage')
+
+    if (!form) return
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const submitButton = form.querySelector('button[type="submit"]')
+      const originalText = submitButton.textContent
+
+      submitButton.disabled = true
+      submitButton.textContent = 'Enviando...'
+
+      try {
+        const response = await fetch('/api/contacto', {
+          method: 'POST',
+          body: new FormData(form)
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          form.reset()
+          messageDiv.className = 'block p-4 rounded-lg text-sm font-medium text-center bg-green-500/20 border border-green-500/30 text-green-300'
+          messageDiv.textContent = '✓ Solicitud enviada. Nos pondremos en contacto pronto.'
+          setTimeout(() => { messageDiv.className = 'hidden' }, 4000)
+        } else {
+          throw new Error(result.message || 'Error')
+        }
+      } catch (error) {
+        console.error(error)
+        messageDiv.className = 'block p-4 rounded-lg text-sm font-medium text-center bg-red-500/20 border border-red-500/30 text-red-300'
+        messageDiv.textContent = '✗ Error al enviar. Intenta de nuevo.'
+      } finally {
+        submitButton.disabled = false
+        submitButton.textContent = originalText
+      }
+    })
+  })
+    </script>
