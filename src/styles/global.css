@@ -22,10 +22,10 @@
   --color-accent-red: #ef4444;
   --color-accent-green: #22c55e;
 
-  /* Texto - Jerarquía clara */
+  /* Texto - Jerarquía clara - Mejorado para contraste WCAG AA */
   --color-text-primary: #fafafa;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
+  --color-text-secondary: #c4c4cb;
+  --color-text-muted: #9a9aa3;
   --color-text-accent: #ff8533;
 
   /* Bordes y superficies */
@@ -39,7 +39,8 @@
   --gradient-racing: linear-gradient(135deg, #ff6b00 0%, #ff8533 50%, #ffab66 100%);
   --gradient-dark: linear-gradient(180deg, #151519 0%, #2a2a31 100%);
   --gradient-card: linear-gradient(145deg, rgba(64, 64, 73, 0.9) 0%, rgba(42, 42, 49, 0.95) 100%);
-  --gradient-glow: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
+  --gradient-glow: radial-gradient(elli4. ✅ Estandarizar spacing y grid de cards
+5. ✅ Agregar divisores visuales entre seccionesse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
 
   /* Sombras premium */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -63,9 +64,9 @@
   --color-bg-input: rgba(48, 48, 56, 0.85);
   --color-border-light: var(--color-border-subtle);
   --color-border-medium: var(--color-border-default);
-  --color-text-gray-light: #d4d4d8;
-  --color-text-gray-medium: #a1a1aa;
-  --color-text-gray-dark: #71717a;
+  --color-text-gray-light: #e4e4e7;
+  --color-text-gray-medium: #c4c4cb;
+  --color-text-gray-dark: #9a9aa3;
 
   /* Breakpoints */
   --breakpoint-3xl: 122rem;
@@ -76,7 +77,7 @@
 ═══════════════════════════════════════════════════════════ */
 
 @keyframes glow-pulse {
-  0%, 100% { opacity: 0.6; }
+  0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 }
 
@@ -361,13 +362,15 @@
   }
 
   .input-racing::placeholder {
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
+    opacity: 0.8;
   }
 
   .input-racing:focus {
     outline: none;
     border-color: var(--color-accent-orange);
     box-shadow: 0 0 0 3px var(--color-accent-orange-glow);
+    background: rgba(48, 48, 56, 1);
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -454,6 +457,74 @@
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
+
+  /* ═══════════════════════════════════════════════════════════
+     PARALLAX Y SCROLL EFFECTS
+  ═══════════════════════════════════════════════════════════ */
+  .parallax-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .parallax-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    background-attachment: fixed;
+    z-index: -1;
+  }
+
+  /* Fade in on scroll */
+  .fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s var(--ease-out-expo);
+  }
+
+  .fade-in-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Scale in on scroll */
+  .scale-in-on-scroll {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.6s var(--ease-out-expo);
+  }
+
+  .scale-in-on-scroll.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Slide in from left */
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: all 0.6s var(--ease-out-expo);
+  }
+
+  .slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Slide in from right */
+  .slide-in-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.6s var(--ease-out-expo);
+  }
+
+  .slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @layer utilities {
@@ -465,7 +536,9 @@
     max-width: 88rem;
   }
 
-  /* Responsive typography */
+  /* ═══════════════════════════════════════════════════════════
+     RESPONSIVE TYPOGRAPHY
+  ═══════════════════════════════════════════════════════════ */
   .text-responsive-xl {
     @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
   }
@@ -478,13 +551,153 @@
     @apply text-base md:text-lg lg:text-xl;
   }
 
-  /* Responsive spacing */
+  /* ═══════════════════════════════════════════════════════════
+     SPACING STANDARIZADO
+  ═══════════════════════════════════════════════════════════ */
   .spacing-section {
     @apply py-12 md:py-16 lg:py-20 xl:py-24;
   }
 
+  .spacing-section-sm {
+    @apply py-8 md:py-10 lg:py-12;
+  }
+
+  .spacing-section-lg {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
   .spacing-container {
     @apply px-4 md:px-6 lg:px-8;
+  }
+
+  .spacing-container-tight {
+    @apply px-4 md:px-6;
+  }
+
+  .spacing-container-wide {
+    @apply px-6 md:px-8 lg:px-12;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     GRID CARDS ESTANDARIZADO
+  ═══════════════════════════════════════════════════════════ */
+  .cards-grid {
+    @apply grid gap-6;
+  }
+
+  .cards-grid-1 {
+    @apply grid-cols-1;
+  }
+
+  .cards-grid-2 {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+
+  .cards-grid-3 {
+    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .cards-grid-4 {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  /* Card container estandarizado */
+  .card-item {
+    @apply relative overflow-hidden rounded-2xl border border-white/5 transition-all duration-300;
+    background: var(--color-racing-card);
+    background-image: 
+      linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+  }
+
+  .card-item:hover {
+    border-color: var(--color-accent-orange)/30;
+    box-shadow: 0 8px 32px rgba(255, 107, 0, 0.1);
+    transform: translateY(-4px);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     DIVISORES Y SEPARADORES VISUALES
+  ═══════════════════════════════════════════════════════════ */
+  .section-divider {
+    position: relative;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent-orange) 15%,
+      var(--color-accent-orange) 85%,
+      transparent 100%
+    );
+    margin: 0;
+    opacity: 0.6;
+  }
+
+  .section-divider-with-glow {
+    position: relative;
+    height: 1px;
+    background: var(--color-border-default);
+    margin: 0;
+  }
+
+  .section-divider-with-glow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 100%;
+    background: var(--color-accent-orange);
+    filter: blur(20px);
+    opacity: 0.4;
+  }
+
+  .section-divider-subtle {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border-default) 50%,
+      transparent 100%
+    );
+    margin: 0;
+  }
+
+  /* Divisor para después de cada sección */
+  .divider-section-bottom {
+    @apply h-12 md:h-16 lg:h-20 relative;
+  }
+
+  .divider-section-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent-orange) 10%,
+      var(--color-accent-orange) 90%,
+      transparent 100%
+    );
+    opacity: 0.5;
+  }
+
+  /* Separador con patrón decorativo */
+  .divider-racing-pattern {
+    position: relative;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-accent-orange) 0px,
+      var(--color-accent-orange) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    opacity: 0.6;
+    margin: 0;
   }
 
   /* Mobile-first grid improvements */
@@ -492,7 +705,68 @@
     @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8;
   }
 
-  /* Texto con colores del nuevo sistema */
+  /* Fondos de sección alternados con patrones sutiles */
+  .section-primary {
+    background-color: var(--color-racing-black);
+    background-image: 
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 80px,
+        rgba(255, 107, 0, 0.008) 80px,
+        rgba(255, 107, 0, 0.008) 160px
+      );
+    position: relative;
+  }
+
+  .section-secondary {
+    background-color: var(--color-racing-dark);
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 80px,
+        rgba(255, 255, 255, 0.008) 80px,
+        rgba(255, 255, 255, 0.008) 160px
+      );
+    position: relative;
+  }
+
+  .section-elevated {
+    background-color: var(--color-racing-surface);
+    background-image: 
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 80px,
+        rgba(255, 107, 0, 0.012) 80px,
+        rgba(255, 107, 0, 0.012) 160px
+      );
+    position: relative;
+  }
+
+  /* Divisor visual después de secciones */
+  .section-primary::after,
+  .section-secondary::after,
+  .section-elevated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent-orange) 10%,
+      var(--color-accent-orange) 90%,
+      transparent 100%
+    );
+    opacity: 0.4;
+    z-index: 10;
+  }
+
+  /* Colores de texto y fondos */
   .text-primary {
     color: var(--color-text-primary);
   }
@@ -524,42 +798,5 @@
 
   .bg-racing-card {
     background-color: var(--color-racing-card);
-  }
-
-  /* Fondos de sección alternados con patrones sutiles */
-  .section-primary {
-    background-color: var(--color-racing-black);
-    background-image: 
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 107, 0, 0.008) 80px,
-        rgba(255, 107, 0, 0.008) 160px
-      );
-  }
-
-  .section-secondary {
-    background-color: var(--color-racing-dark);
-    background-image: 
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 255, 255, 0.008) 80px,
-        rgba(255, 255, 255, 0.008) 160px
-      );
-  }
-
-  .section-elevated {
-    background-color: var(--color-racing-surface);
-    background-image: 
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 107, 0, 0.012) 80px,
-        rgba(255, 107, 0, 0.012) 160px
-      );
   }
 }

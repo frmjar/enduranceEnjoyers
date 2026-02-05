@@ -4,9 +4,9 @@ import Icon from '../icons/Icon.astro'
 const { race } = Astro.props
 ---
 
-  <div class='relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface rounded-xl overflow-hidden border-2 border-white/10 hover:border-accent-orange/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1 group max-w-sm mx-auto w-full flex flex-col'>
+  <div class='relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface rounded-xl overflow-hidden border-2 border-white/10 hover:border-accent-orange/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1 group w-full flex flex-col min-h-96'>
 
-    <div class='relative h-14 flex items-end p-3 bg-gradient-to-br from-racing-elevated via-racing-card to-racing-elevated'>
+    <div class='relative h-14 flex items-end p-3 bg-gradient-to-br from-racing-elevated via-racing-card to-racing-elevated flex-shrink-0'>
       <div class='absolute inset-0 opacity-10'>
         <div class='absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-1/2 translate-x-1/2' />
         <div class='absolute bottom-0 left-0 w-12 h-12 bg-white rounded-full translate-y-1/2 -translate-x-1/2' />

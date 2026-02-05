@@ -14,11 +14,6 @@ const siteLinks = [
   { name: 'Contacto', url: '/#contacto' }
 ]
 
-const legalLinks = [
-  { name: 'Política de Privacidad', url: '/privacidad' },
-  { name: 'Términos y Condiciones', url: '/terminos' }
-]
-
 const { class: className = '', ...props } = Astro.props;
 ---
 
@@ -97,14 +92,7 @@ const { class: className = '', ...props } = Astro.props;
         <p class='text-sm text-text-muted'>© {currentYear} {brandName}. Todos los derechos reservados.</p>
 
         <div class='flex flex-wrap justify-center gap-4'>
-          {/* legalLinks.map(link => (
-            <a
-              href={link.url}
-              class='text-sm text-text-muted hover:text-text-primary transition-colors duration-200'
-            >
-              {link.name}
-            </a>
-          )) */}
+          {}
         </div>
       </div>
     </div>

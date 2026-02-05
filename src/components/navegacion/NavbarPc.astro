@@ -53,7 +53,7 @@ const links = Astro.props.links;
   const desktopNav = document.getElementById('desktop-nav')
   const mobileMenuButton = document.getElementById('mobile-menu-button')
 
-  const openMobileMenu = () => {
+    const openMobileMenu = () => {
     const mobileMenu = document.getElementById('mobile-menu')
     if (!mobileMenu) return
     mobileMenu.classList.remove('translate-x-full')
@@ -89,7 +89,9 @@ const links = Astro.props.links;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    mobileMenuButton?.addEventListener('click', openMobileMenu)
+    mobileMenuButton?.addEventListener('click', () => {
+      window.openMobileMenu?.()
+    })
     updateNavbarOnScroll()
   })
 

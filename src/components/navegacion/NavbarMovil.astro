@@ -6,12 +6,12 @@ const links = Astro.props.links;
     class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
   >
     <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
-    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange' />
+    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange opacity-0 transition-opacity duration-500' />
 
     <div class='relative flex flex-col items-center justify-center h-full px-8'>
       <button
         id='close-menu'
-        class='absolute top-4 right-4 p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200'
+        class='absolute top-4 right-4 p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200 mobile-menu-item'
         aria-label='Cerrar menú'
       >
         <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
@@ -20,10 +20,10 @@ const links = Astro.props.links;
       </button>
 
       <nav class='flex flex-col items-center gap-6'>
-        {links.map(link => (
+        {links.map((link, index) => (
           <a
             href={link.href}
-            class='mobile-link group relative text-2xl font-medium text-white/70 hover:text-white transition-all duration-300'
+            class={`mobile-link group relative text-2xl font-medium text-white/70 hover:text-white transition-all duration-300 mobile-menu-item stagger-${index + 1}`}
           >
             <span class='relative z-10'>{link.label}</span>
             <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-full' />
@@ -31,7 +31,7 @@ const links = Astro.props.links;
         ))}
       </nav>
 
-      <div class='absolute bottom-8 opacity-20'>
+      <div class='absolute bottom-8 opacity-20 mobile-menu-item stagger-7'>
         <img src='/logotextclear.webp' alt='logo_equipo' class='h-8 w-auto' aria-hidden='true' />
       </div>
     </div>
@@ -48,6 +48,25 @@ const links = Astro.props.links;
     document.body.style.overflow = ''
   }
 
+  const openMobileMenu = () => {
+    if (!mobileMenu) return
+    mobileMenu.classList.remove('translate-x-full')
+    mobileMenu.classList.add('translate-x-0')
+    document.body.style.overflow = 'hidden'
+  
+    // Animar items cuando se abre el menú
+    const menuItems = mobileMenu.querySelectorAll('.mobile-menu-item')
+    menuItems.forEach((item, index) => {
+      item.style.opacity = '0'
+      item.style.transform = 'translateY(20px)'
+      setTimeout(() => {
+        item.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        item.style.opacity = '1'
+        item.style.transform = 'translateY(0)'
+      }, 50 * index)
+    })
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     closeMenuButton?.addEventListener('click', closeMobileMenu)
 
@@ -55,4 +74,7 @@ const links = Astro.props.links;
       link.addEventListener('click', closeMobileMenu)
     })
   })
-    </script>
+
+  // Exponer openMobileMenu globalmente
+  window.openMobileMenu = openMobileMenu
+  </script>
