@@ -30,14 +30,13 @@ const links = [
     <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' />
     <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' />
 
-    <!-- Banner superior -->
-    <div
+    <!-- Hero principal -->
+    <section
       id='navbardir'
-      class='relative w-full aspect-[2.5/1] sm:aspect-[3/1] md:aspect-[3.5/1] bg-cover bg-center bg-no-repeat z-10 transition-all duration-500'
+      class='relative isolate overflow-hidden w-full min-h-[min(100svh,980px)] bg-cover bg-center bg-no-repeat z-10 transition-all duration-500'
       style={`background-image: url(${bannerImages.placeholder.src}); background-size: cover;`}
-    >
-      <div class='absolute inset-0 bg-gradient-to-b from-racing-black/60 via-transparent to-racing-black/40' />
-    </div>
+      aria-labelledby='hero-title'
+    />
 
     <NavbarPc links={links} />
     <NavbarMovil links={links} />
@@ -45,7 +44,6 @@ const links = [
   </div>
 
     <script define:vars={{ bannerImages }}>
-  // URLs de las diferentes versiones de la imagen
   const imagePaths = {
     small: bannerImages.small.src,
     medium: bannerImages.medium.src,
@@ -55,7 +53,6 @@ const links = [
 
   const navbardir = document.getElementById('navbardir')
 
-  // Función para establecer la imagen del banner según el ancho de la pantalla
   function setBannerImage () {
     if (!navbardir) return
 

@@ -52,10 +52,7 @@ interface CachedData {
 const TWITTER_BEARER_TOKEN = import.meta.env.TWITTER_BEARER_TOKEN
 const TWITTER_USERNAME = 'EnduEnjoyers'
 const CACHE_KEY = 'twitter:cache'
-const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 días
-const API_CALL_LIMIT_CHECK_KEY = 'twitter:api_calls'
-const API_CALLS_PER_MONTH = 100
-const CACHE_TTL = 30 * 24 * 60 * 60 // 30 días en segundos
+const CACHE_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
 
 // Funciones de caché usando Upstash Redis
 async function readCache (): Promise<CachedData | null> {
@@ -70,34 +67,6 @@ async function readCache (): Promise<CachedData | null> {
   }
 }
 
-async function trackAPICall (): Promise<number> {
-  try {
-    const calls = await redis.incr(API_CALL_LIMIT_CHECK_KEY)
-    await redis.expire(API_CALL_LIMIT_CHECK_KEY, CACHE_TTL)
-    return calls
-  } catch (error) {
-    console.error('Error tracking API call:', error)
-    return 0
-  }
-}
-
-async function getAPICallCount (): Promise<number> {
-  try {
-    const calls = await redis.get<number>(API_CALL_LIMIT_CHECK_KEY)
-    return calls || 0
-  } catch (error) {
-    console.error('Error getting API call count:', error)
-    return 0
-  }
-}
-
-async function getAPIStatus (): Promise<{ allowed: boolean; callCount: number; remaining: number }> {
-  const callCount = await getAPICallCount()
-  const remaining = Math.max(0, API_CALLS_PER_MONTH - callCount)
-  console.log(`Llamadas API: ${callCount}/${API_CALLS_PER_MONTH}, Restantes: ${remaining}`)
-  return { allowed: remaining > 0, callCount, remaining }
-}
-
 async function writeCache (tweets: Tweet[]): Promise<void> {
   try {
     const cacheData: CachedData = {
@@ -105,85 +74,122 @@ async function writeCache (tweets: Tweet[]): Promise<void> {
       lastFetch: Date.now(),
       lastSuccessfulFetch: Date.now()
     }
-    await redis.set(CACHE_KEY, cacheData, { ex: CACHE_TTL })
+    // TTL de 24 horas para mantener los datos incluso si no hay tráfico
+    await redis.set(CACHE_KEY, cacheData, { ex: 86400 })
   } catch (error) {
     console.error('Error writing cache to Redis:', error)
   }
 }
 
-async function formatTweet (user: TwitterUser, tweet: TwitterTweet): Promise<Tweet> {
-  return {
-    id: tweet.id,
-    text: tweet.text,
-    created_at: tweet.created_at,
-    url: `https://twitter.com/${TWITTER_USERNAME}/status/${tweet.id}`,
-    author: {
-      name: user.name,
-      username: user.username,
-      avatar: user.profile_image_url?.replace('_normal', '_200x200') || '/logo.webp'
-    },
-    metrics: tweet.public_metrics
-      ? {
-          likes: tweet.public_metrics.like_count,
-          retweets: tweet.public_metrics.retweet_count,
-          replies: tweet.public_metrics.reply_count
-        }
-      : undefined
+async function updateCacheTimestamp (): Promise<void> {
+  try {
+    const cache = await readCache()
+    if (cache) {
+      cache.lastFetch = Date.now()
+      await redis.set(CACHE_KEY, cache, { ex: 86400 })
+    }
+  } catch (error) {
+    console.error('Error updating cache timestamp:', error)
   }
 }
 
-function buildResponse (data: any, status = 200): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600'
-    }
-  })
-}
-
-async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[]; error?: string }> {
+async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: string }> {
   if (!TWITTER_BEARER_TOKEN) {
     console.error('TWITTER_BEARER_TOKEN no está configurado')
-    return { tweets: [], error: 'TWITTER_BEARER_TOKEN no configurado' }
+    return { tweets: [], error: 'TWITTER_BEARER_TOKEN no configurado en variables de entorno' }
   }
 
+  // Verificar que las credenciales de Redis estén configuradas
   if (!import.meta.env.KV_REST_API_URL || !import.meta.env.KV_REST_API_TOKEN) {
-    console.warn('Variables de Redis no configuradas')
+    console.warn('Variables de Redis no configuradas - KV_REST_API_URL o KV_REST_API_TOKEN')
   }
 
+  // Debug: mostrar info del token (solo primeros/últimos caracteres por seguridad)
+  const tokenPreview = TWITTER_BEARER_TOKEN.length > 10
+    ? `${TWITTER_BEARER_TOKEN.substring(0, 5)}...${TWITTER_BEARER_TOKEN.substring(TWITTER_BEARER_TOKEN.length - 5)}`
+    : '[token muy corto]'
+  console.log('Token preview:', tokenPreview)
+  console.log('Token length:', TWITTER_BEARER_TOKEN.length)
+  console.log('Token has spaces:', TWITTER_BEARER_TOKEN.includes(' '))
+  console.log('Token has newlines:', TWITTER_BEARER_TOKEN.includes('\n'))
+
+  // Limpiar el token por si tiene espacios o saltos de línea
   const cleanToken = TWITTER_BEARER_TOKEN.trim()
 
   try {
+    // Primero obtener el ID del usuario
     const userResponse = await fetch(
       `https://api.twitter.com/2/users/by/username/${TWITTER_USERNAME}?user.fields=profile_image_url`,
-      { headers: { Authorization: `Bearer ${cleanToken}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${cleanToken}`
+        }
+      }
     )
 
     if (!userResponse.ok) {
-      const status = userResponse.status
-      const errorMap: Record<number, string> = {
-        401: 'Token no autorizado',
-        403: 'Token inválido o sin permisos',
-        429: 'Rate limit excedido'
+      const errorText = await userResponse.text()
+      console.error('Error fetching user:', errorText)
+      console.error('Status:', userResponse.status)
+      console.error('Headers:', Object.fromEntries(userResponse.headers.entries()))
+
+      // Detectar error de rate limit
+      if (userResponse.status === 429) {
+        return { tweets: [], error: 'Rate limit excedido - espera 15 minutos' }
       }
-      return { tweets: [], error: errorMap[status] || `Error ${status}` }
+      if (userResponse.status === 403) {
+        return { tweets: [], error: 'Error 403: Token inválido o sin permisos. Verifica tu plan de Twitter API (necesitas Basic o superior para leer tweets)' }
+      }
+      if (userResponse.status === 401) {
+        return { tweets: [], error: 'Error 401: Token no autorizado. Regenera el Bearer Token en Twitter Developer Portal' }
+      }
+      return { tweets: [], error: `Error API Twitter: ${userResponse.status} - ${errorText}` }
     }
 
-    const { data: user }: { data: TwitterUser } = await userResponse.json()
+    const userData = await userResponse.json()
+    const user: TwitterUser = userData.data
 
+    // Obtener   tweets del usuario
     const tweetsResponse = await fetch(
       `https://api.twitter.com/2/users/${user.id}/tweets?max_results=6&tweet.fields=created_at,public_metrics&exclude=retweets,replies`,
-      { headers: { Authorization: `Bearer ${cleanToken}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${cleanToken}`
+        }
+      }
     )
 
     if (!tweetsResponse.ok) {
-      console.error(`Error fetching tweets: ${tweetsResponse.status}`)
-      return { tweets: [], error: `Error ${tweetsResponse.status}` }
+      const errorText = await tweetsResponse.text()
+      console.error('Error fetching tweets:', errorText)
+
+      if (tweetsResponse.status === 429) {
+        return { tweets: [], error: 'Rate limit excedido' }
+      }
+      return { tweets: [], error: `Error API: ${tweetsResponse.status}` }
     }
 
-    const { data: tweets }: { data: TwitterTweet[] } = await tweetsResponse.json()
-    const formattedTweets = await Promise.all(tweets.map(tweet => formatTweet(user, tweet)))
+    const tweetsData = await tweetsResponse.json()
+    const tweets: TwitterTweet[] = tweetsData.data || []
+
+    const formattedTweets = tweets.map((tweet) => ({
+      id: tweet.id,
+      text: tweet.text,
+      created_at: tweet.created_at,
+      url: `https://twitter.com/${TWITTER_USERNAME}/status/${tweet.id}`,
+      author: {
+        name: user.name,
+        username: user.username,
+        avatar: user.profile_image_url?.replace('_normal', '_200x200') || '/logo.webp'
+      },
+      metrics: tweet.public_metrics
+        ? {
+            likes: tweet.public_metrics.like_count,
+            retweets: tweet.public_metrics.retweet_count,
+            replies: tweet.public_metrics.reply_count
+          }
+        : undefined
+    }))
 
     return { tweets: formattedTweets }
   } catch (error) {
@@ -194,98 +200,98 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[]; error?: 
 
 export async function GET () {
   try {
+    // Leer caché existente
     const cache = await readCache()
     const now = Date.now()
-    const { allowed: canCall, callCount, remaining } = await getAPIStatus()
-    const apiStatus = { callsUsed: callCount, callsRemaining: remaining, quotaExceeded: !canCall }
 
-    // Caché válido
+    // Si el caché es válido (menos de 15 min), devolver caché
     if (cache && (now - cache.lastFetch) < CACHE_DURATION) {
-      return buildResponse({
+      console.log('Devolviendo tweets desde caché (aún válido)')
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
-        cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60),
-        apiStatus
-      })
-    }
-
-    // Cuota agotada y hay caché
-    if (!canCall && cache) {
-      return buildResponse({
-        tweets: cache.tweets,
-        fromCache: true,
-        cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60),
-        warning: 'Cuota de API agotada. Usando datos en caché.',
-        apiStatus
-      })
-    }
-
-    // Cuota agotada sin caché
-    if (!canCall) {
-      return buildResponse({
-        tweets: [],
-        error: 'Cuota de API agotada y sin datos en caché',
-        apiStatus
-      })
-    }
-
-    console.log('Obteniendo tweets nuevos...')
-    const { tweets, error } = await fetchTweetsFromTwitterAPI()
-
-    // Éxito
-    if (tweets.length > 0) {
-      const newCallCount = await trackAPICall()
-      await writeCache(tweets)
-      return buildResponse({
-        tweets,
-        fromCache: false,
-        apiStatus: {
-          callsUsed: newCallCount,
-          callsRemaining: Math.max(0, API_CALLS_PER_MONTH - newCallCount),
-          quotaExceeded: false
+        cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60) // minutos
+      }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=300'
         }
       })
     }
 
-    // Error pero hay caché
-    if (cache) {
-      return buildResponse({
+    console.log('Caché expirado o no existe, obteniendo tweets nuevos...')
+
+    // Intentar obtener tweets frescos
+    const { tweets, error } = await fetchTweetsFromTwitterAPI()
+
+    if (tweets.length > 0) {
+      // Éxito: guardar en caché y devolver
+      await writeCache(tweets)
+      console.log('Tweets obtenidos de la API y guardados en caché')
+
+      return new Response(JSON.stringify({
+        tweets,
+        fromCache: false
+      }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=300'
+        }
+      })
+    }
+
+    // Error al obtener tweets: usar caché si existe
+    if (cache && cache.tweets.length > 0) {
+      // Actualizar timestamp para no reintentar inmediatamente
+      await updateCacheTimestamp()
+      console.log('Error en API, devolviendo tweets desde caché antiguo')
+
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
         cacheAge: Math.round((now - cache.lastSuccessfulFetch) / 1000 / 60),
-        warning: error || 'Error en API, usando caché',
-        apiStatus
+        warning: error || 'Usando datos en caché debido a límite de API'
+      }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=300'
+        }
       })
     }
 
-    // Error y sin caché
-    return buildResponse({
+    // No hay caché ni tweets nuevos
+    return new Response(JSON.stringify({
       tweets: [],
-      error: error || 'No se pudieron obtener los tweets',
-      apiStatus
+      error: error || 'No se pudieron obtener los tweets y no hay caché disponible'
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
     })
   } catch (error) {
-    console.error('Error en endpoint:', error)
-    const cache = await readCache()
-    const callCount = await getAPICallCount()
-    const apiStatus = {
-      callsUsed: callCount,
-      callsRemaining: Math.max(0, API_CALLS_PER_MONTH - callCount),
-      quotaExceeded: false
-    }
+    console.error('Error en endpoint de Twitter:', error)
 
-    if (cache?.tweets.length) {
-      return buildResponse({
+    // Último recurso: intentar devolver caché
+    const cache = await readCache()
+    if (cache && cache.tweets.length > 0) {
+      return new Response(JSON.stringify({
         tweets: cache.tweets,
         fromCache: true,
-        error: 'Error del servidor, usando caché',
-        apiStatus
+        error: 'Error del servidor, usando caché'
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
       })
     }
 
-    return buildResponse(
-      { tweets: [], error: 'Error al obtener tweets', apiStatus },
-      500
-    )
+    return new Response(JSON.stringify({
+      tweets: [],
+      error: 'Error al obtener tweets'
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 }

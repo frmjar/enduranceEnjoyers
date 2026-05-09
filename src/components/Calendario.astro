@@ -77,6 +77,7 @@ const { class: className = '', ...props } = Astro.props;
 
   <section class={`spacing-section ${className}`} {...props}>
     <div class='max-w-8xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12'>
+
       <SectionTitle title='Próximas carreras iRacing' subtitle='No te pierdas ningún evento de resistencia' />
 <!--<CardEventoDestacado /> -->
       {allRaces.length > 0
@@ -84,7 +85,7 @@ const { class: className = '', ...props } = Astro.props;
           <div class='space-y-12'>
             {sections.map(section => (
               section.races.length > 0 && (
-                <div> 
+                <div>
                   <div class='flex items-center gap-4 mb-6'>
                     <div class={`flex items-center justify-center w-12 h-12 rounded-xl ${section.iconClasses}`}>
                       <Icon name='calendar' class='w-6 h-6' />
@@ -116,6 +117,17 @@ const { class: className = '', ...props } = Astro.props;
             </p>
           </div>
           )}
+      {allRaces.length === 0 && (
+        <div class='mt-10 text-center py-16 bg-racing-surface/50 rounded-2xl border border-dashed border-white/10'>
+          <div class='w-20 h-20 bg-racing-elevated rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10'>
+            <Icon name='calendar' size='lg' class='text-text-muted' />
+          </div>
+          <h3 class='text-xl font-bold text-text-primary'>Sin carreras programadas</h3>
+          <p class='mt-2 text-text-muted text-lg max-w-xl mx-auto'>
+            No hay eventos visibles en este momento, pero la sección permanece explícita para que el visitante entienda que el calendario está vacío temporalmente.
+          </p>
+        </div>
+      )}
 
     <!-- Botón para ver calendario completo -->
       <div class='text-center mt-12'>

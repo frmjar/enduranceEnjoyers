@@ -4,6 +4,7 @@ const links = Astro.props.links;
   <div
     id='mobile-menu'
     class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
+    aria-hidden='true'
   >
     <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
     <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange opacity-0 transition-opacity duration-500' />
@@ -40,20 +41,27 @@ const links = Astro.props.links;
     <script define:vars={{}}>
   const closeMenuButton = document.getElementById('close-menu')
   const mobileMenu = document.getElementById('mobile-menu')
+  const mobileMenuButton = document.getElementById('mobile-menu-button')
   const mobileMenuLinks = mobileMenu?.querySelectorAll('.mobile-link')
+  const previouslyFocused = { current: null }
 
   const closeMobileMenu = () => {
     mobileMenu?.classList.add('translate-x-full')
     mobileMenu?.classList.remove('translate-x-0')
+    mobileMenu?.setAttribute('aria-hidden', 'true')
+    mobileMenuButton?.setAttribute('aria-expanded', 'false')
     document.body.style.overflow = ''
+    previouslyFocused.current?.focus?.()
   }
 
   const openMobileMenu = () => {
     if (!mobileMenu) return
+    previouslyFocused.current = document.activeElement
     mobileMenu.classList.remove('translate-x-full')
     mobileMenu.classList.add('translate-x-0')
+    mobileMenu.setAttribute('aria-hidden', 'false')
     document.body.style.overflow = 'hidden'
-  
+
     // Animar items cuando se abre el menú
     const menuItems = mobileMenu.querySelectorAll('.mobile-menu-item')
     menuItems.forEach((item, index) => {
@@ -69,6 +77,18 @@ const links = Astro.props.links;
 
   document.addEventListener('DOMContentLoaded', () => {
     closeMenuButton?.addEventListener('click', closeMobileMenu)
+
+    mobileMenu?.addEventListener('click', (event) => {
+      if (event.target === mobileMenu) {
+        closeMobileMenu()
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !mobileMenu?.classList.contains('translate-x-full')) {
+        closeMobileMenu()
+      }
+    })
 
     mobileMenuLinks?.forEach(link => {
       link.addEventListener('click', closeMobileMenu)

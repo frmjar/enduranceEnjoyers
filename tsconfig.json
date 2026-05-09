@@ -11,9 +11,11 @@
     "allowJs": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
     "types": [
-      "astro/client"
+      "astro/client",
+      "node"
     ]
   },
   "include": [

@@ -197,9 +197,12 @@ const jsonLD = `{
       <!-- JSON-LD Structured Data -->
       <script type='application/ld+json' set:html={jsonLD} />
     </head>
-    <body class='flex flex-col min-h-screen'>
+    <body class='flex flex-col min-h-screen overflow-x-hidden'>
+      <a href='#content-start' class='sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[999] focus:rounded-xl focus:bg-racing-dark focus:px-4 focus:py-3 focus:text-text-primary focus:ring-2 focus:ring-accent-orange'>Saltar al contenido</a>
       <div class='flex-grow'>
-        <slot />
+        <div id='content-start'>
+          <slot />
+        </div>
         <Analytics />
         <SpeedInsights />
       </div>

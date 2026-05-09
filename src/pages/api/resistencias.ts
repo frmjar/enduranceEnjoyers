@@ -5,31 +5,45 @@ const SPREADSHEET_ID = import.meta.env.SHEET_ID_RESISTENCIAS
 const headers = ['Season', 'Week', 'Fecha', 'Serie', 'Team', 'Duracion', 'Circuito', 'Lluvia', 'Coches']
 
 export const GET: APIRoute = async (): Promise<Response> => {
-  const response = await sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'B295:J345'
-  })
+  try {
+    if (!SPREADSHEET_ID) {
+      console.warn('SHEET_ID_RESISTENCIAS no configurado')
+      return new Response(JSON.stringify([]), {
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
 
-  const rows = response.data.values ?? []
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'B348:J396'
+    })
 
-  let lastSeason = ''
-  let lastWeek = ''
-  let lastFecha = ''
+    const rows = response.data.values ?? []
 
-  const data = rows.map(row => {
-    if (row[0]) lastSeason = row[0]
-    else row[0] = lastSeason
+    let lastSeason = ''
+    let lastWeek = ''
+    let lastFecha = ''
 
-    if (row[1]) lastWeek = row[1]
-    else row[1] = lastWeek
+    const data = rows.map(row => {
+      if (row[0]) lastSeason = row[0]
+      else row[0] = lastSeason
 
-    if (row[2]) lastFecha = row[2]
-    else row[2] = lastFecha
+      if (row[1]) lastWeek = row[1]
+      else row[1] = lastWeek
 
-    return Object.fromEntries(headers.map((h, i): [string, string] => [h, row[i] || '']))
-  })
+      if (row[2]) lastFecha = row[2]
+      else row[2] = lastFecha
 
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' }
-  })
+      return Object.fromEntries(headers.map((h, i): [string, string] => [h, row[i] || '']))
+    })
+
+    return new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json' }
+    })
+  } catch (error) {
+    console.error('Error fetching resistencias from Sheets:', error)
+    return new Response(JSON.stringify([]), {
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
 }
