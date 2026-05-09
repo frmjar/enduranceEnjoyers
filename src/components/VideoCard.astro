@@ -56,9 +56,9 @@ const formatDate = (dateString) => {
 }
 ---
 
-  <div class={`relative bg-bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col h-full ${className}`}>
+  <div class={`relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface rounded-xl overflow-hidden border-2 border-white/10 hover:border-accent-orange/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1 group flex flex-col h-full ${className}`}>
     <!-- Contenedor de video/thumbnail -->
-    <div class='relative aspect-[4/3] bg-gray-800 overflow-hidden flex-shrink-0'>
+    <div class='relative aspect-[4/3] bg-racing-elevated overflow-hidden flex-shrink-0'>
       <!-- Thumbnail (se oculta cuando se reproduce el video) -->
       <div class='video-thumbnail w-full h-full relative'>
         <img
@@ -70,7 +70,7 @@ const formatDate = (dateString) => {
         <!-- Overlay de play -->
         <div class='absolute inset-0 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center'>
           <button
-            class='play-button w-16 h-16 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transform hover:scale-110 transition-all duration-300'
+            class='play-button w-16 h-16 bg-accent-orange hover:bg-accent-orange-light rounded-full flex items-center justify-center opacity-80 hover:opacity-100 transform hover:scale-110 transition-all duration-300'
             onclick={`playVideo('${video?.id}', ${start}, ${end}, this)`}
             aria-label='Reproducir video'
           >
@@ -81,7 +81,7 @@ const formatDate = (dateString) => {
         </div>
 
         <!-- Duración -->
-        <div class='absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded'>
+        <div class='absolute bottom-2 right-2 bg-racing-black/80 text-white text-xs px-2 py-1 rounded-lg'>
           {formatDuration(video?.duration || 'PT0S')}
         </div>
       </div>
@@ -95,8 +95,8 @@ const formatDate = (dateString) => {
     <!-- Contenido principal que ocupa el espacio disponible -->
     <div class='flex flex-col flex-grow'>
       <!-- Título y descripción -->
-      <div class='p-4 pb-2 flex-grow'>
-        <h3 class='text-lg font-semibold text-text-primary mb-2 group-hover:text-orange-400 transition-colors duration-300'>
+      <div class='p-4 flex-grow'>
+        <h3 class='text-lg font-semibold text-text-primary mb-2 group-hover:text-accent-orange transition-colors duration-300'>
           {video?.title || 'Título del video no disponible'}
         </h3>
 
@@ -107,13 +107,13 @@ const formatDate = (dateString) => {
 
       <!-- Información inferior siempre en la parte de abajo -->
       <div class='px-4 pb-4 mt-auto'>
-        <div class='flex items-center justify-between text-xs text-text-muted border-t border-gray-700 pt-3'>
+        <div class='flex items-center justify-between text-xs text-text-muted border-t border-white/5 pt-3'>
           <span>{formatViews(video?.viewCount || '0')} vistas</span>
 
           <!-- Nombre del canal centrado -->
           <div class='flex items-center gap-1'>
-            <Youtube class='w-3 h-3 text-red-500' />
-            <span class='text-red-200 font-medium'>
+            <Youtube class='w-3 h-3 text-accent-orange' />
+            <span class='text-accent-orange font-medium'>
               {video?.channelTitle || 'Canal'}
             </span>
           </div>

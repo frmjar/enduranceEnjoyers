@@ -1,0 +1,147 @@
+---
+---
+  <div class='relative overflow-hidden bg-gradient-to-br from-racing-card/90 to-racing-card/40 backdrop-blur-md rounded-2xl border border-white/5 p-8 lg:p-10'>
+    <div class='relative'>
+      <div class='mb-8 flex flex-col gap-3'>
+        <span class='badge-racing self-start'>Contacto directo</span>
+        <div>
+          <h3 class='text-2xl lg:text-3xl font-bold text-text-primary mb-2'>Cuéntanos quién eres</h3>
+          <p class='text-text-secondary text-sm max-w-2xl'>
+            Cuentanos sobre ti y nos pondremos en contacto pronto.
+          </p>
+        </div>
+      </div>
+
+      <form id='contactForm' class='space-y-6'>
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-5'>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block' for='iracingName'>Nombre en iRacing <span class='text-accent-orange'>*</span></label>
+            <input
+              id='iracingName'
+              type='text'
+              name='iracingName'
+              placeholder='Tu nombre'
+              autocomplete='name'
+              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+              required
+            />
+          </div>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block' for='discord'>Discord <span class='text-accent-orange'>*</span></label>
+            <input
+              id='discord'
+              type='text'
+              name='discord'
+              placeholder='usuario#0000'
+              autocomplete='off'
+              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+              required
+            />
+          </div>
+        </div>
+
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-5'>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-2.5 block' for='email'>Email</label>
+            <input
+              id='email'
+              type='email'
+              name='email'
+              placeholder='tu@email.com'
+              autocomplete='email'
+              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+            />
+          </div>
+          <div>
+            <label class='text-sm font-semibold text-text-primary mb-3.5 block'>¿Experiencia en iRacing? <span class='text-accent-orange'>*</span></label>
+            <div class='flex gap-3'>
+              <label class='flex-1 relative group cursor-pointer'>
+                <input type='radio' name='experience' value='si' required class='sr-only peer' />
+                <div class='min-h-12 p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/60 group-hover:border-accent-orange/30 transition-all text-center'>
+                  <span class='text-sm font-medium text-text-primary'>Sí</span>
+                </div>
+              </label>
+              <label class='flex-1 relative group cursor-pointer'>
+                <input type='radio' name='experience' value='no' required class='sr-only peer' />
+                <div class='min-h-12 p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/60 group-hover:border-accent-orange/30 transition-all text-center'>
+                  <span class='text-sm font-medium text-text-primary'>No</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class='text-sm font-semibold text-text-primary mb-2.5 block' for='additionalInfo'>Cuéntanos más</label>
+          <textarea
+            id='additionalInfo'
+            name='additionalInfo'
+            rows='4'
+            placeholder='Tu experiencia, objetivos o cualquier detalle útil para conocerte mejor.'
+            class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all resize-none'
+          />
+        </div>
+
+        <div class='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
+          <p class='text-xs sm:text-sm text-text-muted leading-relaxed'>
+            Respondemos por Discord o email. Mantén el mensaje breve y claro.
+          </p>
+
+          <button
+            type='submit'
+            class='btn-racing w-full sm:w-auto inline-flex items-center justify-center min-h-12 px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:ring-offset-2 focus:ring-offset-racing-dark'
+          >
+            Enviar solicitud
+          </button>
+        </div>
+
+        <div id='formMessage' class='hidden p-4 rounded-lg text-sm font-medium text-center' role='status' aria-live='polite' />
+      </form>
+    </div>
+  </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm')
+    const messageDiv = document.getElementById('formMessage')
+
+    if (!form) return
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const submitButton = form.querySelector('button[type="submit"]')
+      const originalText = submitButton.textContent
+      submitButton.setAttribute('aria-busy', 'true')
+
+      submitButton.disabled = true
+      submitButton.textContent = 'Enviando...'
+
+      try {
+        const response = await fetch('/api/contacto', {
+          method: 'POST',
+          body: new FormData(form)
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          form.reset()
+          messageDiv.className = 'block p-4 rounded-lg text-sm font-medium text-center bg-green-500/20 border border-green-500/30 text-green-300'
+          messageDiv.textContent = 'Solicitud enviada. Te contactaremos pronto por el canal que dejaste.'
+          setTimeout(() => { messageDiv.className = 'hidden' }, 5000)
+        } else {
+          throw new Error(result.message || 'Error')
+        }
+      } catch (error) {
+        console.error(error)
+        messageDiv.className = 'block p-4 rounded-lg text-sm font-medium text-center bg-red-500/20 border border-red-500/30 text-red-300'
+        messageDiv.textContent = 'No se pudo enviar la solicitud. Revisa los campos y vuelve a intentarlo.'
+      } finally {
+        submitButton.disabled = false
+        submitButton.textContent = originalText
+        submitButton.removeAttribute('aria-busy')
+      }
+    })
+  })
+    </script>

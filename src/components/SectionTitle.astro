@@ -9,13 +9,21 @@ const {
 } = Astro.props
 ---
 
-  <div class={`${centered ? 'text-center' : ''} mb-12 ${className}`}>
-    <h2 class={`text-4xl font-bold text-text-primary mb-4 ${titleClass}`}>
+  <div class={`${centered ? 'text-center' : ''} mb-12 md:mb-16 ${className}`}>
+  <!-- Título con mejor tipografía -->
+    <h2 class={`text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6 tracking-tight ${titleClass}`}>
       {title}
     </h2>
-    <div class='w-24 h-1 bg-orange-500 rounded-full' class:list={[centered ? 'mx-auto' : '']} />
+
+  <!-- Línea accent con gradiente -->
+    <div class={`flex items-center gap-2 ${centered ? 'justify-center' : ''}`}>
+      <div class='w-8 h-0.5 bg-gradient-to-r from-transparent to-accent-orange rounded-full' />
+      <div class='w-16 h-1 bg-accent-orange rounded-full' />
+      <div class='w-8 h-0.5 bg-gradient-to-l from-transparent to-accent-orange rounded-full' />
+    </div>
+
     {subtitle && (
-      <p class={`text-text-secondary max-w-2xl mt-4 ${centered ? 'mx-auto' : ''} ${subtitleClass}`}>
+      <p class={`text-text-secondary text-base md:text-lg max-w-2xl mt-6 leading-relaxed ${centered ? 'mx-auto' : ''} ${subtitleClass}`}>
         {subtitle}
       </p>
     )}

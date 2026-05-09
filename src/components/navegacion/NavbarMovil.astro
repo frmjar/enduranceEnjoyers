@@ -1,0 +1,100 @@
+---
+const links = Astro.props.links;
+---
+  <div
+    id='mobile-menu'
+    class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
+    aria-hidden='true'
+  >
+    <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
+    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange opacity-0 transition-opacity duration-500' />
+
+    <div class='relative flex flex-col items-center justify-center h-full px-8'>
+      <button
+        id='close-menu'
+        class='absolute top-4 right-4 p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200 mobile-menu-item'
+        aria-label='Cerrar menú'
+      >
+        <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' />
+        </svg>
+      </button>
+
+      <nav class='flex flex-col items-center gap-6'>
+        {links.map((link, index) => (
+          <a
+            href={link.href}
+            class={`mobile-link group relative text-2xl font-medium text-white/70 hover:text-white transition-all duration-300 mobile-menu-item stagger-${index + 1}`}
+          >
+            <span class='relative z-10'>{link.label}</span>
+            <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-full' />
+          </a>
+        ))}
+      </nav>
+
+      <div class='absolute bottom-8 opacity-20 mobile-menu-item stagger-7'>
+        <img src='/logotextclear.webp' alt='logo_equipo' class='h-8 w-auto' aria-hidden='true' />
+      </div>
+    </div>
+  </div>
+
+    <script define:vars={{}}>
+  const closeMenuButton = document.getElementById('close-menu')
+  const mobileMenu = document.getElementById('mobile-menu')
+  const mobileMenuButton = document.getElementById('mobile-menu-button')
+  const mobileMenuLinks = mobileMenu?.querySelectorAll('.mobile-link')
+  const previouslyFocused = { current: null }
+
+  const closeMobileMenu = () => {
+    mobileMenu?.classList.add('translate-x-full')
+    mobileMenu?.classList.remove('translate-x-0')
+    mobileMenu?.setAttribute('aria-hidden', 'true')
+    mobileMenuButton?.setAttribute('aria-expanded', 'false')
+    document.body.style.overflow = ''
+    previouslyFocused.current?.focus?.()
+  }
+
+  const openMobileMenu = () => {
+    if (!mobileMenu) return
+    previouslyFocused.current = document.activeElement
+    mobileMenu.classList.remove('translate-x-full')
+    mobileMenu.classList.add('translate-x-0')
+    mobileMenu.setAttribute('aria-hidden', 'false')
+    document.body.style.overflow = 'hidden'
+
+    // Animar items cuando se abre el menú
+    const menuItems = mobileMenu.querySelectorAll('.mobile-menu-item')
+    menuItems.forEach((item, index) => {
+      item.style.opacity = '0'
+      item.style.transform = 'translateY(20px)'
+      setTimeout(() => {
+        item.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        item.style.opacity = '1'
+        item.style.transform = 'translateY(0)'
+      }, 50 * index)
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    closeMenuButton?.addEventListener('click', closeMobileMenu)
+
+    mobileMenu?.addEventListener('click', (event) => {
+      if (event.target === mobileMenu) {
+        closeMobileMenu()
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !mobileMenu?.classList.contains('translate-x-full')) {
+        closeMobileMenu()
+      }
+    })
+
+    mobileMenuLinks?.forEach(link => {
+      link.addEventListener('click', closeMobileMenu)
+    })
+  })
+
+  // Exponer openMobileMenu globalmente
+  window.openMobileMenu = openMobileMenu
+  </script>

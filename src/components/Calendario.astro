@@ -1,6 +1,6 @@
 ---
 import Icon from '../icons/Icon.astro'
-import Card from './Card.astro'
+import CardCalendario from './CardCalendario.astro'
 import SectionTitle from './SectionTitle.astro'
 
 const meses = {
@@ -18,16 +18,14 @@ const meses = {
   diciembre: 11
 }
 
-const parseRaceDate = (fecha) => {
+const parseRaceDate = (fecha: string) => {
   const [d, m, y] = fecha.split(' ')
   const monthName = m.toLowerCase()
   return new Date(parseInt(y), meses[monthName], parseInt(d))
 }
 
-const getWeekNumber = (date) => {
-  const d = new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-  )
+const getWeekNumber = (date: Date) => {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
   return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
@@ -47,94 +45,102 @@ const currentWeek = getWeekNumber(today)
 const nextWeek = currentWeek + 1
 const year = today.getFullYear()
 
-const races = scheduleData
-  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha) }))
-  .filter((r) => {
-    const week = getWeekNumber(r.date)
-    return (
-      r.date.getFullYear() === year &&
-      (week === currentWeek || week === nextWeek)
-    )
-  })
+// Filtrar carreras de esta semana y la próxima
+const allRaces = scheduleData
+  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha), weekNum: 0 }))
+  .map((r) => ({ ...r, weekNum: getWeekNumber(r.date) }))
+  .filter((r) => r.date.getFullYear() === year && (r.weekNum === currentWeek || r.weekNum === nextWeek))
   .sort((a, b) => a.date.getTime() - b.date.getTime())
 
-const groupedRaces = races.reduce((acc, r) => {
-  const week = r.Week
-  acc[week] = acc[week] || []
-  acc[week].push(r)
-  return acc
-}, {})
+const thisWeekRaces = allRaces.filter(r => r.weekNum === currentWeek)
+const nextWeekRaces = allRaces.filter(r => r.weekNum === nextWeek)
 
-const sortedWeeks = Object.keys(groupedRaces).sort((a, b) => parseInt(a) - parseInt(b))
+const sections = [
+  {
+    title: 'Esta semana',
+    week: `Semana ${thisWeekRaces[0]?.Week || ''}`,
+    iconClasses: 'bg-gradient-to-br from-accent-orange to-accent-orange-light text-white shadow-lg shadow-accent-orange/20',
+    subtitleClasses: 'text-accent-orange',
+    races: thisWeekRaces
+  },
+  {
+    title: 'Próxima semana',
+    week: `Semana ${nextWeekRaces[0]?.Week || ''}`,
+    iconClasses: 'bg-racing-elevated border border-white/10 text-text-secondary',
+    subtitleClasses: 'text-text-muted',
+    races: nextWeekRaces
+  }
+]
 
 const { class: className = '', ...props } = Astro.props;
 ---
 
-  <section class={`spacing-section max-w-8xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 ${className}`} {...props}>
-    <SectionTitle title='Próximas carreras iRacing' />
+  <section class={`spacing-section ${className}`} {...props}>
+    <div class='max-w-8xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12'>
 
-    {
-    sortedWeeks.length > 0
-      ? (
-        <div class='space-y-12'>
-          {sortedWeeks.map((weekNumber, index) => (
-            <div class='mb-10'>
-              <div class='flex items-center gap-4 mb-6'>
-                <div class='flex items-center justify-center w-12 h-12 bg-orange-500 rounded-xl'>
-                  <Icon name='calendar' class='text-white' />
+      <SectionTitle title='Próximas carreras iRacing' subtitle='No te pierdas ningún evento de resistencia' />
+<!--<CardEventoDestacado /> -->
+      {allRaces.length > 0
+        ? (
+          <div class='space-y-12'>
+            {sections.map(section => (
+              section.races.length > 0 && (
+                <div>
+                  <div class='flex items-center gap-4 mb-6'>
+                    <div class={`flex items-center justify-center w-12 h-12 rounded-xl ${section.iconClasses}`}>
+                      <Icon name='calendar' class='w-6 h-6' />
+                    </div>
+                    <div>
+                      <h3 class='text-xl md:text-2xl font-bold text-text-primary'>{section.title}</h3>
+                      <span class={`text-sm ${section.subtitleClasses}`}>{section.week}</span>
+                    </div>
+                    <div class='flex-1 h-px bg-gradient-to-r from-accent-orange  to-transparent' />
+                  </div>
+
+                  <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+                    {section.races.map((race) => (
+                      <CardCalendario race={race} />
+                    ))}
+                  </div>
                 </div>
-                <h3 class='text-2xl font-bold text-text-primary'>
-                  Semana {weekNumber}{' '}
-                  {index === 0 ? '(Esta semana)' : '(Próxima semana)'}
-                </h3>
-                <div class='flex-1 h-px bg-border-light' />
-              </div>
-
-              <div class='grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-8xl mx-auto px-2 sm:px-0'>
-                {groupedRaces[weekNumber].map((race, raceIndex) => {
-                  const raceDetails = [
-                    { label: 'Equipo', value: race.Team === 'SI' ? 'Sí' : 'No' },
-                    { label: 'Duración', value: race.Duracion },
-                    { label: 'Circuito', value: race.Circuito },
-                    { label: 'Prob. lluvia', value: race.Lluvia || 'N/A' },
-                    { label: 'Coches', value: race.Coches }
-                  ]
-
-                  return (
-                    <Card
-                      title={race.Serie}
-                      titleHoverColor
-                      headerDate={race.Fecha}
-                      headerSeason={race.Season}
-                      details={raceDetails}
-                    />
-                  )
-                })}
-              </div>
+              )
+            ))}
+          </div>
+          )
+        : (
+          <div class='text-center py-16 bg-racing-surface/50 rounded-2xl border border-white/5'>
+            <div class='w-20 h-20 bg-racing-elevated rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10'>
+              <Icon name='calendar' size='lg' class='text-text-muted' />
             </div>
-          ))}
-        </div>
-        )
-      : (
-        <div class='text-center py-12'>
-          <div class='w-16 h-16 bg-bg-secondary rounded-full flex items-center justify-center mx-auto mb-4'>
+            <p class='text-text-muted text-lg'>
+              No hay carreras programadas para esta semana o la siguiente
+            </p>
+          </div>
+          )}
+      {allRaces.length === 0 && (
+        <div class='mt-10 text-center py-16 bg-racing-surface/50 rounded-2xl border border-dashed border-white/10'>
+          <div class='w-20 h-20 bg-racing-elevated rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10'>
             <Icon name='calendar' size='lg' class='text-text-muted' />
           </div>
-          <p class='text-text-muted text-lg'>
-            No hay carreras programadas para esta semana o la siguiente
+          <h3 class='text-xl font-bold text-text-primary'>Sin carreras programadas</h3>
+          <p class='mt-2 text-text-muted text-lg max-w-xl mx-auto'>
+            No hay eventos visibles en este momento, pero la sección permanece explícita para que el visitante entienda que el calendario está vacío temporalmente.
           </p>
         </div>
-        )
-  }
+      )}
 
     <!-- Botón para ver calendario completo -->
-    <div class='text-center mt-8'>
-      <a
-        href='/calendario'
-        class='inline-flex items-center gap-2 bg-orange-800 hover:bg-orange-900 text-white font-bold px-6 py-3 rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl border border-orange-500'
-      >
-        <Icon name='calendar' class='w-5 h-5' />
-        Ver calendario completo
-      </a>
+      <div class='text-center mt-12'>
+        <a
+          href='/calendario'
+          class='group inline-flex items-center gap-3 bg-gradient-to-r from-accent-orange to-accent-orange-light hover:from-accent-orange-light hover:to-accent-orange text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-accent-orange/25 hover:shadow-xl hover:shadow-accent-orange/40 hover:-translate-y-0.5'
+        >
+          <Icon name='calendar' class='w-5 h-5' />
+          <span>Ver calendario completo</span>
+          <svg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5 transition-transform duration-300 group-hover:translate-x-1' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>

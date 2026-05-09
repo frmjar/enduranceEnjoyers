@@ -3,15 +3,13 @@ import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from '@vercel/speed-insights/astro'
 import '../styles/global.css'
 import Footer from './Footer.astro'
-import Header from './Header.astro'
 
 const {
   title = 'Endurance Enjoyers | Equipo español de resistencia iRacing',
   description = 'Únete a Endurance Enjoyers, la comunidad de sim racing especializada en carreras de resistencia en iRacing. Experiencias únicas, eventos exclusivos y pasión por las carreras de larga duración.',
   keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras, simracing, motorsport virtual, España, iRacing calendar, calendario iRacing',
   ogImage = '/og-image.png',
-  canonicalUrl,
-  showHeader = false
+  canonicalUrl
 } = Astro.props
 
 const currentUrl = canonicalUrl || Astro.url.href
@@ -199,10 +197,12 @@ const jsonLD = `{
       <!-- JSON-LD Structured Data -->
       <script type='application/ld+json' set:html={jsonLD} />
     </head>
-    <body class='flex flex-col min-h-screen'>
-      {showHeader && <Header />}
+    <body class='flex flex-col min-h-screen overflow-x-hidden'>
+      <a href='#content-start' class='sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[999] focus:rounded-xl focus:bg-racing-dark focus:px-4 focus:py-3 focus:text-text-primary focus:ring-2 focus:ring-accent-orange'>Saltar al contenido</a>
       <div class='flex-grow'>
-        <slot />
+        <div id='content-start'>
+          <slot />
+        </div>
         <Analytics />
         <SpeedInsights />
       </div>

@@ -9,12 +9,12 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
   const data = await request.formData()
 
   const iracingName = data.get('iracingName')?.toString() ?? ''
-  const iracingId = data.get('iracingId')?.toString() ?? ''
   const discord = data.get('discord')?.toString() ?? ''
   const email = data.get('email')?.toString() ?? ''
-  const iracingSafety = data.get('iracingSafety')?.toString() ?? ''
   const experience = data.get('experience')?.toString() ?? ''
   const additionalInfo = data.get('additionalInfo')?.toString() ?? ''
+  const iracingId = ''
+  const iracingSafety = ''
 
   // Formatear fecha al formato DD/MM/AAAA HH:mm:ss
   const now = new Date()

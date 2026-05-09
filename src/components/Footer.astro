@@ -14,41 +14,42 @@ const siteLinks = [
   { name: 'Contacto', url: '/#contacto' }
 ]
 
-const legalLinks = [
-  { name: 'Política de Privacidad', url: '/privacidad' },
-  { name: 'Términos y Condiciones', url: '/terminos' }
-]
-
 const { class: className = '', ...props } = Astro.props;
 ---
 
-  <footer class={`py-8 px-4 bg-primary-header ${className}`} {...props}>
+  <footer class={`py-6 md:py-10 px-4 ${className}`} {...props}>
+    <!-- Línea accent superior -->
+    <div class='absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-orange/60 to-transparent' />
+
     <div class='max-w-6xl mx-auto'>
-      <div class='grid grid-cols-1 md:grid-cols-3 gap-8 mb-8'>
+      <div class='grid grid-cols-1 md:grid-cols-3 gap-10 mb-10'>
+        <!-- Logo y descripción -->
         <div class='text-center md:text-left'>
-          <a href='/' class='inline-block'>
+          <a href='/' class='inline-block group'>
             <Image
               src={Logo}
               width={100}
               height={100}
               alt={`${brandName} Logo`}
-              class='mx-auto md:mx-0 mb-4'
+              class='mx-auto md:mx-0 mb-4 transition-transform duration-300 group-hover:scale-105'
             />
           </a>
-          <p class='text-sm text-gray-300 max-w-xs mx-auto md:mx-0'>
+          <p class='text-sm text-text-secondary leading-relaxed max-w-xs mx-auto md:mx-0'>
             Equipo de carreras de resistencia en iRacing. Participamos en las principales competiciones de resistencia virtual.
           </p>
         </div>
 
+        <!-- Enlaces -->
         <div>
-          <h3 class='text-white font-semibold text-lg mb-4 text-center md:text-left'>Enlaces</h3>
-          <ul class='space-y-2 text-center md:text-left'>
+          <h3 class='text-text-primary font-semibold text-lg mb-5 text-center md:text-left'>Enlaces</h3>
+          <ul class='space-y-3 text-center md:text-left'>
             {siteLinks.map(link => (
               <li>
                 <a
                   href={link.url}
-                  class='text-gray-300 hover:text-white transition-colors duration-300'
+                  class='text-text-secondary hover:text-text-primary transition-colors duration-200 inline-flex items-center gap-2 group'
                 >
+                  <span class='w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-200 group-hover:w-3' />
                   {link.name}
                 </a>
               </li>
@@ -56,48 +57,40 @@ const { class: className = '', ...props } = Astro.props;
           </ul>
         </div>
 
+        <!-- Redes sociales -->
         <div class='text-center md:text-left'>
-          <h3 class='text-white font-semibold text-lg mb-4'>Síguenos</h3>
-          <div class='flex justify-center md:justify-start gap-4 mb-4'>
+          <h3 class='text-text-primary font-semibold text-lg mb-5'>Síguenos</h3>
+          <div class='flex justify-center md:justify-start gap-4 mb-5'>
             <a
               href='https://x.com/EnduEnjoyers'
               target='_blank'
               aria-label='Twitter'
-              class='text-gray-300 hover:text-white transition-colors duration-300'
+              class='p-3 rounded-xl bg-racing-surface hover:bg-racing-elevated text-text-secondary hover:text-text-primary transition-all duration-200 hover:-translate-y-1'
               rel='noreferrer'
             >
-              <TwitterIcon class='w-6 h-6 fill-current' />
+              <TwitterIcon class='w-5 h-5 fill-current' />
             </a>
 
             <a
               href='https://www.twitch.tv/enduranceenjoyers'
               target='_blank'
               aria-label='Twitch'
-              class='text-gray-300 hover:text-white transition-colors duration-300'
+              class='p-3 rounded-xl bg-racing-surface hover:bg-racing-elevated text-text-secondary hover:text-text-primary transition-all duration-200 hover:-translate-y-1'
               rel='noreferrer'
             >
-              <TwitchIcon class='w-6 h-6 fill-current' />
+              <TwitchIcon class='w-5 h-5 fill-current' />
             </a>
           </div>
-          <p class='text-sm text-gray-300'>¿Preguntas? <a href='/#contacto' class='text-white hover:underline'>Contáctanos</a></p>
+          <p class='text-sm text-text-secondary'>¿Preguntas? <a href='/#contacto' class='text-text-primary hover:text-accent-orange transition-colors duration-200'>Contáctanos</a></p>
         </div>
       </div>
 
-      <div class='border-t border-gray-700 my-6' />
+      <!-- Separador con gradiente -->
+      <div class='h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-8' />
 
-      <div class='flex flex-col md:flex-row justify-between items-center'>
-        <p class='text-sm text-gray-400 mb-4 md:mb-0'>© {currentYear} {brandName}. Todos los derechos reservados.</p>
+      <div class='flex flex-col md:flex-row justify-between items-center gap-4'>
+        <p class='text-sm text-text-muted'>© {currentYear} {brandName}. Todos los derechos reservados.</p>
 
-        <div class='flex flex-wrap justify-center gap-4'>
-          {/* legalLinks.map(link => (
-            <a
-              href={link.url}
-              class='text-sm text-gray-400 hover:text-white transition-colors duration-300'
-            >
-              {link.name}
-            </a>
-          )) */}
-        </div>
       </div>
     </div>
   </footer>

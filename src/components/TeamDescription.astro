@@ -6,27 +6,43 @@ const teamLogoUrl = getUrl({ publicId: 'General/skincar', format: 'png' })
 
 const { class: className = '', ...props } = Astro.props;
 ---
-  <section class={className} {...props} itemscope itemtype='https://schema.org/SportsTeam'>
-    <div class='flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 xl:gap-10 2xl:gap-12 max-w-8xl px-4 sm:px-6 md:px-8 lg:px-12 2xl:px-16 py-6 sm:py-8 md:py-10 mx-auto'>
-      <p class='flex-1 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium sm:font-semibold lg:font-bold text-text-primary leading-relaxed' itemprop='description'>
-        Endurance Enjoyers es un equipo de simracing enfocado en las carreras de resistencia dentro de iRacing. Combinamos la pasión por el automovilismo virtual con un entorno colaborativo, relajado y libre de presiones competitivas.
-      </p>
+  <section class={`py-16 md:py-20 lg:py-24 ${className}`} {...props} itemscope itemtype='https://schema.org/SportsTeam'>
+    <!-- Contenedor principal con más espacio -->
+    <div class='max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16'>
+      
+      <!-- Grid de dos columnas con mejor espaciado -->
+      <div class='relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20'>
+        
+        <!-- Línea divisoria central -->
+        <div class='absolute left-1/2 top-0 w-1 h-4/5 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent rounded-full hidden lg:block transform -translate-x-1/2'></div>
+        
+        <!-- Columna izquierda -->
+        <div>
+          <p class='text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-text-primary leading-relaxed' itemprop='description'>
+            Endurance Enjoyers es un equipo de simracing enfocado en las carreras de resistencia dentro de iRacing. Combinamos la pasión por el automovilismo virtual con un entorno colaborativo, relajado y libre de presiones competitivas.
+          </p>
+        </div>
 
-      <!-- Separador visual -->
-      <div class='w-full h-px lg:w-px lg:h-auto bg-gray-300 lg:bg-gray-400 my-2 lg:my-0 lg:min-h-24' />
-
-      <p class='flex-1 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium sm:font-semibold lg:font-bold text-text-primary leading-relaxed'>
-        Priorizamos la experiencia compartida, el respeto en pista y el compañerismo. Valoramos la mejora constante y el disfrute colectivo por encima del resultado. Rechazamos el "tryhardismo" y promovemos un espacio sano donde correr bien es tan importante o más que ganar.
-      </p>
+        <!-- Columna derecha -->
+        <div>
+          <p class='text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-text-primary leading-relaxed'>
+            Priorizamos la experiencia compartida, el respeto en pista y el compañerismo. Valoramos la mejora constante y el disfrute colectivo por encima del resultado. Rechazamos el "tryhardismo" y promovemos un espacio sano donde correr bien es tan importante o más que ganar.
+          </p>
+        </div>
+      </div>
     </div>
 
-    <div class='px-4 sm:px-6 md:px-8'>
+    <!-- Imagen del coche con más margen -->
+    <div class='mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6 md:px-8'>
       <Image
         src={teamLogoUrl}
         alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
-        class='mx-auto -mt-2 sm:-mt-4 md:-mt-6 lg:-mt-8 xl:-mt-12 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-3xl xl:max-w-5xl 2xl:max-w-6xl opacity-75 sm:opacity-80'
+        class='mx-auto w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl opacity-80 hover:opacity-100 transition-opacity duration-500'
         inferSize
         itemprop='logo'
       />
     </div>
+    
+    <!-- Espaciado inferior -->
+    <div class='h-8 md:h-12 lg:h-16'></div>
   </section>

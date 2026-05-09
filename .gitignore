@@ -31,3 +31,7 @@ pnpm-debug.log*
 
 # cache
 .cache/
+
+_bmad
+_bmad-output
+.agents

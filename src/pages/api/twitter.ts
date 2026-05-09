@@ -52,7 +52,7 @@ interface CachedData {
 const TWITTER_BEARER_TOKEN = import.meta.env.TWITTER_BEARER_TOKEN
 const TWITTER_USERNAME = 'EnduEnjoyers'
 const CACHE_KEY = 'twitter:cache'
-const CACHE_DURATION = 12 * 60 * 60 * 1000 // 12 horas en milisegundos
+const CACHE_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
 
 // Funciones de caché usando Upstash Redis
 async function readCache (): Promise<CachedData | null> {
@@ -104,6 +104,15 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
     console.warn('Variables de Redis no configuradas - KV_REST_API_URL o KV_REST_API_TOKEN')
   }
 
+  // Debug: mostrar info del token (solo primeros/últimos caracteres por seguridad)
+  const tokenPreview = TWITTER_BEARER_TOKEN.length > 10
+    ? `${TWITTER_BEARER_TOKEN.substring(0, 5)}...${TWITTER_BEARER_TOKEN.substring(TWITTER_BEARER_TOKEN.length - 5)}`
+    : '[token muy corto]'
+  console.log('Token preview:', tokenPreview)
+  console.log('Token length:', TWITTER_BEARER_TOKEN.length)
+  console.log('Token has spaces:', TWITTER_BEARER_TOKEN.includes(' '))
+  console.log('Token has newlines:', TWITTER_BEARER_TOKEN.includes('\n'))
+
   // Limpiar el token por si tiene espacios o saltos de línea
   const cleanToken = TWITTER_BEARER_TOKEN.trim()
 
@@ -120,6 +129,9 @@ async function fetchTweetsFromTwitterAPI (): Promise<{ tweets: Tweet[], error?: 
 
     if (!userResponse.ok) {
       const errorText = await userResponse.text()
+      console.error('Error fetching user:', errorText)
+      console.error('Status:', userResponse.status)
+      console.error('Headers:', Object.fromEntries(userResponse.headers.entries()))
 
       // Detectar error de rate limit
       if (userResponse.status === 429) {
