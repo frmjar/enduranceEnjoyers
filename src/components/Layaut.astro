@@ -137,7 +137,7 @@ const jsonLD = `{
   ]
 }`
 ---
-  <html lang='es'>
+  <html lang='es' role='document'>
     <head>
       <title>{title}</title>
       <meta charset='UTF-8' />
@@ -200,12 +200,12 @@ const jsonLD = `{
     <body class='flex flex-col min-h-screen overflow-x-hidden'>
       <a href='#content-start' class='sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[999] focus:rounded-xl focus:bg-racing-dark focus:px-4 focus:py-3 focus:text-text-primary focus:ring-2 focus:ring-accent-orange'>Saltar al contenido</a>
       <div class='flex-grow'>
-        <div id='content-start'>
+        <main id='content-start'>
           <slot />
-        </div>
+        </main>
         <Analytics />
         <SpeedInsights />
       </div>
-      <Footer />
+      <Footer role='contentinfo' />
     </body>
   </html>

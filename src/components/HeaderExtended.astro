@@ -1,15 +1,14 @@
 ---
-import sample from '../assets/banner.png'
 import { getImage } from 'astro:assets'
-import NavbarPc from './navegacion/NavbarPc.astro'
+import sample from '../assets/banner.png'
 import NavbarMovil from './navegacion/NavbarMovil.astro'
+import NavbarPc from './navegacion/NavbarPc.astro'
 
 const bannerImages = {
   small: await getImage({ src: sample, width: 640, format: 'webp', quality: 80 }),
   medium: await getImage({ src: sample, width: 1024, format: 'webp', quality: 80 }),
   large: await getImage({ src: sample, width: 1536, format: 'webp', quality: 80 }),
-  xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 }),
-  placeholder: await getImage({ src: sample, width: 640, format: 'webp', quality: 100 })
+  xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 })
 }
 
 const props = Astro.props
@@ -18,7 +17,6 @@ const links = [
   { href: '#home', label: 'Inicio' },
   { href: '#calendario', label: 'Calendario' },
   { href: '#novedades', label: 'Novedades' },
-  { href: '#twitter', label: 'Twitter' },
   { href: '#galeria', label: 'Galería' },
   { href: '#contacto', label: 'Contacto' }
 ]
@@ -33,50 +31,27 @@ const links = [
     <!-- Hero principal -->
     <section
       id='navbardir'
-      class='relative isolate overflow-hidden w-full min-h-[min(100svh,980px)] bg-cover bg-center bg-no-repeat z-10 transition-all duration-500'
-      style={`background-image: url(${bannerImages.placeholder.src}); background-size: cover;`}
+      class='relative isolate overflow-hidden w-full bg-racing-black z-10 transition-all duration-500'
       aria-labelledby='hero-title'
-    />
+      role='banner'
+    >
+      <picture class='block w-full'>
+        <source media='(min-width: 1536px)' srcset={bannerImages.xlarge.src} />
+        <source media='(min-width: 1024px)' srcset={bannerImages.large.src} />
+        <source media='(min-width: 640px)' srcset={bannerImages.medium.src} />
+        <img
+          src={bannerImages.small.src}
+          alt=''
+          aria-hidden='true'
+          fetchpriority='high'
+          decoding='async'
+          class='block w-full h-auto object-contain object-top'
+        />
+      </picture>
+      <h1 id='hero-title' class='sr-only'>Endurance Enjoyers</h1>
+    </section>
 
     <NavbarPc links={links} />
     <NavbarMovil links={links} />
 
   </div>
-
-    <script define:vars={{ bannerImages }}>
-  const imagePaths = {
-    small: bannerImages.small.src,
-    medium: bannerImages.medium.src,
-    large: bannerImages.large.src,
-    xlarge: bannerImages.xlarge.src
-  }
-
-  const navbardir = document.getElementById('navbardir')
-
-  function setBannerImage () {
-    if (!navbardir) return
-
-    const screenWidth = window.innerWidth
-    let imageUrl
-
-    if (screenWidth < 640) {
-      imageUrl = imagePaths.small
-    } else if (screenWidth < 1024) {
-      imageUrl = imagePaths.medium
-    } else if (screenWidth < 1536) {
-      imageUrl = imagePaths.large
-    } else {
-      imageUrl = imagePaths.xlarge
-    }
-
-    const img = new Image()
-    img.onload = function () {
-      navbardir.style.backgroundImage = `url(${imageUrl})`
-    }
-    img.src = imageUrl
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setBannerImage()
-  })
-    </script>
