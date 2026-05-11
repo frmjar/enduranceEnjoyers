@@ -117,7 +117,7 @@ export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, 
   alt: string
 }>> => {
   try {
-    const result = await cloudinary.api.resources_by_asset_folder(folder || '', {
+    const result = await cloudinary.api.resources_by_asset_folder(folder ?? '', {
       type: 'upload',
       max_results: cantidad,
       resource_type: 'image',

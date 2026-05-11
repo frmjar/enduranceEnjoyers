@@ -23,10 +23,10 @@ const links = [
 ---
 
   <div {...props}>
-    <link rel='preload' as='image' href={bannerImages.medium.src} media='(min-width: 640px) and (max-width: 1023px)' />
-    <link rel='preload' as='image' href={bannerImages.large.src} media='(min-width: 1024px) and (max-width: 1535px)' />
-    <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' />
-    <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' />
+    <link rel='preload' as='image' href={bannerImages.medium.src} media='(min-width: 640px) and (max-width: 1023px)' importance='high' />
+    <link rel='preload' as='image' href={bannerImages.large.src} media='(min-width: 1024px) and (max-width: 1535px)' importance='high' />
+    <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' importance='high' />
+    <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' importance='high' />
 
     <!-- Hero principal -->
     <section
@@ -44,7 +44,8 @@ const links = [
           alt=''
           aria-hidden='true'
           fetchpriority='high'
-          decoding='async'
+          loading='eager'
+          decoding='sync'
           class='block w-full h-auto object-contain object-top'
         />
       </picture>
