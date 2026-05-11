@@ -40,14 +40,14 @@ export const getOptimizedUrl = ({
 }): string => {
   const extension = (typeof format === 'string' && format.trim() !== '') ? `.${format}` : ''
 
-  // Tamaños optimizados por contexto y dispositivo
+  // Tamaños optimizados por contexto y dispositivo (vertical para galería)
   const sizeMap = {
     gallery: {
-      mobile: { width: 320, height: 240 },
-      tablet: { width: 360, height: 270 },
-      desktop: { width: 400, height: 300 },
-      large: { width: 300, height: 225 },
-      extraLarge: { width: 400, height: 300 }
+      mobile: { width: 280, height: 420 },
+      tablet: { width: 300, height: 450 },
+      desktop: { width: 320, height: 480 },
+      large: { width: 360, height: 540 },
+      extraLarge: { width: 400, height: 600 }
     },
     modal: {
       mobile: { width: 800 },
@@ -81,14 +81,17 @@ export const getOptimizedUrl = ({
     })
   }
 
-  // Para gallery y thumbnails usamos crop fill para mantener dimensiones consistentes
+  // Para gallery usamos crop fill con dimensiones verticales; para thumbnails priorizamos ver la imagen completa
   const { width, height } = sizeConfig as { width: number, height: number }
+  const isThumbnail = context === 'thumbnail'
 
   return cloudinary.url(publicId + extension, {
     resource_type: 'image',
     type: 'upload',
     transformation: [
-      { width, height, crop: 'fill', gravity: 'auto' },
+      isThumbnail
+        ? { width, height, crop: 'fit' }
+        : { width, height, crop: 'fill', gravity: 'auto' },
       { quality: context === 'thumbnail' ? 80 : 90, fetch_format: 'webp' },
       { flags: 'progressive' },
       { dpr: 'auto' }

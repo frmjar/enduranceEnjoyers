@@ -25,14 +25,14 @@ const { class: className = '', ...props } = Astro.props;
       {images.length > 0
         ? (
           <div
-            class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto my-10'
+            class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-auto my-10'
           >
             {
             images.map((img) => (
               <div class='relative group overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-accent-orange/20 border border-white/10 hover:border-accent-orange/50 bg-racing-surface'>
-                <div class='aspect-w-4 aspect-h-3 bg-racing-elevated animate-pulse overflow-hidden'>
+                <div class='aspect-w-3 aspect-h-4 bg-racing-elevated animate-pulse overflow-hidden'>
                   <Image
-                    src={img.urlTablet}
+                    src={img.urlDesktop}
                     alt={img.alt}
                     data-original={img.original}
                     data-modal-mobile={img.urlModalMobile}
@@ -45,8 +45,8 @@ const { class: className = '', ...props } = Astro.props;
                     data-desktop={img.urlDesktop}
                     data-large={img.urlLarge}
                     data-extralarge={img.urlExtraLarge}
-                    width={400}
-                    height={300}
+                    width={320}
+                    height={480}
                     loading='lazy'
                     decoding='async'
                     class='rounded-lg clickable-img w-full h-full object-cover gallery-image transition-transform duration-500 group-hover:scale-110'

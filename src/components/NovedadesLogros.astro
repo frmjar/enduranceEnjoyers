@@ -38,9 +38,10 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
           ? images.map((image) => (
             <Card key={image.id} class='flex items-center justify-center !p-0 overflow-hidden border border-white/10'>
               <Image
-                src={image.original}
+                src={image.urlDesktop}
                 alt={image.alt}
                 inferSize
+                class='w-full h-auto object-cover object-center'
               />
             </Card>
           ))

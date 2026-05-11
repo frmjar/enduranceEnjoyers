@@ -9,13 +9,13 @@ const { class: className = '', ...props } = Astro.props;
   <section class={`py-16 md:py-20 lg:py-24 ${className}`} {...props} itemscope itemtype='https://schema.org/SportsTeam'>
     <!-- Contenedor principal con más espacio -->
     <div class='max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16'>
-      
+
       <!-- Grid de dos columnas con mejor espaciado -->
       <div class='relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20'>
-        
+
         <!-- Línea divisoria central -->
-        <div class='absolute left-1/2 top-0 w-1 h-4/5 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent rounded-full hidden lg:block transform -translate-x-1/2'></div>
-        
+        <div class='absolute left-1/2 top-0 w-1 h-4/5 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent rounded-full hidden lg:block transform -translate-x-1/2' />
+
         <!-- Columna izquierda -->
         <div>
           <p class='text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-text-primary leading-relaxed' itemprop='description'>
@@ -42,7 +42,7 @@ const { class: className = '', ...props } = Astro.props;
         itemprop='logo'
       />
     </div>
-    
+
     <!-- Espaciado inferior -->
-    <div class='h-8 md:h-12 lg:h-16'></div>
+    <div class='h-8 md:h-12 lg:h-16' />
   </section>
