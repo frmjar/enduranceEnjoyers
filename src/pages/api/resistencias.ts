@@ -15,7 +15,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'B348:J396'
+      range: 'B397:J441'
     })
 
     const rows = response.data.values ?? []
