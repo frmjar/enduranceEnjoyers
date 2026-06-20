@@ -2,40 +2,12 @@
 import Icon from '../icons/Icon.astro'
 import CardCalendario from './CardCalendario.astro'
 import SectionTitle from './SectionTitle.astro'
+import { parseRaceDate, getWeekNumber, type RaceData, type RaceWithDate } from '../utils/date'
 
-const meses = {
-  enero: 0,
-  febrero: 1,
-  marzo: 2,
-  abril: 3,
-  mayo: 4,
-  junio: 5,
-  julio: 6,
-  agosto: 7,
-  septiembre: 8,
-  octubre: 9,
-  noviembre: 10,
-  diciembre: 11
-}
-
-const parseRaceDate = (fecha: string) => {
-  const [d, m, y] = fecha.split(' ')
-  const monthName = m.toLowerCase()
-  return new Date(parseInt(y), meses[monthName], parseInt(d))
-}
-
-const getWeekNumber = (date: Date) => {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
-}
-
-let scheduleData = []
+let scheduleData: RaceData[] = []
 try {
   const res = await fetch(`${Astro.url.origin}/api/resistencias`)
   if (res.ok) scheduleData = await res.json()
-  else console.error('Error al obtener datos:', res.status)
 } catch (err) {
   console.error('Error de conexión con la API:', err)
 }
@@ -45,8 +17,7 @@ const currentWeek = getWeekNumber(today)
 const nextWeek = currentWeek + 1
 const year = today.getFullYear()
 
-// Filtrar carreras de esta semana y la próxima
-const allRaces = scheduleData
+const allRaces: RaceWithDate[] = scheduleData
   .map((r) => ({ ...r, date: parseRaceDate(r.Fecha), weekNum: 0 }))
   .map((r) => ({ ...r, weekNum: getWeekNumber(r.date) }))
   .filter((r) => r.date.getFullYear() === year && (r.weekNum === currentWeek || r.weekNum === nextWeek))

@@ -1,13 +1,41 @@
-export async function GET ({ url }: { url: string }): Promise<Response> {
+import type { APIRoute } from 'astro'
+
+export const prerender = false
+
+interface YouTubeVideo {
+  id: string
+  title: string
+  description: string
+  thumbnail: string
+  publishedAt: string
+  duration: string
+  viewCount: string
+  channelId: string
+  channelTitle: string
+}
+
+export const GET: APIRoute = async (): Promise<Response> => {
   try {
     const YOUTUBE_API_KEY: string = import.meta.env.YOUTUBE_API_KEY
     const CHANNEL_IDS_STRING: string = import.meta.env.YOUTUBE_CHANNEL_IDS || ''
 
-    // Separar los IDs de canales por comas y limpiar espacios
-    const channelIds = CHANNEL_IDS_STRING.split(',').map(id => id.trim()).filter(id => id.length > 0)
-    console.log('Canales a procesar:', channelIds)
+    if (!YOUTUBE_API_KEY || !CHANNEL_IDS_STRING) {
+      return new Response(JSON.stringify({ videos: [] }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
 
-    const allVideos = []
+    const channelIds = CHANNEL_IDS_STRING.split(',').map(id => id.trim()).filter(id => id.length > 0)
+
+    if (channelIds.length === 0) {
+      return new Response(JSON.stringify({ videos: [] }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
+    const allVideos: YouTubeVideo[] = []
 
     // Obtener videos de cada canal
     for (const channelId of channelIds) {
@@ -68,8 +96,6 @@ export async function GET ({ url }: { url: string }): Promise<Response> {
             })
 
             allVideos.push(...channelVideos)
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            console.log(`Obtenidos ${channelVideos.length} videos del canal ${channelId}`)
           }
         }
       } catch (channelError) {
@@ -80,8 +106,6 @@ export async function GET ({ url }: { url: string }): Promise<Response> {
 
     // Ordenar todos los videos por fecha de publicación (más recientes primero)
     allVideos.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-
-    console.log(`Total de videos obtenidos: ${allVideos.length}`)
 
     return new Response(JSON.stringify({ videos: allVideos }), {
       status: 200,

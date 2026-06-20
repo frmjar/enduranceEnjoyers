@@ -8,17 +8,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     build: {
-      rollupOptions: {
-        output: {
-          // Optimizar el chunking para mejor cache
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            cloudinary: ['cloudinary'],
-            google: ['googleapis']
-          }
-        }
-      },
-      // Optimizar el tamaño del bundle
       minify: 'terser',
       terserOptions: {
         compress: {
@@ -27,7 +16,6 @@ export default defineConfig({
         }
       }
     },
-    // Optimizar la carga de módulos
     optimizeDeps: {
       exclude: ['@vercel/analytics', '@vercel/speed-insights']
     }
@@ -42,11 +30,6 @@ export default defineConfig({
   }),
 
   image: {
-    serviceEntryPoint: '@astrojs/image/cloudinary',
-    cloudinary: {
-      cloudName: 'enduranceenjoyers',
-      url: 'https://res.cloudinary.com/enduranceenjoyers/image/upload'
-    },
     format: ['webp', 'avif'],
     fallbackFormat: 'png',
     domains: ['res.cloudinary.com']

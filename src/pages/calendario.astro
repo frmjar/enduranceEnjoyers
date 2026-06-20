@@ -3,41 +3,12 @@ import CardCalendario from '../components/CardCalendario.astro'
 import Layaut from '../components/Layaut.astro'
 import Icon from '../icons/Icon.astro'
 import '../styles/calendario.css'
+import { parseRaceDate, getMonthName, type RaceData, type RaceWithDate } from '../utils/date'
 
-const meses = {
-  enero: 0,
-  febrero: 1,
-  marzo: 2,
-  abril: 3,
-  mayo: 4,
-  junio: 5,
-  julio: 6,
-  agosto: 7,
-  septiembre: 8,
-  octubre: 9,
-  noviembre: 10,
-  diciembre: 11
-}
-
-const parseRaceDate = (fecha) => {
-  const [d, m, y] = fecha.split(' ')
-  return new Date(y, meses[m.toLowerCase()], d)
-}
-
-const getWeekNumber = (date) => {
-  const d = new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-  )
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7)
-}
-
-let scheduleData = []
+let scheduleData: RaceData[] = []
 try {
   const res = await fetch(`${Astro.url.origin}/api/resistencias`)
   if (res.ok) scheduleData = await res.json()
-  else console.error('Error al obtener datos:', res.status)
 } catch (err) {
   console.error('Error de conexión con la API:', err)
 }
@@ -45,29 +16,20 @@ try {
 const today = new Date()
 const year = today.getFullYear()
 
-const races = scheduleData
-  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha) }))
+const races: RaceWithDate[] = scheduleData
+  .map((r) => ({ ...r, date: parseRaceDate(r.Fecha), weekNum: 0 }))
   .filter((r) => r.date.getFullYear() === year)
   .sort((a, b) => a.date - b.date)
 
-// Agrupar carreras por mes
-const groupedByMonth = races.reduce((acc, race) => {
+const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+
+const groupedByMonth: Record<number, RaceWithDate[]> = races.reduce((acc, race) => {
   const month = race.date.getMonth()
   acc[month] = acc[month] || []
   acc[month].push(race)
   return acc
-}, {})
+}, {} as Record<number, RaceWithDate[]>)
 
-// Obtener nombres de meses en español
-const getMonthName = (monthIndex) => {
-  const monthNames = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ]
-  return monthNames[monthIndex]
-}
-
-// Ordenar meses
 const sortedMonths = Object.keys(groupedByMonth).map(Number).sort((a, b) => a - b)
 
 const seoData = {
@@ -116,7 +78,7 @@ const seoData = {
 
                 <div class='grid gap-6 md:grid-cols-3 lg:grid-cols-4 max-w-8xl mx-auto'>
                   {groupedByMonth[monthIndex].map((race) => {
-                    const isPastEvent = race.date < today
+                    const isPastEvent = race.date < todayStart
 
                     return (
                       <div class={isPastEvent ? 'past-event' : ''}>
