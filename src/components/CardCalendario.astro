@@ -4,16 +4,12 @@ import Icon from '../icons/Icon.astro'
 const { race } = Astro.props
 ---
 
-  <div class='relative bg-gradient-to-br from-racing-surface via-racing-elevated to-racing-surface rounded-xl overflow-hidden border-2 border-white/10 hover:border-accent-orange/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent-orange/10 hover:-translate-y-1 group w-full flex flex-col min-h-96'>
+  <div class='relative bg-racing-card rounded-lg overflow-hidden border border-border-subtle hover:border-accent-cyan/40 transition-all duration-200 group w-full flex flex-col min-h-96'>
 
-    <div class='relative h-14 flex items-end p-3 bg-gradient-to-br from-racing-elevated via-racing-card to-racing-elevated flex-shrink-0'>
-      <div class='absolute inset-0 opacity-10'>
-        <div class='absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-1/2 translate-x-1/2' />
-        <div class='absolute bottom-0 left-0 w-12 h-12 bg-white rounded-full translate-y-1/2 -translate-x-1/2' />
-      </div>
+    <div class='relative h-14 flex items-end p-3 bg-racing-surface flex-shrink-0 border-b border-border-subtle'>
 
       <div class='absolute top-2 right-3'>
-        <span class='text-sm font-bold opacity-50 text-text-primary'>S{race.Season}</span>
+        <span class='text-xs font-bold text-text-muted'>S{race.Season}</span>
       </div>
 
       <div class='relative z-10 text-text-primary'>
@@ -26,37 +22,37 @@ const { race } = Astro.props
       <div class='space-y-3 flex-grow'>
         <div>
           <h3 class='text-lg font-bold text-text-primary mb-1 line-clamp-2'>{race.Serie}</h3>
-          <p class='text-sm text-accent-orange font-medium flex items-center gap-2'>
+          <p class='text-sm text-accent-cyan font-medium flex items-center gap-2'>
             <span class='line-clamp-1'>{race.Circuito}</span>
           </p>
         </div>
 
         <div class='grid grid-cols-2 gap-2'>
-          <div class='col-span-2 bg-racing-black/30 rounded-lg p-2'>
+          <div class='col-span-2 bg-racing-black/50 rounded-md p-2'>
             <span class='text-xs text-text-muted uppercase tracking-wider block mb-0.5'>Coches</span>
             <span class='text-text-primary font-semibold text-sm'>{race.Coches}</span>
           </div>
-          <div class='bg-racing-black/30 rounded-lg p-2'>
+          <div class='bg-racing-black/50 rounded-md p-2'>
             <span class='text-xs text-text-muted uppercase tracking-wider block mb-0.5'>Duración</span>
             <span class='text-text-primary font-semibold text-sm'>{race.Duracion}</span>
           </div>
-          <div class='bg-racing-black/30 rounded-lg p-2'>
+          <div class='bg-racing-black/50 rounded-md p-2'>
             <span class='text-xs text-text-muted uppercase tracking-wider block mb-0.5'>Lluvia</span>
             <span class='text-text-primary font-semibold text-sm'>{race.Lluvia || 'N/A'}</span>
           </div>
         </div>
       </div>
 
-      <div class='flex items-center justify-between pt-3 mt-3 border-t border-white/5'>
+      <div class='flex items-center justify-between pt-3 mt-3 border-t border-border-subtle'>
         {race.Team === 'SI'
           ? (
-            <span class='inline-flex items-center gap-1.5 px-2 py-1 bg-accent-orange/20 text-accent-orange rounded-lg text-xs font-medium'>
+            <span class='inline-flex items-center gap-1.5 px-2 py-1 bg-accent-orange/10 text-accent-orange rounded-md text-xs font-medium'>
               <Icon name='multiPerson' class='w-3.5 h-3.5' />
               Evento de equipo
             </span>
             )
           : (
-            <span class='inline-flex items-center gap-1.5 px-2 py-1 bg-accent-orange/20 text-accent-orange rounded-lg text-xs font-medium'>
+            <span class='inline-flex items-center gap-1.5 px-2 py-1 bg-accent-cyan/10 text-accent-cyan rounded-md text-xs font-medium'>
               <Icon name='singlePerson' class='w-3.5 h-3.5' />
               Evento individual
             </span>
@@ -64,6 +60,4 @@ const { race } = Astro.props
         <span class='text-text-muted text-sm font-bold'>Semana {race.Week}</span>
       </div>
     </div>
-
-    <div class='h-1 bg-gradient-to-r from-transparent via-accent-orange/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity mt-auto' />
   </div>

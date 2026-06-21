@@ -2,55 +2,48 @@
 
 @theme {
   /* ═══════════════════════════════════════════════════════════
-     🏎️ ENDURANCE ENJOYERS - RACING EDITION 2.0
-     Sistema de diseño con estética motorsport premium
+     ENDURANCE ENJOYERS - MOTORSPORT PREMIUM
+     Estilo F1/motorsport: fondos sólidos, dual tone naranja+cyan
   ═══════════════════════════════════════════════════════════ */
 
-  /* Colores primarios - Oscuros pero más claros */
-  --color-racing-black: #151519;
-  --color-racing-dark: #212127;
-  --color-racing-surface: #2a2a31;
-  --color-racing-elevated: #35353d;
-  --color-racing-card: #404049;
+  /* Superficies — sólidas, oscuras */
+  --color-racing-black: #0d0d0f;
+  --color-racing-dark: #16161a;
+  --color-racing-surface: #1e1e23;
+  --color-racing-elevated: #26262c;
+  --color-racing-card: #1a1a1f;
 
-  /* Acentos neón racing */
-  --color-accent-orange: #ff6b00;
-  --color-accent-orange-light: #ff8533;
-  --color-accent-orange-glow: rgba(255, 107, 0, 0.4);
-  --color-accent-cyan: #00d4ff;
-  --color-accent-cyan-glow: rgba(0, 212, 255, 0.3);
-  --color-accent-red: #ef4444;
-  --color-accent-green: #22c55e;
+  /* Acentos — dual tone */
+  --color-accent-orange: #ff4d00;
+  --color-accent-orange-light: #ff6a2b;
+  --color-accent-orange-glow: rgba(255, 77, 0, 0.25);
+  --color-accent-cyan: #00c8ff;
+  --color-accent-cyan-glow: rgba(0, 200, 255, 0.25);
+  --color-accent-red: #e63946;
+  --color-accent-green: #2ec4b6;
 
-  /* Texto - Jerarquía clara - Mejorado para contraste WCAG AA */
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #c4c4cb;
-  --color-text-muted: #9a9aa3;
-  --color-text-accent: #ff8533;
+  /* Texto */
+  --color-text-primary: #f0f0f2;
+  --color-text-secondary: #a0a0ab;
+  --color-text-muted: #6b6b76;
+  --color-text-accent: #ff6a2b;
 
-  /* Bordes y superficies */
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-default: rgba(255, 255, 255, 0.1);
-  --color-border-hover: rgba(255, 107, 0, 0.5);
-  --color-glass-bg: rgba(33, 33, 39, 0.85);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
+  /* Bordes — más visibles */
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-default: rgba(255, 255, 255, 0.12);
+  --color-border-hover: rgba(0, 200, 255, 0.4);
+  --color-glass-bg: #1a1a1f;
+  --color-glass-border: rgba(255, 255, 255, 0.08);
 
-  /* Gradientes */
-  --gradient-racing: linear-gradient(135deg, #ff6b00 0%, #ff8533 50%, #ffab66 100%);
-  --gradient-dark: linear-gradient(180deg, #151519 0%, #2a2a31 100%);
-  --gradient-card: linear-gradient(145deg, rgba(64, 64, 73, 0.9) 0%, rgba(42, 42, 49, 0.95) 100%);
-  --gradient-glow: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
+  /* Sombras — sutiles */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow-orange: 0 0 0 1px rgba(255, 77, 0, 0.3);
+  --shadow-glow-cyan: 0 0 0 1px rgba(0, 200, 255, 0.3);
 
-  /* Sombras premium */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-glow-orange: 0 0 20px rgba(255, 107, 0, 0.3), 0 0 40px rgba(255, 107, 0, 0.1);
-  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.3);
-
-  /* Timing functions */
+  /* Timing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Legacy compatibility */
   --color-primary-header: var(--color-racing-dark);
@@ -60,46 +53,25 @@
   --color-bg-primary: var(--color-racing-black);
   --color-bg-secondary: var(--color-racing-surface);
   --color-bg-card: var(--color-racing-card);
-  --color-bg-input: rgba(48, 48, 56, 0.85);
+  --color-bg-input: #26262c;
   --color-border-light: var(--color-border-subtle);
   --color-border-medium: var(--color-border-default);
-  --color-text-gray-light: #e4e4e7;
-  --color-text-gray-medium: #c4c4cb;
-  --color-text-gray-dark: #9a9aa3;
+  --color-text-gray-light: #e0e0e2;
+  --color-text-gray-medium: #a0a0ab;
+  --color-text-gray-dark: #6b6b76;
 
   /* Breakpoints */
   --breakpoint-3xl: 122rem;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ANIMACIONES RACING
+   ANIMACIONES
 ═══════════════════════════════════════════════════════════ */
-
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes border-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -107,41 +79,23 @@
   }
 }
 
-@keyframes speed-lines {
-  0% { transform: translateX(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
-}
-
-@keyframes checkered-scroll {
-  0% { background-position: 0 0; }
-  100% { background-position: 40px 40px; }
-}
-
 @layer base {
   html {
     @apply scroll-smooth;
-    scroll-padding-top: 6.5rem;
+    scroll-padding-top: 4.5rem;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-accent-orange) var(--color-racing-dark);
+    scrollbar-color: var(--color-accent-cyan) var(--color-racing-dark);
   }
 
   body {
     @apply font-sans antialiased;
     background: var(--color-racing-black);
     color: var(--color-text-primary);
-    background-image: 
-      /* Glow superior muy sutil */
-      radial-gradient(ellipse at 50% 0%, rgba(255, 107, 0, 0.03) 0%, transparent 50%),
-      /* Gradiente base */
-      var(--gradient-dark);
-    background-attachment: fixed;
   }
 
-  /* Scrollbar personalizada */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
@@ -149,15 +103,10 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--color-accent-orange), var(--color-accent-orange-light));
-    border-radius: 4px;
+    background: var(--color-accent-cyan);
+    border-radius: 3px;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-accent-orange-light);
-  }
-
-  /* Selection */
   ::selection {
     background: var(--color-accent-orange);
     color: var(--color-racing-black);
@@ -166,46 +115,38 @@
   footer {
     background-color: var(--color-racing-dark);
     color: var(--color-text-primary);
-    /* Patrón checkered sutil */
-    background-image: 
-      linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.02) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.02) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   }
 
   h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-4;
+    @apply text-3xl md:text-4xl lg:text-5xl font-black mb-4;
     color: var(--color-text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   h2 {
     @apply text-2xl md:text-3xl font-bold mb-3;
     color: var(--color-text-primary);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
 
   h3 {
-    @apply text-xl font-semibold;
+    @apply text-lg font-bold uppercase tracking-wide;
     color: var(--color-text-primary);
   }
 
   p {
-    @apply text-base md:text-lg mb-4 leading-relaxed;
+    @apply text-sm md:text-base mb-4 leading-normal;
     color: var(--color-text-secondary);
   }
 
   a {
-    @apply transition-colors duration-300;
+    @apply transition-colors duration-200;
   }
 
   a:focus-visible,
   button:focus-visible {
-    outline: 2px solid var(--color-accent-orange);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-accent-cyan);
+    outline-offset: 2px;
   }
 
   img {
@@ -214,7 +155,7 @@
   }
 
   section[id] {
-    scroll-margin-top: 6.5rem;
+    scroll-margin-top: 4.5rem;
   }
 
   * {
@@ -224,275 +165,96 @@
 
 @layer components {
   /* ═══════════════════════════════════════════════════════════
-     GLASSMORPHISM CARDS
-  ═══════════════════════════════════════════════════════════ */
-  .glass-card {
-    background: var(--gradient-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--color-glass-border);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s var(--ease-out-expo);
-  }
-
-  .glass-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .glass-card:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: var(--shadow-glow-orange);
-    transform: translateY(-4px);
-  }
-
-  /* Card con borde animado */
-  .glass-card-glow {
-    position: relative;
-    background: var(--color-racing-card);
-    border-radius: 16px;
-    padding: 1px;
-  }
-
-  .glass-card-glow::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 16px;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      var(--color-accent-orange) 0%,
-      transparent 40%,
-      transparent 60%,
-      var(--color-accent-cyan) 100%
-    );
-    background-size: 200% 200%;
-    animation: border-flow 4s ease infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .glass-card-glow:hover::before {
-    opacity: 1;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     RACING LINES BACKGROUND
-  ═══════════════════════════════════════════════════════════ */
-  .racing-lines {
-    position: relative;
-  }
-
-  .racing-lines::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 40px,
-      rgba(255, 107, 0, 0.02) 40px,
-      rgba(255, 107, 0, 0.02) 80px
-    );
-    pointer-events: none;
-  }
-
-  /* Patrón checkered (bandera a cuadros) */
-  .checkered-pattern {
-    background-image: 
-      linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.02) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.02) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     BOTONES RACING
+     BOTONES
   ═══════════════════════════════════════════════════════════ */
   .btn-racing {
-    @apply relative inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl;
-    background: var(--gradient-racing);
+    @apply relative inline-flex items-center justify-center px-6 py-3 font-bold uppercase tracking-wide text-sm rounded-md;
+    background: var(--color-accent-orange);
     color: var(--color-racing-black);
-    overflow: hidden;
-    transition: all 0.3s var(--ease-out-expo);
-  }
-
-  .btn-racing::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
+    transition: all 0.2s ease;
   }
 
   .btn-racing:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow-orange);
-  }
-
-  .btn-racing:hover::before {
-    transform: translateX(100%);
+    background: var(--color-accent-orange-light);
   }
 
   .btn-racing-outline {
-    @apply relative inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl;
+    @apply relative inline-flex items-center justify-center px-6 py-3 font-bold uppercase tracking-wide text-sm rounded-md;
     background: transparent;
-    border: 2px solid var(--color-accent-orange);
-    color: var(--color-accent-orange);
-    transition: all 0.3s var(--ease-out-expo);
+    border: 1px solid var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+    transition: all 0.2s ease;
   }
 
   .btn-racing-outline:hover {
-    background: var(--color-accent-orange);
-    color: var(--color-racing-black);
-    box-shadow: var(--shadow-glow-orange);
+    background: rgba(0, 200, 255, 0.1);
   }
 
   /* ═══════════════════════════════════════════════════════════
-     INPUTS RACING
+     INPUTS
   ═══════════════════════════════════════════════════════════ */
   .input-racing {
-    @apply w-full px-4 py-3 rounded-xl transition-all duration-300;
+    @apply w-full px-4 py-3 rounded-md transition-all duration-200;
     background: var(--color-racing-elevated);
     border: 1px solid var(--color-border-default);
     color: var(--color-text-primary);
   }
 
   .input-racing::placeholder {
-    color: var(--color-text-secondary);
-    opacity: 0.8;
+    color: var(--color-text-muted);
   }
 
   .input-racing:focus {
     outline: none;
-    border-color: var(--color-accent-orange);
-    box-shadow: 0 0 0 3px var(--color-accent-orange-glow);
-    background: rgba(48, 48, 56, 1);
+    border-color: var(--color-accent-cyan);
+    box-shadow: 0 0 0 2px var(--color-accent-cyan-glow);
   }
 
   /* ═══════════════════════════════════════════════════════════
-     BADGES Y TAGS
+     BADGES
   ═══════════════════════════════════════════════════════════ */
   .badge-racing {
-    @apply inline-flex items-center px-3 py-1 text-sm font-medium rounded-full;
-    background: rgba(255, 107, 0, 0.15);
-    color: var(--color-accent-orange-light);
-    border: 1px solid rgba(255, 107, 0, 0.3);
+    @apply inline-flex items-center px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-md;
+    background: rgba(255, 77, 0, 0.15);
+    color: var(--color-accent-orange);
+    border: 1px solid rgba(255, 77, 0, 0.25);
   }
 
   .badge-cyan {
-    background: rgba(0, 212, 255, 0.15);
+    @apply inline-flex items-center px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-md;
+    background: rgba(0, 200, 255, 0.15);
     color: var(--color-accent-cyan);
-    border: 1px solid rgba(0, 212, 255, 0.3);
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     DIVIDERS
-  ═══════════════════════════════════════════════════════════ */
-  .divider-racing {
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-accent-orange) 20%,
-      var(--color-accent-orange) 80%,
-      transparent 100%
-    );
-  }
-
-  .divider-glow {
-    height: 1px;
-    background: var(--color-border-default);
-    position: relative;
-  }
-
-  .divider-glow::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100%;
-    background: var(--color-accent-orange);
-    filter: blur(20px);
-    opacity: 0.5;
+    border: 1px solid rgba(0, 200, 255, 0.25);
   }
 
   /* ═══════════════════════════════════════════════════════════
      EFECTOS DE TEXTO
   ═══════════════════════════════════════════════════════════ */
   .text-gradient {
-    background: var(--gradient-racing);
+    background: linear-gradient(135deg, var(--color-accent-orange), var(--color-accent-cyan));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-
-  .text-glow {
-    text-shadow: 0 0 20px var(--color-accent-orange-glow);
   }
 
   /* ═══════════════════════════════════════════════════════════
      ANIMACIONES DE ENTRADA
   ═══════════════════════════════════════════════════════════ */
   .animate-fade-in-up {
-    animation: fade-in-up 0.6s var(--ease-out-expo) forwards;
+    animation: fade-in-up 0.5s var(--ease-out-expo) forwards;
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  .animate-glow-pulse {
-    animation: glow-pulse 2s ease-in-out infinite;
-  }
-
-  /* Staggered animations */
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
 
-  /* ═══════════════════════════════════════════════════════════
-     PARALLAX Y SCROLL EFFECTS
-  ═══════════════════════════════════════════════════════════ */
-  .parallax-section {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .parallax-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    background-attachment: fixed;
-    z-index: -1;
-  }
-
-  /* Fade in on scroll */
+  /* Scroll reveal */
   .fade-in-on-scroll {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s var(--ease-out-expo);
+    transform: translateY(20px);
+    transition: all 0.5s var(--ease-out-expo);
   }
 
   .fade-in-on-scroll.visible {
@@ -500,11 +262,10 @@
     transform: translateY(0);
   }
 
-  /* Scale in on scroll */
   .scale-in-on-scroll {
     opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.6s var(--ease-out-expo);
+    transform: scale(0.97);
+    transition: all 0.5s var(--ease-out-expo);
   }
 
   .scale-in-on-scroll.visible {
@@ -512,11 +273,10 @@
     transform: scale(1);
   }
 
-  /* Slide in from left */
   .slide-in-left {
     opacity: 0;
-    transform: translateX(-60px);
-    transition: all 0.6s var(--ease-out-expo);
+    transform: translateX(-40px);
+    transition: all 0.5s var(--ease-out-expo);
   }
 
   .slide-in-left.visible {
@@ -524,11 +284,10 @@
     transform: translateX(0);
   }
 
-  /* Slide in from right */
   .slide-in-right {
     opacity: 0;
-    transform: translateX(60px);
-    transition: all 0.6s var(--ease-out-expo);
+    transform: translateX(40px);
+    transition: all 0.5s var(--ease-out-expo);
   }
 
   .slide-in-right.visible {
@@ -562,7 +321,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
-     SPACING STANDARIZADO
+     SPACING
   ═══════════════════════════════════════════════════════════ */
   .spacing-section {
     @apply py-12 md:py-16 lg:py-20 xl:py-24;
@@ -589,10 +348,10 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
-     GRID CARDS ESTANDARIZADO
+     GRID
   ═══════════════════════════════════════════════════════════ */
   .cards-grid {
-    @apply grid gap-6;
+    @apply grid gap-4;
   }
 
   .cards-grid-1 {
@@ -611,172 +370,56 @@
     @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
   }
 
-  /* Card container estandarizado */
   .card-item {
-    @apply relative overflow-hidden rounded-2xl border border-white/5 transition-all duration-300;
+    @apply relative overflow-hidden rounded-lg border transition-all duration-200;
     background: var(--color-racing-card);
-    background-image: 
-      linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+    border-color: var(--color-border-subtle);
   }
 
   .card-item:hover {
-    border-color: var(--color-accent-orange)/30;
-    box-shadow: 0 8px 32px rgba(255, 107, 0, 0.1);
-    transform: translateY(-4px);
+    border-color: var(--color-border-hover);
+    transform: translateY(-2px);
   }
 
   /* ═══════════════════════════════════════════════════════════
-     DIVISORES Y SEPARADORES VISUALES
+     SECCIONES — fondos sólidos alternados
   ═══════════════════════════════════════════════════════════ */
-  .section-divider {
-    position: relative;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-accent-orange) 15%,
-      var(--color-accent-orange) 85%,
-      transparent 100%
-    );
-    margin: 0;
-    opacity: 0.6;
-  }
-
-  .section-divider-with-glow {
-    position: relative;
-    height: 1px;
-    background: var(--color-border-default);
-    margin: 0;
-  }
-
-  .section-divider-with-glow::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 100%;
-    background: var(--color-accent-orange);
-    filter: blur(20px);
-    opacity: 0.4;
-  }
-
-  .section-divider-subtle {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-border-default) 50%,
-      transparent 100%
-    );
-    margin: 0;
-  }
-
-  /* Divisor para después de cada sección */
-  .divider-section-bottom {
-    @apply h-12 md:h-16 lg:h-20 relative;
-  }
-
-  .divider-section-bottom::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-accent-orange) 10%,
-      var(--color-accent-orange) 90%,
-      transparent 100%
-    );
-    opacity: 0.5;
-  }
-
-  /* Separador con patrón decorativo */
-  .divider-racing-pattern {
-    position: relative;
-    height: 3px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--color-accent-orange) 0px,
-      var(--color-accent-orange) 8px,
-      transparent 8px,
-      transparent 16px
-    );
-    opacity: 0.6;
-    margin: 0;
-  }
-
-  /* Mobile-first grid improvements */
-  .grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8;
-  }
-
-  /* Fondos de sección alternados con patrones sutiles */
   .section-primary {
     background-color: var(--color-racing-black);
-    background-image: 
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 107, 0, 0.008) 80px,
-        rgba(255, 107, 0, 0.008) 160px
-      );
     position: relative;
   }
 
   .section-secondary {
     background-color: var(--color-racing-dark);
-    background-image: 
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 255, 255, 0.008) 80px,
-        rgba(255, 255, 255, 0.008) 160px
-      );
     position: relative;
   }
 
   .section-elevated {
     background-color: var(--color-racing-surface);
-    background-image: 
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 80px,
-        rgba(255, 107, 0, 0.012) 80px,
-        rgba(255, 107, 0, 0.012) 160px
-      );
     position: relative;
   }
 
-  /* Divisor visual después de secciones */
   .section-primary::after,
   .section-secondary::after,
   .section-elevated::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 5%;
-    right: 5%;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-accent-orange) 10%,
-      var(--color-accent-orange) 90%,
-      transparent 100%
-    );
-    opacity: 0.4;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: var(--color-border-subtle);
     z-index: 10;
   }
 
-  /* Colores de texto y fondos */
+  /* ═══════════════════════════════════════════════════════════
+     GRID RESPONSIVE
+  ═══════════════════════════════════════════════════════════ */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5;
+  }
+
+  /* Colores de texto */
   .text-primary {
     color: var(--color-text-primary);
   }

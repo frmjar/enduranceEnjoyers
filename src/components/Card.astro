@@ -19,28 +19,25 @@ const {
 
   <div class={`
   relative overflow-hidden
-  bg-racing-card/80 backdrop-blur-sm 
-  rounded-2xl 
-  border border-white/5 hover:border-accent-orange/30
-  transition-all duration-300 
-  hover:shadow-lg hover:shadow-accent-orange/10
+  bg-racing-card
+  rounded-lg
+  border border-border-subtle hover:border-accent-cyan/40
+  transition-all duration-200
   hover:-translate-y-1
   group p-6
   ${className}
 `}
   >
-  <!-- Efecto glow sutil en hover -->
-    <div class='absolute inset-0 bg-gradient-to-br from-accent-orange/0 to-transparent opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none' />
 
     {(headerDate || headerSeason) && (
       <header class='relative flex items-center justify-between mb-4'>
         {headerDate && (
-          <time class='text-sm font-semibold text-accent-orange bg-accent-orange/10 px-3 py-1.5 rounded-full border border-accent-orange/20'>
+          <time class='text-sm font-semibold text-accent-orange bg-accent-orange/10 px-3 py-1.5 rounded-md border border-accent-orange/20'>
             {headerDate}
           </time>
         )}
         {headerSeason && (
-          <span class='text-sm text-text-muted bg-racing-surface px-3 py-1.5 rounded-full'>
+          <span class='text-sm text-text-muted bg-racing-surface px-3 py-1.5 rounded-md'>
             {headerSeason}
           </span>
         )}
@@ -53,7 +50,7 @@ const {
           ? (
             <div class='flex items-center'>
               {icon && (
-                <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center mr-4 shadow-lg shadow-accent-orange/20`}>
+                <div class={`w-12 h-12 ${iconColor} rounded-lg flex items-center justify-center mr-4`}>
                   <Icon name={icon} class='text-white' />
                 </div>
               )}
@@ -66,14 +63,14 @@ const {
             )
           : (
               icon && (
-                <div class={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center shadow-lg shadow-accent-orange/20`}>
+                <div class={`w-12 h-12 ${iconColor} rounded-lg flex items-center justify-center`}>
                   <Icon name={icon} class='text-white' />
                 </div>
               )
             )}
 
         {date && (
-          <span class='text-sm font-medium text-text-secondary bg-racing-surface px-3 py-1.5 rounded-full'>
+          <span class='text-sm font-medium text-text-secondary bg-racing-surface px-3 py-1.5 rounded-md'>
             {date}
           </span>
         )}
@@ -81,7 +78,7 @@ const {
     )}
 
     {title && !titleInline && (
-      <h3 class={`relative text-xl font-bold mb-4 text-text-primary leading-tight ${titleHoverColor ? 'group-hover:text-accent-orange transition-colors duration-200' : ''}`}>
+      <h3 class={`relative text-xl font-bold mb-4 text-text-primary leading-tight ${titleHoverColor ? 'group-hover:text-accent-cyan transition-colors duration-200' : ''}`}>
         {title}
       </h3>
     )}
@@ -100,8 +97,8 @@ const {
       <div class='relative space-y-3'>
         {details.map((detail, detailIndex) => (
           <div class='flex items-center gap-2'>
-            <div class='w-2 h-2 bg-accent-orange rounded-full' />
-            <span class='text-sm font-medium text-accent-orange'>{detail.label}:</span>
+            <div class='w-2 h-2 bg-accent-cyan rounded-full' />
+            <span class='text-sm font-medium text-accent-cyan'>{detail.label}:</span>
             <span class='text-sm text-text-secondary'>{detail.value}</span>
           </div>
         ))}
@@ -112,7 +109,7 @@ const {
       <div class='relative space-y-3 mt-6'>
         {results.map((result, resultIndex) => (
           <div class='flex items-center space-x-3'>
-            <div class='w-2 h-2 bg-accent-orange rounded-full flex-shrink-0' />
+            <div class='w-2 h-2 bg-accent-cyan rounded-full flex-shrink-0' />
             <span class='text-text-primary text-sm'>{result}</span>
           </div>
         ))}

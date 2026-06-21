@@ -8,7 +8,7 @@ const links = Astro.props.links;
     role='navigation'
   >
     <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
-    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange opacity-0 transition-opacity duration-500' />
+    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-cyan via-accent-cyan to-accent-cyan opacity-0 transition-opacity duration-500' />
 
     <div class='relative flex flex-col items-center justify-center h-full px-8'>
       <button
@@ -25,10 +25,10 @@ const links = Astro.props.links;
         {links.map((link, index) => (
           <a
             href={link.href}
-            class={`mobile-link group relative text-2xl font-medium text-white/70 hover:text-white transition-all duration-300 mobile-menu-item stagger-${index + 1}`}
+            class={`mobile-link group relative text-2xl font-semibold uppercase tracking-wide text-white/70 hover:text-accent-cyan transition-all duration-300 mobile-menu-item stagger-${index + 1}`}
           >
             <span class='relative z-10'>{link.label}</span>
-            <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-full' />
+            <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-cyan rounded-full transition-all duration-300 group-hover:w-full' />
           </a>
         ))}
       </nav>

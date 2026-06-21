@@ -30,14 +30,14 @@ const sections = [
   {
     title: 'Esta semana',
     week: `Semana ${thisWeekRaces[0]?.Week || ''}`,
-    iconClasses: 'bg-gradient-to-br from-accent-orange to-accent-orange-light text-white shadow-lg shadow-accent-orange/20',
-    subtitleClasses: 'text-accent-orange',
+                    iconClasses: 'bg-accent-orange text-white',
+                    subtitleClasses: 'text-accent-orange',
     races: thisWeekRaces
   },
   {
     title: 'Próxima semana',
     week: `Semana ${nextWeekRaces[0]?.Week || ''}`,
-    iconClasses: 'bg-racing-elevated border border-white/10 text-text-secondary',
+                    iconClasses: 'bg-racing-surface border border-border-subtle text-text-secondary',
     subtitleClasses: 'text-text-muted',
     races: nextWeekRaces
   }
@@ -57,15 +57,15 @@ const { class: className = '', ...props } = Astro.props;
             {sections.map(section => (
               section.races.length > 0 && (
                 <div>
-                  <div class='flex items-center gap-4 mb-6'>
-                    <div class={`flex items-center justify-center w-12 h-12 rounded-xl ${section.iconClasses}`}>
+                    <div class='flex items-center gap-4 mb-6'>
+                    <div class={`flex items-center justify-center w-12 h-12 rounded-lg ${section.iconClasses}`}>
                       <Icon name='calendar' class='w-6 h-6' />
                     </div>
                     <div>
                       <h3 class='text-xl md:text-2xl font-bold text-text-primary'>{section.title}</h3>
                       <span class={`text-sm ${section.subtitleClasses}`}>{section.week}</span>
                     </div>
-                    <div class='flex-1 h-px bg-gradient-to-r from-accent-orange  to-transparent' />
+                    <div class='flex-1 h-px bg-border-subtle' />
                   </div>
 
                   <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
@@ -79,8 +79,8 @@ const { class: className = '', ...props } = Astro.props;
           </div>
           )
         : (
-          <div class='text-center py-16 bg-racing-surface/50 rounded-2xl border border-white/5'>
-            <div class='w-20 h-20 bg-racing-elevated rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10'>
+          <div class='text-center py-16 bg-racing-surface/50 rounded-lg border border-border-subtle'>
+            <div class='w-20 h-20 bg-racing-elevated rounded-lg flex items-center justify-center mx-auto mb-6 border border-border-subtle'>
               <Icon name='calendar' size='lg' class='text-text-muted' />
             </div>
             <p class='text-text-muted text-lg'>
@@ -89,8 +89,8 @@ const { class: className = '', ...props } = Astro.props;
           </div>
           )}
       {allRaces.length === 0 && (
-        <div class='mt-10 text-center py-16 bg-racing-surface/50 rounded-2xl border border-dashed border-white/10'>
-          <div class='w-20 h-20 bg-racing-elevated rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10'>
+        <div class='mt-10 text-center py-16 bg-racing-surface/50 rounded-lg border border-dashed border-border-subtle'>
+          <div class='w-20 h-20 bg-racing-elevated rounded-lg flex items-center justify-center mx-auto mb-6 border border-border-subtle'>
             <Icon name='calendar' size='lg' class='text-text-muted' />
           </div>
           <h3 class='text-xl font-bold text-text-primary'>Sin carreras programadas</h3>
@@ -104,7 +104,7 @@ const { class: className = '', ...props } = Astro.props;
       <div class='text-center mt-12'>
         <a
           href='/calendario'
-          class='group inline-flex items-center gap-3 bg-gradient-to-r from-accent-orange to-accent-orange-light hover:from-accent-orange-light hover:to-accent-orange text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-accent-orange/25 hover:shadow-xl hover:shadow-accent-orange/40 hover:-translate-y-0.5'
+          class='group inline-flex items-center gap-3 bg-accent-orange hover:bg-accent-orange-light text-racing-black font-bold px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-0.5'
         >
           <Icon name='calendar' class='w-5 h-5' />
           <span>Ver calendario completo</span>

@@ -1,6 +1,6 @@
 ---
 ---
-  <div class='relative overflow-hidden bg-gradient-to-br from-racing-card/90 to-racing-card/40 backdrop-blur-md rounded-2xl border border-white/5 p-8 lg:p-10'>
+  <div class='relative overflow-hidden bg-racing-card rounded-lg border border-border-subtle p-8 lg:p-10'>
     <div class='relative'>
       <div class='mb-8 flex flex-col gap-3'>
         <span class='badge-racing self-start'>Contacto directo</span>
@@ -22,7 +22,7 @@
               name='iracingName'
               placeholder='Tu nombre'
               autocomplete='name'
-              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+              class='input-racing'
               required
             />
           </div>
@@ -34,7 +34,7 @@
               name='discord'
               placeholder='usuario#0000'
               autocomplete='off'
-              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+              class='input-racing'
               required
             />
           </div>
@@ -49,7 +49,7 @@
               name='email'
               placeholder='tu@email.com'
               autocomplete='email'
-              class='w-full min-h-12 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all'
+              class='input-racing'
             />
           </div>
           <div>
@@ -57,13 +57,13 @@
             <div class='flex gap-3'>
               <label class='flex-1 relative group cursor-pointer'>
                 <input type='radio' name='experience' value='si' required class='sr-only peer' />
-                <div class='min-h-12 p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/60 group-hover:border-accent-orange/30 transition-all text-center'>
+                <div class='min-h-12 p-3 rounded-md border border-border-subtle bg-racing-elevated peer-checked:bg-accent-orange/15 peer-checked:border-accent-orange/50 group-hover:border-accent-orange/30 transition-all text-center'>
                   <span class='text-sm font-medium text-text-primary'>Sí</span>
                 </div>
               </label>
               <label class='flex-1 relative group cursor-pointer'>
                 <input type='radio' name='experience' value='no' required class='sr-only peer' />
-                <div class='min-h-12 p-3 rounded-lg border border-white/10 bg-white/5 peer-checked:bg-accent-orange/20 peer-checked:border-accent-orange/60 group-hover:border-accent-orange/30 transition-all text-center'>
+                <div class='min-h-12 p-3 rounded-md border border-border-subtle bg-racing-elevated peer-checked:bg-accent-orange/15 peer-checked:border-accent-orange/50 group-hover:border-accent-orange/30 transition-all text-center'>
                   <span class='text-sm font-medium text-text-primary'>No</span>
                 </div>
               </label>
@@ -78,7 +78,7 @@
             name='additionalInfo'
             rows='4'
             placeholder='Tu experiencia, objetivos o cualquier detalle útil para conocerte mejor.'
-            class='w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-orange/60 focus:bg-white/10 transition-all resize-none'
+            class='w-full px-4 py-3 bg-racing-elevated border border-border-subtle rounded-md text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan/30 transition-all resize-none'
           />
         </div>
 
@@ -89,7 +89,7 @@
 
           <button
             type='submit'
-            class='btn-racing w-full sm:w-auto inline-flex items-center justify-center min-h-12 px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:ring-offset-2 focus:ring-offset-racing-dark'
+            class='btn-racing w-full sm:w-auto inline-flex items-center justify-center min-h-12 px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:ring-offset-2 focus:ring-offset-racing-card'
           >
             Enviar solicitud
           </button>

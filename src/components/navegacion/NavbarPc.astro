@@ -3,8 +3,8 @@ const links = Astro.props.links;
 ---
 
   <nav id='navbar' class='fixed top-0 left-0 w-full z-50 transition-all duration-300' role='navigation'>
-    <div id='navbar-bg' class='absolute inset-0 bg-racing-dark/0 backdrop-blur-none border-b border-transparent transition-all duration-300' />
-    <div id='navbar-accent' class='absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-orange to-transparent opacity-0 transition-opacity duration-300' />
+    <div id='navbar-bg' class='absolute inset-0 bg-racing-black/0 backdrop-blur-none border-b border-transparent transition-all duration-300' />
+    <div id='navbar-accent' class='absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-cyan to-transparent opacity-0 transition-opacity duration-300' />
 
     <div class='relative flex items-center justify-center h-18 md:h-20 px-4 md:px-8 max-w-8xl mx-auto'>
       <div id='scroll-logo' class='absolute left-4 md:left-16 flex-shrink-0 opacity-0 -translate-x-4 transition-all duration-300'>
@@ -24,10 +24,10 @@ const links = Astro.props.links;
         {links.map(link => (
           <a
             href={link.href}
-            class='nav-link relative px-5 py-2 text-base lg:text-lg font-medium text-white/90 hover:text-white transition-colors duration-200 group'
+            class='nav-link relative px-5 py-2 text-sm lg:text-base font-semibold uppercase tracking-wide text-white/80 hover:text-accent-cyan transition-colors duration-200 group'
           >
             <span class='relative z-10'>{link.label}</span>
-            <span class='absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent-orange rounded-full transition-all duration-300 group-hover:w-3/4' />
+            <span class='absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent-cyan rounded-full transition-all duration-300 group-hover:w-3/4' />
           </a>
         ))}
       </div>
@@ -75,16 +75,16 @@ const links = Astro.props.links;
     if (window.scrollY > alturaConMargen / 3) {
       logo.classList.remove('opacity-0', '-translate-x-4')
       logo.classList.add('opacity-100', 'translate-x-0')
-      navbarBg.classList.remove('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
-      navbarBg.classList.add('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarBg.classList.remove('bg-racing-black/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.add('bg-racing-black/95', 'backdrop-blur-md', 'border-border-subtle')
       navbarAccent.classList.remove('opacity-0')
       navbarAccent.classList.add('opacity-60')
       desktopNav?.classList.add('md:ml-32')
     } else {
       logo.classList.add('opacity-0', '-translate-x-4')
       logo.classList.remove('opacity-100', 'translate-x-0')
-      navbarBg.classList.add('bg-racing-dark/0', 'backdrop-blur-none', 'border-transparent')
-      navbarBg.classList.remove('bg-racing-dark/90', 'backdrop-blur-md', 'border-white/5')
+      navbarBg.classList.add('bg-racing-black/0', 'backdrop-blur-none', 'border-transparent')
+      navbarBg.classList.remove('bg-racing-black/95', 'backdrop-blur-md', 'border-border-subtle')
       navbarAccent.classList.add('opacity-0')
       navbarAccent.classList.remove('opacity-60')
       desktopNav?.classList.remove('md:ml-32')

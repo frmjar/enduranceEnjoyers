@@ -29,8 +29,8 @@ const { class: className = '', ...props } = Astro.props;
           >
             {
             images.map((img) => (
-              <div class='relative group overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-accent-orange/20 border border-white/10 hover:border-accent-orange/50 bg-racing-surface'>
-                <div class='aspect-w-3 aspect-h-4 bg-racing-elevated animate-pulse overflow-hidden'>
+              <div class='relative group overflow-hidden rounded-lg transition-all duration-200 hover:-translate-y-1 border border-border-subtle hover:border-accent-cyan/40 bg-racing-card'>
+                <div class='aspect-w-3 aspect-h-4 bg-racing-surface animate-pulse overflow-hidden'>
                   <Image
                     src={img.urlDesktop}
                     alt={img.alt}
@@ -55,7 +55,7 @@ const { class: className = '', ...props } = Astro.props;
                 </div>
 
                 {(img.description || img.title) && (
-                  <div class='absolute px-5 py-4 bottom-0 left-0 right-0 bg-gradient-to-t from-racing-black via-racing-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-b-xl border-t border-accent-orange/30'>
+                  <div class='absolute px-5 py-4 bottom-0 left-0 right-0 bg-gradient-to-t from-racing-black via-racing-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-b-lg border-t border-accent-cyan/20'>
                     <h3 class='text-text-primary font-bold text-lg mb-1'>
                       {img.title || img.name}
                     </h3>
@@ -68,8 +68,8 @@ const { class: className = '', ...props } = Astro.props;
                 )}
                 
                 <!-- Icono de expandir -->
-                <div class='absolute top-3 right-3 w-10 h-10 bg-racing-black/70 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300 border border-accent-orange/50'>
-                  <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 text-accent-orange' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <div class='absolute top-3 right-3 w-10 h-10 bg-racing-black/70 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-200 border border-accent-cyan/40'>
+                  <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 text-accent-cyan' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                     <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4' />
                   </svg>
                 </div>
@@ -79,7 +79,7 @@ const { class: className = '', ...props } = Astro.props;
           </div>
         )
         : (
-          <div class='my-10 rounded-2xl border border-dashed border-white/10 bg-racing-surface/60 px-6 py-16 text-center'>
+          <div class='my-10 rounded-lg border border-dashed border-border-subtle bg-racing-surface/60 px-6 py-16 text-center'>
             <span class='text-4xl'>🖼️</span>
             <h3 class='mt-4 text-lg font-bold text-text-primary'>Galería sin imágenes disponibles</h3>
             <p class='mt-2 text-sm text-text-secondary max-w-xl mx-auto'>

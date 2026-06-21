@@ -36,7 +36,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
 
         {images.length > 0
           ? images.map((image) => (
-            <Card key={image.id} class='flex items-center justify-center !p-0 overflow-hidden border border-white/10'>
+            <Card key={image.id} class='flex items-center justify-center !p-0 overflow-hidden border border-border-subtle'>
               <Image
                 src={image.urlDesktop}
                 alt={image.alt}
@@ -46,7 +46,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
             </Card>
           ))
           : (
-            <Card class='min-h-72 flex flex-col items-center justify-center text-center gap-4 border border-dashed border-white/10 bg-racing-surface/60'>
+            <Card class='min-h-72 flex flex-col items-center justify-center text-center gap-4 border border-dashed border-border-subtle bg-racing-surface/60'>
               <span class='text-4xl'>📰</span>
               <div>
                 <h3 class='text-lg font-bold text-text-primary'>Sin novedades publicadas</h3>
@@ -63,8 +63,8 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
           <div class="absolute -top-6 -left-6 z-20">
             <div class="relative group/label">
               <div class="absolute inset-0 bg-accent-orange blur-xl opacity-75 group-hover/label:opacity-100 transition-opacity"></div>
-              <span class="relative block px-6 py-3 bg-gradient-to-r from-accent-orange via-accent-orange-light to-accent-orange text-racing-black font-black text-sm uppercase tracking-[0.2em] rounded-2xl shadow-2xl transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
-                <span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">🔥 DESTACADO</span>
+                <span class="relative block px-6 py-3 bg-accent-orange text-racing-black font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
+                <span>🔥 DESTACADO</span>
               </span>
             </div>
           </div>
@@ -89,8 +89,8 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 <div class="absolute -top-6 -left-6 z-20">
                   <div class="relative group/label">
                     <div class="absolute inset-0 bg-accent-orange-light blur-xl opacity-75 group-hover/label:opacity-100 transition-opacity"></div>
-                    <span class="relative block px-6 py-3 bg-racing-black border-3 border-accent-orange text-accent-orange font-black text-sm uppercase tracking-[0.2em] rounded-2xl shadow-2xl transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
-                      <span class="drop-shadow-[0_0_10px_rgba(255,140,0,0.8)]">⚡ NUEVO</span>
+                    <span class="relative block px-6 py-3 bg-racing-black border border-accent-cyan text-accent-cyan font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
+                      <span>⚡ NUEVO</span>
                     </span>
                   </div>
                 </div>
@@ -137,7 +137,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 href='https://www.youtube.com/@Sayk365'
                 target='_blank'
                 rel='noopener noreferrer'
-                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-xl  px-6 py-3 group-hover:shadow-[0_0_30px_rgba(255,140,0,0.5)]'
+                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md  px-6 py-3'
               >
                 Sayk →
               </a>
@@ -145,7 +145,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 href='https://www.youtube.com/@thejerbo2250'
                 target='_blank'
                 rel='noopener noreferrer'
-                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-xl px-6 py-3 group-hover:shadow-[0_0_30px_rgba(255,140,0,0.5)]'
+                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md px-6 py-3'
               >
                 Jerbo →
               </a>
@@ -153,7 +153,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 href='https://www.youtube.com/@ChrisTorresSimracing'
                 target='_blank'
                 rel='noopener noreferrer'
-                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-xl px-6 py-3 group-hover:shadow-[0_0_30px_rgba(255,140,0,0.5)]'
+                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md px-6 py-3'
               >
                 Chris Torres →
               </a>
