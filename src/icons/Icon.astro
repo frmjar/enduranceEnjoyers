@@ -1,16 +1,21 @@
 ---
+import ArrowLeft from './ArrowLeft.astro'
+import ArrowRight from './ArrowRight.astro'
 import Calendar from './Calendar.astro'
-import CheckCircle from './CheckCircle.astro'
+import ChevronLeft from './ChevronLeft.astro'
+import ChevronRight from './ChevronRight.astro'
 import Close from './Close.astro'
-import Flag from './Flag.astro'
+import Expand from './Expand.astro'
 import Menu from './Menu.astro'
 import MultiPerson from './MultiPerson.astro'
+import Play from './Play.astro'
 import SinglePerson from './SinglePerson.astro'
 import Trophy from './Trophy.astro'
 import Twitch from './Twitch.astro'
 import Twitter from './Twitter.astro'
+import Youtube from './Youtube.astro'
 
-export type IconTypes = 'calendar' | 'trophy' | 'flag' | 'checkCircle' | 'close' | 'twitter' | 'menu' | 'singlePerson' | 'multiPerson' | 'twitch'
+export type IconTypes = 'arrowLeft' | 'arrowRight' | 'calendar' | 'chevronLeft' | 'chevronRight' | 'close' | 'expand' | 'menu' | 'multiPerson' | 'play' | 'singlePerson' | 'trophy' | 'twitch' | 'twitter' | 'youtube'
 
 export interface Props {
   name: IconTypes
@@ -28,19 +33,28 @@ const {
 } = Astro.props
 
 const iconComponents = {
+  arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
   calendar: Calendar,
-  trophy: Trophy,
-  flag: Flag,
-  checkCircle: CheckCircle,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
   close: Close,
-  twitter: Twitter,
+  expand: Expand,
   menu: Menu,
-  twitch: Twitch,
+  multiPerson: MultiPerson,
+  play: Play,
   singlePerson: SinglePerson,
-  multiPerson: MultiPerson
+  trophy: Trophy,
+  twitch: Twitch,
+  twitter: Twitter,
+  youtube: Youtube
 }
 
-const IconComponent = iconComponents[name] || Calendar
+const IconComponent = iconComponents[name]
+
+if (!IconComponent) {
+  console.warn(`Icono no encontrado: "${name}"`)
+}
 ---
 
-  <IconComponent class={className} size={size} fill={fill} {...props} />
+  {IconComponent && <IconComponent class={className} size={size} fill={fill} {...props} />}

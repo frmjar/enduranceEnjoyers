@@ -60,7 +60,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
 
         if (data.items && data.items.length > 0) {
           // Obtener detalles adicionales de los videos
-          const videoIds: string = data.items.map((item: any) => item.id.videoId).join(',')
+          const videoIds: string = data.items.map((item: Record<string, any>) => item.id.videoId).join(',')
           const detailsResponse = await fetch(
             'https://www.googleapis.com/youtube/v3/videos?' +
             `key=${YOUTUBE_API_KEY}&` +
@@ -72,7 +72,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
             const detailsData = await detailsResponse.json()
 
             // Combinar datos de este canal
-            const channelVideos = data.items.map((item: any, index: number) => {
+            const channelVideos = data.items.map((item: Record<string, any>, index: number) => {
               const details = detailsData.items[index]
 
               const thumbnails = item.snippet.thumbnails

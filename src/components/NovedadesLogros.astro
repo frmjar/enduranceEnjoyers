@@ -5,6 +5,11 @@ import Card from './Card.astro'
 import SectionTitle from './SectionTitle.astro'
 import VideoCard from './VideoCard.astro'
 
+export interface Props {
+  id?: string
+  class?: string
+}
+
 const { id, class: className } = Astro.props
 
 let youtubeVideos = []
@@ -22,6 +27,22 @@ try {
 }
 
 const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedades })
+
+const videoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  'name': 'Clip histórico: Retransmisión oficial iRacing',
+  'description': 'Clip histórico del equipo Endurance Enjoyers durante una retransmisión oficial de iRacing.',
+  'thumbnailUrl': 'https://img.youtube.com/vi/k9ewVCfSfKw/hqdefault.jpg',
+  'embedUrl': 'https://www.youtube.com/embed/k9ewVCfSfKw',
+  'uploadDate': '2025-08-16',
+  'duration': 'PT1M',
+  'interactionStatistic': {
+    '@type': 'InteractionCounter',
+    'interactionType': 'WatchAction',
+    'userInteractionCount': 1
+  }
+}
 ---
 
   <section id={id} class={`spacing-section ${className || ''}`}>
@@ -40,7 +61,8 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
               <Image
                 src={image.urlDesktop}
                 alt={image.alt}
-                inferSize
+                width={320}
+                height={427}
                 class='w-full h-auto object-cover object-center'
               />
             </Card>
@@ -63,22 +85,23 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
           <div class="absolute -top-6 -left-6 z-20">
             <div class="relative group/label">
               <div class="absolute inset-0 bg-accent-orange blur-xl opacity-75 group-hover/label:opacity-100 transition-opacity"></div>
-                <span class="relative block px-6 py-3 bg-accent-orange text-racing-black font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
+                <span class="relative block px-6 py-3 bg-accent-orange text-racing-black font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 label-3d transition-all duration-500">
                 <span>🔥 DESTACADO</span>
               </span>
             </div>
-          </div>
-          <VideoCard
-            video={{
-              id: 'k9ewVCfSfKw',
-              channelTitle: 'iRacingOfficial',
-              publishedAt: '2025-08-16T00:00:00Z',
-              url: 'https://www.youtube.com/watch?v=k9ewVCfSfKw',
-              title: 'Clip histórico: Retransmisión oficial iRacing',
-              description: 'Este clip recoge uno de los momentos históricos del equipo Endurance Enjoyers. ¡Revívelo y compártelo!',
-              thumbnail: 'https://img.youtube.com/vi/k9ewVCfSfKw/hqdefault.jpg'
-            }} start={4112} end={4172}
-          />
+        </div>
+        <VideoCard
+          video={{
+            id: 'k9ewVCfSfKw',
+            channelTitle: 'iRacingOfficial',
+            publishedAt: '2025-08-16T00:00:00Z',
+            url: 'https://www.youtube.com/watch?v=k9ewVCfSfKw',
+            title: 'Clip histórico: Retransmisión oficial iRacing',
+            description: 'Este clip recoge uno de los momentos históricos del equipo Endurance Enjoyers. ¡Revívelo y compártelo!',
+            thumbnail: 'https://img.youtube.com/vi/k9ewVCfSfKw/hqdefault.jpg'
+          }} start={4112} end={4172}
+        />
+        <script type='application/ld+json' set:html={JSON.stringify(videoSchema)} />
         </div>
 
         {youtubeVideos.length > 0
@@ -89,7 +112,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 <div class="absolute -top-6 -left-6 z-20">
                   <div class="relative group/label">
                     <div class="absolute inset-0 bg-accent-orange-light blur-xl opacity-75 group-hover/label:opacity-100 transition-opacity"></div>
-                    <span class="relative block px-6 py-3 bg-racing-black border border-accent-cyan text-accent-cyan font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 transition-all duration-500" style="transform: perspective(500px) rotateX(10deg) rotateY(-5deg);">
+                    <span class="relative block px-6 py-3 bg-racing-black border border-accent-cyan text-accent-cyan font-black text-sm uppercase tracking-[0.2em] rounded-lg transform -rotate-3 group-hover/label:rotate-0 group-hover/label:scale-110 label-3d transition-all duration-500">
                       <span>⚡ NUEVO</span>
                     </span>
                   </div>
@@ -137,7 +160,7 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 href='https://www.youtube.com/@Sayk365'
                 target='_blank'
                 rel='noopener noreferrer'
-                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md  px-6 py-3'
+                class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md px-6 py-3'
               >
                 Sayk →
               </a>
@@ -156,6 +179,17 @@ const images = await getImages({ cantidad: 3, folder: CloudinaryFolders.Novedade
                 class='block w-full bg-accent-orange hover:bg-accent-orange-light text-racing-black font-black text-sm uppercase tracking-wider rounded-md px-6 py-3'
               >
                 Chris Torres →
+              </a>
+            </div>
+            <div class='mt-4 pt-4 border-t border-border-subtle'>
+              <p class='text-xs text-muted uppercase tracking-wider mb-2'>En directo</p>
+              <a
+                href='https://www.twitch.tv/enduranceenjoyers'
+                target='_blank'
+                rel='noopener noreferrer'
+                class='block w-full bg-[#9146FF] hover:bg-[#a970ff] text-white font-black text-sm uppercase tracking-wider rounded-md px-6 py-3 transition-colors'
+              >
+                Endurance Enjoyers → Twitch
               </a>
             </div>
           </div>

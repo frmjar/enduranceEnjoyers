@@ -1,129 +1,91 @@
 ---
+import Icon from '../../icons/Icon.astro'
+import SocialLinks from '../SocialLinks.astro'
+
+export interface Props {
+  links: Array<{ href: string, label: string }>
+}
+
 const links = Astro.props.links;
 ---
-  <div
-    id='mobile-menu'
-    class='fixed inset-0 z-[100] transform translate-x-full transition-transform duration-500 ease-out md:hidden'
-    aria-hidden='true'
-    role='navigation'
-  >
-    <div class='absolute inset-0 bg-racing-black/98 backdrop-blur-xl' />
-    <div class='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-cyan via-accent-cyan to-accent-cyan opacity-0 transition-opacity duration-500' />
 
-    <div class='relative flex flex-col items-center justify-center h-full px-8'>
+<div
+  id='mobile-menu'
+  role='dialog'
+  aria-modal='true'
+  aria-label='Menú de navegación'
+  class='fixed inset-0 z-40 translate-x-full transition-transform duration-300 ease-out md:hidden'
+>
+  <div id='mobile-overlay' class='absolute inset-0 bg-racing-black/80 backdrop-blur-sm' />
+
+  <div class='absolute right-0 top-0 bottom-0 w-full max-w-sm bg-racing-dark border-l border-border-subtle'>
+    <div class='flex items-center justify-between p-6 border-b border-border-subtle'>
+      <img
+        src='/logotextclear.webp'
+        alt='Endurance Enjoyers'
+        class='h-10 w-auto'
+        width='120'
+        height='35'
+      />
       <button
-        id='close-menu'
-        class='absolute top-4 right-4 p-3 text-white/60 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200 mobile-menu-item'
+        id='mobile-close-button'
+        class='p-2 text-white/80 hover:text-white transition-colors'
         aria-label='Cerrar menú'
       >
-        <svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' />
-        </svg>
+        <Icon name='close' />
       </button>
+    </div>
 
-      <nav class='flex flex-col items-center gap-6'>
-        {links.map((link, index) => (
-          <a
-            href={link.href}
-            class={`mobile-link group relative text-2xl font-semibold uppercase tracking-wide text-white/70 hover:text-accent-cyan transition-all duration-300 mobile-menu-item stagger-${index + 1}`}
-          >
-            <span class='relative z-10'>{link.label}</span>
-            <span class='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-cyan rounded-full transition-all duration-300 group-hover:w-full' />
-          </a>
+    <nav class='p-6' aria-label='Navegación móvil'>
+      <ul class='space-y-2'>
+        {links.map((link, i) => (
+          <li>
+            <a
+              href={link.href}
+              class='mobile-nav-link block px-4 py-3 text-lg font-bold text-white/70 hover:text-accent-cyan hover:bg-racing-surface rounded-lg transition-all duration-200 uppercase tracking-wider'
+            >
+              {link.label}
+            </a>
+          </li>
         ))}
-      </nav>
+      </ul>
+    </nav>
 
-      <div class='absolute bottom-8 opacity-20 mobile-menu-item stagger-7'>
-        <img src='/logotextclear.webp' alt='logo_equipo' class='h-8 w-auto' aria-hidden='true' />
+    <div class='absolute bottom-0 left-0 right-0 p-6 border-t border-border-subtle'>
+      <div class='flex justify-center gap-4'>
+        <SocialLinks variant='navbar' />
       </div>
     </div>
   </div>
+</div>
 
-    <script define:vars={{}}>
-  const closeMenuButton = document.getElementById('close-menu')
-  const mobileMenu = document.getElementById('mobile-menu')
-  const mobileMenuButton = document.getElementById('mobile-menu-button')
-  const mobileMenuLinks = mobileMenu?.querySelectorAll('.mobile-link')
-  const previouslyFocused = { current: null }
+<script>
+  const menu = document.getElementById('mobile-menu')
+  const overlay = document.getElementById('mobile-overlay')
+  const closeBtn = document.getElementById('mobile-close-button')
+  const navLinks = document.querySelectorAll('.mobile-nav-link')
 
-  const getFocusableElements = () => {
-    if (!mobileMenu) return []
-    return Array.from(mobileMenu.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])'))
-  }
-
-  const closeMobileMenu = () => {
-    mobileMenu?.classList.add('translate-x-full')
-    mobileMenu?.classList.remove('translate-x-0')
-    mobileMenu?.setAttribute('aria-hidden', 'true')
-    mobileMenuButton?.setAttribute('aria-expanded', 'false')
+  const closeMenu = () => {
+    menu?.classList.remove('translate-x-0')
+    menu?.classList.add('translate-x-full')
     document.body.style.overflow = ''
-    previouslyFocused.current?.focus?.()
+    document.getElementById('mobile-menu-button')?.focus()
   }
 
-  const openMobileMenu = () => {
-    if (!mobileMenu) return
-    previouslyFocused.current = document.activeElement
-    mobileMenu.classList.remove('translate-x-full')
-    mobileMenu.classList.add('translate-x-0')
-    mobileMenu.setAttribute('aria-hidden', 'false')
-    mobileMenuButton?.setAttribute('aria-expanded', 'true')
+  window.openMobileMenu = () => {
+    menu?.classList.remove('translate-x-full')
+    menu?.classList.add('translate-x-0')
     document.body.style.overflow = 'hidden'
-
-    const menuItems = mobileMenu.querySelectorAll('.mobile-menu-item')
-    menuItems.forEach((item, index) => {
-      item.style.opacity = '0'
-      item.style.transform = 'translateY(20px)'
-      setTimeout(() => {
-        item.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
-        item.style.opacity = '1'
-        item.style.transform = 'translateY(0)'
-      }, 50 * index)
-    })
-
-    closeMenuButton?.focus()
+    closeBtn?.focus()
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    closeMenuButton?.addEventListener('click', closeMobileMenu)
+  closeBtn?.addEventListener('click', closeMenu)
+  overlay?.addEventListener('click', closeMenu)
+  navLinks.forEach(link => link.addEventListener('click', closeMenu))
 
-    mobileMenu?.addEventListener('click', (event) => {
-      if (event.target === mobileMenu) {
-        closeMobileMenu()
-      }
-    })
-
-    mobileMenu?.addEventListener('keydown', (event) => {
-      if (event.key !== 'Tab') return
-
-      const focusable = getFocusableElements()
-      if (focusable.length === 0) return
-
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-
-      if (event.shiftKey) {
-        if (document.activeElement === first) {
-          event.preventDefault()
-          last.focus()
-        }
-      } else {
-        if (document.activeElement === last) {
-          event.preventDefault()
-          first.focus()
-        }
-      }
-    })
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !mobileMenu?.classList.contains('translate-x-full')) {
-        closeMobileMenu()
-      }
-    })
-
-    mobileMenuLinks?.forEach(link => {
-      link.addEventListener('click', closeMobileMenu)
-    })
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu?.classList.contains('translate-x-0')) {
+      closeMenu()
+    }
   })
-
-  window.openMobileMenu = openMobileMenu
-    </script>
+</script>

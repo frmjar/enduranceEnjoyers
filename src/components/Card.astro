@@ -1,5 +1,21 @@
 ---
 import Icon from '../icons/Icon.astro'
+import type { IconTypes } from '../icons/Icon.astro'
+
+export interface Props {
+  title?: string
+  description?: string
+  date?: string
+  icon?: IconTypes
+  iconColor?: string
+  results?: string[]
+  details?: Array<{ label: string, value: string }>
+  class?: string
+  titleInline?: boolean
+  headerDate?: string | null
+  headerSeason?: string | null
+  variant?: 'default' | 'glass' | 'compact'
+}
 
 const {
   title,
@@ -11,108 +27,93 @@ const {
   details = [],
   class: className = '',
   titleInline = false,
-  titleHoverColor = false,
   headerDate = null,
-  headerSeason = null
+  headerSeason = null,
+  variant = 'default'
 } = Astro.props
 ---
 
-  <div class={`
-  relative overflow-hidden
-  bg-racing-card
-  rounded-lg
-  border border-border-subtle hover:border-accent-cyan/40
-  transition-all duration-200
-  hover:-translate-y-1
-  group p-6
+<div class={`
+  relative overflow-hidden rounded-xl
+  bg-racing-card border border-border-subtle
+  transition-all duration-300 ease-out
+  ${variant === 'glass' ? 'backdrop-blur-xl bg-glass' : ''}
+  ${variant === 'compact' ? 'p-4' : 'p-6'}
+  hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent-cyan-glow
+  group
   ${className}
-`}
-  >
+`}>
+  {(headerDate || headerSeason) && (
+    <header class='flex items-center justify-between mb-4'>
+      {headerDate && (
+        <time class='text-sm font-semibold text-accent-orange bg-accent-orange/10 px-3 py-1.5 rounded-md border border-accent-orange/20'>
+          {headerDate}
+        </time>
+      )}
+      {headerSeason && (
+        <span class='text-sm text-muted bg-racing-surface px-3 py-1.5 rounded-md'>
+          {headerSeason}
+        </span>
+      )}
+    </header>
+  )}
 
-    {(headerDate || headerSeason) && (
-      <header class='relative flex items-center justify-between mb-4'>
-        {headerDate && (
-          <time class='text-sm font-semibold text-accent-orange bg-accent-orange/10 px-3 py-1.5 rounded-md border border-accent-orange/20'>
-            {headerDate}
-          </time>
-        )}
-        {headerSeason && (
-          <span class='text-sm text-text-muted bg-racing-surface px-3 py-1.5 rounded-md'>
-            {headerSeason}
-          </span>
-        )}
-      </header>
-    )}
-
-    {(icon || date || (title && titleInline)) && !headerDate && !headerSeason && (
-      <div class='relative flex items-center justify-between mb-6'>
-        {titleInline
-          ? (
-            <div class='flex items-center'>
-              {icon && (
-                <div class={`w-12 h-12 ${iconColor} rounded-lg flex items-center justify-center mr-4`}>
-                  <Icon name={icon} class='text-white' />
-                </div>
-              )}
-              {title && (
-                <h3 class='text-xl font-semibold text-white leading-tight'>
-                  {title}
-                </h3>
-              )}
+  {(icon || date || (title && titleInline)) && !headerDate && !headerSeason && (
+    <div class='flex items-center justify-between mb-4'>
+      {titleInline ? (
+        <div class='flex items-center gap-3'>
+          {icon && (
+            <div class={`w-10 h-10 ${iconColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
+              <Icon name={icon} class='text-white w-5 h-5' />
             </div>
-            )
-          : (
-              icon && (
-                <div class={`w-12 h-12 ${iconColor} rounded-lg flex items-center justify-center`}>
-                  <Icon name={icon} class='text-white' />
-                </div>
-              )
-            )}
-
-        {date && (
-          <span class='text-sm font-medium text-text-secondary bg-racing-surface px-3 py-1.5 rounded-md'>
-            {date}
-          </span>
-        )}
-      </div>
-    )}
-
-    {title && !titleInline && (
-      <h3 class={`relative text-xl font-bold mb-4 text-text-primary leading-tight ${titleHoverColor ? 'group-hover:text-accent-cyan transition-colors duration-200' : ''}`}>
-        {title}
-      </h3>
-    )}
-
-    {description && (
-      <p class='relative text-text-secondary leading-relaxed mb-6'>
-        {description}
-      </p>
-    )}
-
-    <div class='relative'>
-      <slot />
+          )}
+          {title && <h3 class='text-lg font-bold text-text-primary leading-tight'>{title}</h3>}
+        </div>
+      ) : icon && (
+        <div class={`w-10 h-10 ${iconColor} rounded-lg flex items-center justify-center`}>
+          <Icon name={icon} class='text-white w-5 h-5' />
+        </div>
+      )}
+      {date && (
+        <span class='text-sm font-medium text-secondary bg-racing-surface px-3 py-1 rounded-md'>
+          {date}
+        </span>
+      )}
     </div>
+  )}
 
-    {details.length > 0 && (
-      <div class='relative space-y-3'>
-        {details.map((detail, detailIndex) => (
-          <div class='flex items-center gap-2'>
-            <div class='w-2 h-2 bg-accent-cyan rounded-full' />
-            <span class='text-sm font-medium text-accent-cyan'>{detail.label}:</span>
-            <span class='text-sm text-text-secondary'>{detail.value}</span>
-          </div>
-        ))}
-      </div>
-    )}
+  {title && !titleInline && (
+    <h3 class='text-xl font-bold mb-3 leading-tight text-text-primary group-hover:text-accent-cyan transition-colors'>
+      {title}
+    </h3>
+  )}
 
-    {results.length > 0 && (
-      <div class='relative space-y-3 mt-6'>
-        {results.map((result, resultIndex) => (
-          <div class='flex items-center space-x-3'>
-            <div class='w-2 h-2 bg-accent-cyan rounded-full flex-shrink-0' />
-            <span class='text-text-primary text-sm'>{result}</span>
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
+  {description && (
+    <p class='text-secondary leading-relaxed mb-4'>{description}</p>
+  )}
+
+  <slot />
+
+  {details.length > 0 && (
+    <div class='space-y-2'>
+      {details.map((detail) => (
+        <div class='flex items-center gap-2'>
+          <div class='w-1.5 h-1.5 bg-accent-cyan rounded-full flex-shrink-0' />
+          <span class='text-sm font-medium text-accent-cyan'>{detail.label}:</span>
+          <span class='text-sm text-secondary'>{detail.value}</span>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {results.length > 0 && (
+    <div class='space-y-2 mt-4'>
+      {results.map((result) => (
+        <div class='flex items-center gap-2'>
+          <div class='w-1.5 h-1.5 bg-accent-cyan rounded-full flex-shrink-0' />
+          <span class='text-sm text-text-primary'>{result}</span>
+        </div>
+      ))}
+    </div>
+  )}
+</div>

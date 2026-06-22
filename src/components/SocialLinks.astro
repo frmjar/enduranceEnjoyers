@@ -1,0 +1,31 @@
+---
+import Icon from '../icons/Icon.astro'
+
+export interface Props {
+  variant?: 'footer' | 'navbar'
+}
+
+const { variant = 'footer' } = Astro.props
+
+const hoverClass = variant === 'footer' ? 'hover:-translate-y-0.5' : ''
+const textColor = variant === 'footer' ? 'text-secondary' : 'text-text-secondary'
+---
+
+<a
+  href='https://x.com/EnduEnjoyers'
+  target='_blank'
+  rel='noopener noreferrer'
+  class={`p-3 rounded-lg bg-racing-surface hover:bg-racing-elevated ${textColor} hover:text-accent-cyan transition-all ${hoverClass}`}
+  aria-label='Twitter'
+>
+  <Icon name='twitter' class='w-5 h-5' />
+</a>
+<a
+  href='https://www.twitch.tv/enduranceenjoyers'
+  target='_blank'
+  rel='noopener noreferrer'
+  class={`p-3 rounded-lg bg-racing-surface hover:bg-racing-elevated ${textColor} hover:text-accent-cyan transition-all ${hoverClass}`}
+  aria-label='Twitch'
+>
+  <Icon name='twitch' class='w-5 h-5' />
+</a>

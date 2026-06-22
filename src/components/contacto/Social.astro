@@ -15,7 +15,7 @@ import Icon from '../../icons/Icon.astro'
       <a
         href='https://x.com/EnduEnjoyers'
         target='_blank'
-        rel='noreferrer'
+        rel='noopener noreferrer'
         class='flex items-center justify-between p-3 rounded-md bg-racing-elevated border border-border-subtle hover:bg-accent-cyan/10 hover:border-accent-cyan/30 transition-all group/link'
       >
         <div class='flex items-center gap-2'>
@@ -25,6 +25,21 @@ import Icon from '../../icons/Icon.astro'
           <span class='text-sm font-medium text-text-primary'>@EnduEnjoyers</span>
         </div>
         <Icon name='twitter' class='w-4 h-4 text-text-muted group-hover/link:text-accent-cyan transition-colors' />
+      </a>
+
+      <a
+        href='https://www.twitch.tv/enduranceenjoyers'
+        target='_blank'
+        rel='noopener noreferrer'
+        class='flex items-center justify-between p-3 rounded-md bg-racing-elevated border border-border-subtle hover:bg-[#9146FF]/10 hover:border-[#9146FF]/30 transition-all group/link'
+      >
+        <div class='flex items-center gap-2'>
+          <div class='w-8 h-8 rounded-md bg-[#9146FF]/15 flex items-center justify-center'>
+            <Icon name='twitch' class='w-4 h-4 text-[#9146FF]' />
+          </div>
+          <span class='text-sm font-medium text-text-primary'>Endurance Enjoyers</span>
+        </div>
+        <Icon name='twitch' class='w-4 h-4 text-text-muted group-hover/link:text-[#9146FF] transition-colors' />
       </a>
     </div>
   </div>

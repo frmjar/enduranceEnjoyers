@@ -11,6 +11,10 @@ const bannerImages = {
   xlarge: await getImage({ src: sample, width: 2048, format: 'webp', quality: 80 })
 }
 
+export interface Props {
+  id?: string
+}
+
 const props = Astro.props
 
 const links = [
@@ -22,37 +26,37 @@ const links = [
 ]
 ---
 
-  <div {...props}>
-    <link rel='preload' as='image' href={bannerImages.medium.src} media='(min-width: 640px) and (max-width: 1023px)' />
-    <link rel='preload' as='image' href={bannerImages.large.src} media='(min-width: 1024px) and (max-width: 1535px)' />
-    <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' />
-    <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' />
+<div {...props}>
+  <link rel='preload' as='image' href={bannerImages.medium.src} media='(min-width: 640px) and (max-width: 1023px)' />
+  <link rel='preload' as='image' href={bannerImages.large.src} media='(min-width: 1024px) and (max-width: 1535px)' />
+  <link rel='preload' as='image' href={bannerImages.xlarge.src} media='(min-width: 1536px)' />
+  <link rel='preload' as='image' href={bannerImages.small.src} media='(max-width: 639px)' />
 
-    <!-- Hero principal -->
-    <section
-      id='navbardir'
-      class='relative isolate overflow-hidden w-full bg-racing-black z-10 transition-all duration-500'
-      aria-labelledby='hero-title'
-      role='banner'
-    >
-      <picture class='block w-full'>
-        <source media='(min-width: 1536px)' srcset={bannerImages.xlarge.src} />
-        <source media='(min-width: 1024px)' srcset={bannerImages.large.src} />
-        <source media='(min-width: 640px)' srcset={bannerImages.medium.src} />
-        <img
-          src={bannerImages.small.src}
-          alt=''
-          aria-hidden='true'
-          fetchpriority='high'
-          loading='eager'
-          decoding='sync'
-          class='block w-full h-auto object-contain object-top'
-        />
-      </picture>
-      <h1 id='hero-title' class='sr-only'>Endurance Enjoyers</h1>
-    </section>
+  <section
+    id='navbardir'
+    class='relative isolate overflow-hidden w-full bg-racing-black'
+    aria-labelledby='hero-title'
+    role='banner'
+  >
+    <picture class='block w-full'>
+      <source media='(min-width: 1536px)' srcset={bannerImages.xlarge.src} />
+      <source media='(min-width: 1024px)' srcset={bannerImages.large.src} />
+      <source media='(min-width: 640px)' srcset={bannerImages.medium.src} />
+      <img
+        src={bannerImages.small.src}
+        alt=''
+        aria-hidden='true'
+        width={bannerImages.small.width}
+        height={bannerImages.small.height}
+        fetchpriority='high'
+        loading='eager'
+        decoding='sync'
+        class='block w-full h-auto object-contain object-top'
+      />
+    </picture>
+    <h1 id='hero-title' class='sr-only'>Endurance Enjoyers | Equipo español de simracing y carreras de resistencia en iRacing</h1>
+  </section>
 
-    <NavbarPc links={links} />
-    <NavbarMovil links={links} />
-
-  </div>
+  <NavbarPc links={links} />
+  <NavbarMovil links={links} />
+</div>

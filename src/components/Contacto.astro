@@ -4,6 +4,11 @@ import Formulario from './contacto/Formulario.astro'
 import Requisitos from './contacto/Requisitos.astro'
 import Social from './contacto/Social.astro'
 
+export interface Props {
+  id?: string
+  class?: string
+}
+
 const { id, class: className } = Astro.props;
 ---
 

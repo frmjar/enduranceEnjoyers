@@ -4,14 +4,9 @@ import Layaut from '../components/Layaut.astro'
 import Icon from '../icons/Icon.astro'
 import '../styles/calendario.css'
 import { parseRaceDate, getMonthName, type RaceData, type RaceWithDate } from '../utils/date'
+import { fetchRaces } from '../utils/api'
 
-let scheduleData: RaceData[] = []
-try {
-  const res = await fetch(`${Astro.url.origin}/api/resistencias`)
-  if (res.ok) scheduleData = await res.json()
-} catch (err) {
-  console.error('Error de conexión con la API:', err)
-}
+const scheduleData = await fetchRaces(Astro.url.origin)
 
 const today = new Date()
 const year = today.getFullYear()
@@ -33,15 +28,22 @@ const groupedByMonth: Record<number, RaceWithDate[]> = races.reduce((acc, race) 
 const sortedMonths = Object.keys(groupedByMonth).map(Number).sort((a, b) => a - b)
 
 const seoData = {
-  title: 'Calendario iRacing 2024 - Carreras Resistencia | Endurance Enjoyers',
+  title: `Calendario iRacing ${year} - Carreras de Resistencia | Endurance Enjoyers`,
   description: 'Consulta nuestro calendario completo de carreras de resistencia en iRacing. Eventos semanales, campeonatos especiales y todas las fechas de la temporada actual de Endurance Enjoyers.',
   keywords: 'calendario, eventos, carreras, competiciones, endurance, iRacing, Endurance Enjoyers, calendario iRacing, iRacing calendar',
-  canonicalUrl: 'https://enduenjoyers.es/calendario',
-  showHeader: true
+  canonicalUrl: 'https://enduenjoyers.es/calendario'
 };
 ---
 
   <Layaut {...seoData}>
+    <script type='application/ld+json' set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': 'https://enduenjoyers.es' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Calendario iRacing', 'item': 'https://enduenjoyers.es/calendario' }
+      ]
+    })} />
     <main class='max-w-8xl mx-auto px-4 py-12 calendario-main'>
       <div class='text-center mb-16'>
         <span class='inline-block px-4 py-1.5 bg-accent-orange/10 text-accent-orange text-sm font-semibold rounded-md mb-4 border border-accent-orange/20'>
@@ -108,9 +110,7 @@ const seoData = {
           href='/'
           class='group inline-flex items-center gap-3 bg-racing-surface hover:bg-racing-elevated text-text-primary font-medium py-3 px-6 rounded-lg transition-all duration-200 border border-border-subtle hover:border-accent-cyan/40'
         >
-          <svg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 17l-5-5m0 0l5-5m-5 5h12' />
-          </svg>
+          <Icon name='arrowLeft' class='transition-transform duration-300 group-hover:-translate-x-1' />
           <span>Volver a la página principal</span>
         </a>
       </div>

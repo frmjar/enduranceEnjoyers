@@ -1,30 +1,44 @@
 ---
+export interface Props {
+  title: string
+  subtitle?: string
+  class?: string
+  centered?: boolean
+  variant?: 'default' | 'orange' | 'gradient'
+}
+
 const {
   title,
   subtitle,
   class: className = '',
-  titleClass = '',
-  subtitleClass = '',
-  centered = true
+  centered = true,
+  variant = 'default'
 } = Astro.props
+
+const variants = {
+  default: 'after:bg-accent-cyan',
+  orange: 'after:bg-accent-orange',
+  gradient: 'after:bg-gradient-to-r after:from-accent-orange after:to-accent-cyan'
+}
 ---
 
-  <div class={`${centered ? 'text-center' : ''} mb-12 md:mb-16 ${className}`}>
-  <!-- Título con mejor tipografía -->
-    <h2 class={`text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6 tracking-tight ${titleClass}`}>
-      {title}
-    </h2>
+<div class={`${centered ? 'text-center' : ''} mb-12 md:mb-16 ${className}`}>
+  <h2 class='mb-4 text-balance'>
+    {variant === 'gradient'
+      ? <span class='text-gradient'>{title}</span>
+      : title
+    }
+  </h2>
 
-  <!-- Línea accent cyan -->
-    <div class={`flex items-center gap-2 ${centered ? 'justify-center' : ''}`}>
-      <div class='w-8 h-0.5 bg-gradient-to-r from-transparent to-accent-cyan rounded-full' />
-      <div class='w-16 h-1 bg-accent-cyan rounded-full' />
-      <div class='w-8 h-0.5 bg-gradient-to-l from-transparent to-accent-cyan rounded-full' />
-    </div>
-
-    {subtitle && (
-      <p class={`text-text-secondary text-base md:text-lg max-w-2xl mt-6 leading-relaxed ${centered ? 'mx-auto' : ''} ${subtitleClass}`}>
-        {subtitle}
-      </p>
-    )}
+  <div class={`flex items-center gap-2 mb-4 ${centered ? 'justify-center' : ''}`}>
+    <div class={`h-0.5 w-8 rounded-full bg-gradient-to-r from-transparent ${variant === 'orange' ? 'to-accent-orange' : 'to-accent-cyan'}`} />
+    <div class={`h-1 w-16 rounded-full ${variant === 'orange' ? 'bg-accent-orange' : 'bg-accent-cyan'}`} />
+    <div class={`h-0.5 w-8 rounded-full bg-gradient-to-l from-transparent ${variant === 'orange' ? 'to-accent-orange' : 'to-accent-cyan'}`} />
   </div>
+
+  {subtitle && (
+    <p class={`text-secondary text-base md:text-lg max-w-2xl mt-6 leading-relaxed ${centered ? 'mx-auto' : ''}`}>
+      {subtitle}
+    </p>
+  )}
+</div>

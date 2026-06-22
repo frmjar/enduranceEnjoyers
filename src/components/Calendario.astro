@@ -3,14 +3,9 @@ import Icon from '../icons/Icon.astro'
 import CardCalendario from './CardCalendario.astro'
 import SectionTitle from './SectionTitle.astro'
 import { parseRaceDate, getWeekNumber, type RaceData, type RaceWithDate } from '../utils/date'
+import { fetchRaces } from '../utils/api'
 
-let scheduleData: RaceData[] = []
-try {
-  const res = await fetch(`${Astro.url.origin}/api/resistencias`)
-  if (res.ok) scheduleData = await res.json()
-} catch (err) {
-  console.error('Error de conexión con la API:', err)
-}
+const scheduleData = await fetchRaces(Astro.url.origin)
 
 const today = new Date()
 const currentWeek = getWeekNumber(today)
@@ -26,7 +21,15 @@ const allRaces: RaceWithDate[] = scheduleData
 const thisWeekRaces = allRaces.filter(r => r.weekNum === currentWeek)
 const nextWeekRaces = allRaces.filter(r => r.weekNum === nextWeek)
 
-const sections = [
+interface Section {
+  title: string
+  week: string
+  iconClasses: string
+  subtitleClasses: string
+  races: RaceWithDate[]
+}
+
+const sections: Section[] = [
   {
     title: 'Esta semana',
     week: `Semana ${thisWeekRaces[0]?.Week || ''}`,
@@ -50,7 +53,6 @@ const { class: className = '', ...props } = Astro.props;
     <div class='max-w-8xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12'>
 
       <SectionTitle title='Próximas carreras iRacing' subtitle='No te pierdas ningún evento de resistencia' />
-<!--<CardEventoDestacado /> -->
       {allRaces.length > 0
         ? (
           <div class='space-y-12'>
@@ -88,18 +90,6 @@ const { class: className = '', ...props } = Astro.props;
             </p>
           </div>
           )}
-      {allRaces.length === 0 && (
-        <div class='mt-10 text-center py-16 bg-racing-surface/50 rounded-lg border border-dashed border-border-subtle'>
-          <div class='w-20 h-20 bg-racing-elevated rounded-lg flex items-center justify-center mx-auto mb-6 border border-border-subtle'>
-            <Icon name='calendar' size='lg' class='text-text-muted' />
-          </div>
-          <h3 class='text-xl font-bold text-text-primary'>Sin carreras programadas</h3>
-          <p class='mt-2 text-text-muted text-lg max-w-xl mx-auto'>
-            No hay eventos visibles en este momento, pero la sección permanece explícita para que el visitante entienda que el calendario está vacío temporalmente.
-          </p>
-        </div>
-      )}
-
     <!-- Botón para ver calendario completo -->
       <div class='text-center mt-12'>
         <a
@@ -108,9 +98,7 @@ const { class: className = '', ...props } = Astro.props;
         >
           <Icon name='calendar' class='w-5 h-5' />
           <span>Ver calendario completo</span>
-          <svg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5 transition-transform duration-300 group-hover:translate-x-1' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 7l5 5m0 0l-5 5m5-5H6' />
-          </svg>
+            <Icon name='arrowRight' class='transition-transform duration-300 group-hover:translate-x-1' />
         </a>
       </div>
     </div>

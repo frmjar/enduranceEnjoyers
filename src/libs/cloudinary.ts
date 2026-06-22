@@ -43,11 +43,11 @@ export const getOptimizedUrl = ({
   // Tamaños optimizados por contexto y dispositivo (vertical para galería)
   const sizeMap = {
     gallery: {
-      mobile: { width: 280, height: 420 },
-      tablet: { width: 300, height: 450 },
-      desktop: { width: 320, height: 480 },
-      large: { width: 360, height: 540 },
-      extraLarge: { width: 400, height: 600 }
+      mobile: { width: 280, height: 373 },
+      tablet: { width: 300, height: 400 },
+      desktop: { width: 320, height: 427 },
+      large: { width: 360, height: 480 },
+      extraLarge: { width: 400, height: 533 }
     },
     modal: {
       mobile: { width: 800 },
@@ -74,7 +74,7 @@ export const getOptimizedUrl = ({
       type: 'upload',
       transformation: [
         { width: sizeConfig.width, crop: 'limit' }, // 'limit' mantiene la relación de aspecto
-        { quality: 95, fetch_format: 'webp' },
+        { quality: 92, fetch_format: 'webp' },
         { flags: 'progressive' },
         { dpr: 'auto' }
       ]
@@ -92,14 +92,14 @@ export const getOptimizedUrl = ({
       isThumbnail
         ? { width, height, crop: 'fit' }
         : { width, height, crop: 'fill', gravity: 'auto' },
-      { quality: context === 'thumbnail' ? 80 : 90, fetch_format: 'webp' },
+      { quality: context === 'thumbnail' ? 75 : 85, fetch_format: 'webp' },
       { flags: 'progressive' },
       { dpr: 'auto' }
     ]
   })
 }
 
-export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: CloudinaryFolders }): Promise<Array<{
+export interface CloudinaryImage {
   url: string
   urlMobile: string
   urlTablet: string
@@ -118,7 +118,9 @@ export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, 
   title?: string
   description?: string
   alt: string
-}>> => {
+}
+
+export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, folder?: CloudinaryFolders }): Promise<CloudinaryImage[]> => {
   try {
     const result = await cloudinary.api.resources_by_asset_folder(folder ?? '', {
       type: 'upload',
@@ -127,7 +129,7 @@ export const getImages = async ({ cantidad = 12, folder }: { cantidad?: number, 
       context: true
     })
 
-    return result.resources.map((img: any) => {
+    return result.resources.map((img: Record<string, any>) => {
       const context = img?.context?.custom || {}
 
       return {

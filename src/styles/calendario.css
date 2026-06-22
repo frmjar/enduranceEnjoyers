@@ -27,17 +27,3 @@
     pointer-events: none;
     backdrop-filter: blur(4px);
 }
-
-.past-event-card {
-    filter: grayscale(30%);
-    transition: all 0.3s ease;
-}
-
-.past-event-card:hover {
-    filter: grayscale(10%);
-}
-
-.past-event-text {
-    text-decoration: line-through;
-    color: #71717a !important;
-}

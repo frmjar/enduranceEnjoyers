@@ -34,7 +34,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
       if (row[2]) lastFecha = row[2]
       else row[2] = lastFecha
 
-      return Object.fromEntries(headers.map((h, i): [string, string] => [h, row[i] || '']))
+      return Object.fromEntries(headers.map((h, i): [string, string] => [h, String(row[i] ?? '')])) as Record<string, string>
     })
 
     return new Response(JSON.stringify(data), {

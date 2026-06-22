@@ -11,15 +11,9 @@ const {
   fill = 'currentColor'
 } = Astro.props
 
-const sizeClasses = {
-  sm: 'w-4 h-4',
-  md: 'w-6 h-6',
-  lg: 'w-8 h-8',
-  xl: 'w-10 h-10'
-}
+import { sizeClasses } from './sizes'
 ---
 
-<svg class={`${sizeClasses[size]} ${className}`} fill={fill} viewBox='0 0 16 16'>
-  <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142z"/>
-  <path d="M11.857 3.143h-1.143V6.57h1.143zm-3.143 0H7.571V6.57h1.143z"/>
-</svg>
+  <svg class={`${sizeClasses[size]} ${className}`} fill={fill} viewBox='0 0 24 24'>
+    <path d='M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z' />
+  </svg>

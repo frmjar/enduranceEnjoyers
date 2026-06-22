@@ -2,48 +2,59 @@
 import { Image } from 'astro:assets'
 import { getUrl } from '../libs/cloudinary'
 
-const teamLogoUrl = getUrl({ publicId: 'General/skincar', format: 'png' })
+const teamLogoUrl = getUrl({ publicId: 'General/skincar' })
+
+export interface Props {
+  class?: string
+}
 
 const { class: className = '', ...props } = Astro.props;
+
+const stats: Array<{ value: string, label: string }> = [
+  { value: 'iRacing', label: 'Plataforma' },
+  { value: 'Resistencia', label: 'Especialidad' },
+  { value: '2024', label: 'Fundación' },
+  { value: 'España', label: 'País' }
+]
 ---
-  <section class={`py-16 md:py-20 lg:py-24 ${className}`} {...props} itemscope itemtype='https://schema.org/SportsTeam'>
-    <!-- Contenedor principal con más espacio -->
-    <div class='max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16'>
 
-      <!-- Grid de dos columnas con mejor espaciado -->
-      <div class='relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20'>
+<section class={`py-16 md:py-24 lg:py-28 relative overflow-hidden ${className}`} itemscope itemtype='https://schema.org/SportsTeam' {...props}>
+  <div class='absolute inset-0 noise-overlay pointer-events-none' />
 
-        <!-- Línea divisoria central -->
-        <div class='absolute left-1/2 top-0 w-1 h-4/5 bg-gradient-to-b from-accent-cyan via-accent-cyan/50 to-transparent rounded-full hidden lg:block transform -translate-x-1/2' />
+  <div class='max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16'>
+    <div class='relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20'>
+      <div class='space-y-6'>
+        <span class='badge badge-orange'>¿Quiénes somos?</span>
+        <p class='text-xl md:text-2xl font-medium text-text-primary leading-relaxed' itemprop='description'>
+          Endurance Enjoyers es un equipo de simracing enfocado en las carreras de resistencia dentro de iRacing. Combinamos la pasión por el automovilismo virtual con un entorno colaborativo, relajado y libre de presiones competitivas.
+        </p>
+      </div>
 
-        <!-- Columna izquierda -->
-        <div>
-          <h1 class='sr-only'>Endurance Enjoyers - Equipo de Carreras de Resistencia en iRacing</h1>
-          <p class='text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-text-primary leading-relaxed' itemprop='description'>
-            Endurance Enjoyers es un equipo de simracing enfocado en las carreras de resistencia dentro de iRacing. Combinamos la pasión por el automovilismo virtual con un entorno colaborativo, relajado y libre de presiones competitivas.
-          </p>
-        </div>
-
-        <!-- Columna derecha -->
-        <div>
-          <p class='text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-text-primary leading-relaxed'>
-            Priorizamos la experiencia compartida, el respeto en pista y el compañerismo. Valoramos la mejora constante y el disfrute colectivo por encima del resultado. Rechazamos el "tryhardismo" y promovemos un espacio sano donde correr bien es tan importante o más que ganar.
-          </p>
-        </div>
+      <div class='space-y-6'>
+        <span class='badge badge-cyan'>Nuestra filosofía</span>
+        <p class='text-xl md:text-2xl font-medium text-text-primary leading-relaxed'>
+          Priorizamos la experiencia compartida, el respeto en pista y el compañerismo. Valoramos la mejora constante y el disfrute colectivo por encima del resultado.
+        </p>
       </div>
     </div>
 
-    <!-- Imagen del coche con más margen -->
-    <div class='mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6 md:px-8'>
-      <Image
-        src={teamLogoUrl}
-        alt='Endurance Enjoyers team logo - Equipo de carreras de resistencia'
-        class='mx-auto w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl opacity-80 hover:opacity-100 transition-opacity duration-500'
-        inferSize
-        itemprop='logo'
-      />
+    <div class='grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 md:mt-16'>
+      {stats.map((stat, i) => (
+        <div key={i} class='card p-6 text-center hover:border-accent-cyan/30'>
+          <p class='text-2xl md:text-3xl font-black text-accent-cyan font-heading'>{stat.value}</p>
+          <p class='text-sm text-muted uppercase tracking-wider mt-1'>{stat.label}</p>
+        </div>
+      ))}
     </div>
+  </div>
 
-    <!-- Espaciado inferior -->
-    <div class='h-8 md:h-12 lg:h-16' />
-  </section>
+  <div class='mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6 md:px-8'>
+    <Image
+      src={teamLogoUrl}
+      alt='Endurance Enjoyers - Coche de carreras de resistencia'
+      class='mx-auto w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl opacity-70 hover:opacity-100 transition-opacity duration-500'
+      inferSize
+      itemprop='logo'
+    />
+  </div>
+</section>

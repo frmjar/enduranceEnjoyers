@@ -1,5 +1,10 @@
 ---
 import Icon from '../icons/Icon.astro'
+import type { RaceData } from '../utils/date'
+
+export interface Props {
+  race: RaceData
+}
 
 const { race } = Astro.props
 ---

@@ -4,9 +4,17 @@ import SpeedInsights from '@vercel/speed-insights/astro'
 import '../styles/global.css'
 import Footer from './Footer.astro'
 
+export interface Props {
+  title?: string
+  description?: string
+  keywords?: string
+  ogImage?: string
+  canonicalUrl?: string
+}
+
 const {
-  title = 'Endurance Enjoyers | Equipo español de resistencia iRacing',
-  description = 'Únete a Endurance Enjoyers, la comunidad de sim racing especializada en carreras de resistencia en iRacing. Experiencias únicas, eventos exclusivos y pasión por las carreras de larga duración.',
+  title = 'Endurance Enjoyers | Equipo español de simracing y resistencia en iRacing',
+  description = 'Únete a Endurance Enjoyers, la comunidad de sim racing especializada en carreras de resistencia en iRacing.',
   keywords = 'iRacing, carreras resistencia, endurance racing, 24 horas Daytona, Le Mans, equipo carreras, simulador carreras, simracing, motorsport virtual, España, iRacing calendar, calendario iRacing',
   ogImage = '/og-image.png',
   canonicalUrl
@@ -14,195 +22,131 @@ const {
 
 const currentUrl = canonicalUrl || Astro.url.href
 const fullOgImage = new URL(ogImage, Astro.url.origin).href
-
-// Generar JSON-LD manualmente para evitar problemas en el build
 const contactUrl = new URL('/#contacto', Astro.url.origin).href
 
-const jsonLD = `{
+const jsonLD = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": "${currentUrl}",
-      "url": "${currentUrl}",
-      "name": "${title}",
-      "isPartOf": {"@id": "${Astro.url.origin}/#website"},
-      "about": {"@id": "${Astro.url.origin}/#organization"},
-      "primaryImageOfPage": {"@id": "${currentUrl}#primaryimage"},
-      "image": {"@id": "${currentUrl}#primaryimage"},
-      "thumbnailUrl": "${fullOgImage}",
-      "datePublished": "2024-01-01T00:00:00+00:00",
-      "dateModified": "${new Date().toISOString()}",
-      "description": "${description.replace(/"/g, '\\"')}",
-      "inLanguage": "es-ES",
-      "potentialAction": [
-        {
-          "@type": "ReadAction",
-          "target": ["${currentUrl}"]
-        }
-      ]
+      "@id": currentUrl,
+      "url": currentUrl,
+      "name": title,
+      "isPartOf": { "@id": `${Astro.url.origin}/#website` },
+      "about": { "@id": `${Astro.url.origin}/#organization` },
+      "image": { "@id": `${currentUrl}#primaryimage` },
+      "description": description,
+      "inLanguage": "es-ES"
     },
     {
       "@type": "ImageObject",
-      "inLanguage": "es-ES",
-      "@id": "${currentUrl}#primaryimage",
-      "url": "${fullOgImage}",
-      "contentUrl": "${fullOgImage}",
+      "@id": `${currentUrl}#primaryimage`,
+      "url": fullOgImage,
+      "contentUrl": fullOgImage,
       "width": 1200,
-      "height": 630,
+      "height": 650,
       "caption": "Endurance Enjoyers - Equipo de Sim Racing"
     },
     {
       "@type": "WebSite",
-      "@id": "${Astro.url.origin}/#website",
-      "url": "${Astro.url.origin}/",
+      "@id": `${Astro.url.origin}/#website`,
+      "url": Astro.url.origin,
       "name": "Endurance Enjoyers",
-      "description": "Comunidad premium de sim racing especializada en carreras de resistencia en iRacing",
-      "publisher": {"@id": "${Astro.url.origin}/#organization"},
-      "potentialAction": [
-        {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "${Astro.url.origin}/?s={search_term_string}"
-          },
-          "query-input": {
-            "@type": "PropertyValueSpecification",
-            "valueRequired": true,
-            "valueName": "search_term_string"
-          }
-        }
-      ],
+      "publisher": { "@id": `${Astro.url.origin}/#organization` },
       "inLanguage": "es-ES"
     },
     {
       "@type": "SportsTeam",
-      "@id": "${Astro.url.origin}/#organization",
+      "@id": `${Astro.url.origin}/#organization`,
       "name": "Endurance Enjoyers",
       "alternateName": "EnduEnjoyers",
-      "url": "${Astro.url.origin}/",
+      "url": Astro.url.origin,
       "logo": {
         "@type": "ImageObject",
-        "inLanguage": "es-ES",
-        "@id": "${Astro.url.origin}/#logoconfondo",
-        "url": "${new URL('/logoconfondo.webp', Astro.url.origin).href}",
-        "contentUrl": "${new URL('/logoconfondo.webp', Astro.url.origin).href}",
+        "url": new URL('/logoconfondo.webp', Astro.url.origin).href,
         "width": 512,
-        "height": 512,
-        "caption": "Endurance Enjoyers Logo"
+        "height": 512
       },
-      "image": {"@id": "${Astro.url.origin}/#logoconfondo"},
-      "description": "${description.replace(/"/g, '\\"')}",
       "sport": "Simracing",
-      "subOrganization": "iRacing Endurance Racing",
       "foundingDate": "2024",
-      "memberOf": {
-        "@type": "Organization",
-        "name": "iRacing",
-        "url": "https://www.iracing.com"
-      },
       "sameAs": [
-        "https://x.com/EnduEnjoyers"
+        "https://x.com/EnduEnjoyers",
+        "https://www.twitch.tv/enduranceenjoyers",
+        "https://www.youtube.com/@EnduranceEnjoyers"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "Team Recruitment",
         "availableLanguage": ["Spanish", "English"],
-        "url": "${contactUrl}"
+        "url": contactUrl
       },
-      "areaServed": {
-        "@type": "Country",
-        "name": "Spain"
-      },
-      "knowsAbout": [
-        "iRacing",
-        "Endurance Racing",
-        "24 Hours of Daytona",
-        "24 Hours of Le Mans",
-        "Motorsport Simulation",
-        "Sim Racing",
-        "Virtual Motorsport",
-        "Carreras de Resistencia",
-        "Simulador de Carreras",
-        "Competición Virtual",
-        "Calendario de iRacing"
-      ]
+      "areaServed": { "@type": "Country", "name": "Spain" }
     }
   ]
-}`
+})
 ---
-  <html lang='es' role='document'>
-    <head>
-      <title>{title}</title>
-      <meta charset='UTF-8' />
-      <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-      <meta name='description' content={description} />
-      <meta name='keywords' content={keywords} />
-      <meta name='robots' content='index, follow' />
-      <meta name='author' content='Endurance Enjoyers' />
-      <meta name='publisher' content='Endurance Enjoyers' />
-      <meta name='theme-color' content='#0d0d0f' />
 
-      <!-- Inter font -->
-      <link rel='preconnect' href='https://fonts.googleapis.com' />
-      <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-      <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' rel='stylesheet' />
-      <meta name='generator' content={Astro.generator} />
+<html lang='es' role='document'>
+  <head>
+    <title>{title}</title>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <meta name='description' content={description} />
+    <meta name='keywords' content={keywords} />
+    <meta name='robots' content='index, follow' />
+    <meta name='author' content='Endurance Enjoyers' />
+    <meta name='theme-color' content='#0a0a0c' />
 
-      <!-- Canonical URL -->
-      <link rel='canonical' href={currentUrl} />
+    <link rel='alternate' hreflang='es' href={currentUrl} />
+    <link rel='alternate' hreflang='x-default' href={currentUrl} />
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link href='https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700&family=Barlow+Condensed:wght@600;700;800;900&display=swap' rel='stylesheet' />
 
-      <!-- Forzar HTTPS -->
-      <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+    <meta name='generator' content={Astro.generator} />
+    <link rel='canonical' href={currentUrl} />
+    <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
 
-      <!-- Open Graph -->
-      <meta property='og:title' content={title} />
-      <meta property='og:description' content={description} />
-      <meta property='og:type' content='website' />
-      <meta property='og:url' content={currentUrl} />
-      <meta property='og:image' content={fullOgImage} />
-      <meta property='og:image:width' content='1200' />
-      <meta property='og:image:height' content='630' />
-      <meta property='og:image:type' content='image/png' />
-      <meta property='og:site_name' content='Endurance Enjoyers' />
-      <meta property='og:locale' content='es_ES' />
+    <meta property='og:title' content={title} />
+    <meta property='og:description' content={description} />
+    <meta property='og:type' content='website' />
+    <meta property='og:url' content={currentUrl} />
+    <meta property='og:image' content={fullOgImage} />
+    <meta property='og:image:width' content='1200' />
+    <meta property='og:image:height' content='650' />
+    <meta property='og:image:alt' content='Endurance Enjoyers - Equipo de Sim Racing' />
+    <meta property='og:site_name' content='Endurance Enjoyers' />
+    <meta property='og:locale' content='es_ES' />
 
-      <!-- Twitter Cards -->
-      <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:site' content='@EnduEnjoyers' />
-      <meta name='twitter:title' content={title} />
-      <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={fullOgImage} />
-      <meta name='twitter:creator' content='@EnduEnjoyers' />
-      <meta name='twitter:image:alt' content='Endurance Enjoyers - Comunidad de Simracing' />
+    <meta name='twitter:card' content='summary_large_image' />
+    <meta name='twitter:site' content='@EnduEnjoyers' />
+    <meta name='twitter:title' content={title} />
+    <meta name='twitter:description' content={description} />
+    <meta name='twitter:image' content={fullOgImage} />
+    <meta name='twitter:creator' content='@EnduEnjoyers' />
 
-      <!-- Preload critical resources -->
-      <link rel='preload' href='/logotextclear.webp' as='image' type='image/webp' />
+    <link rel='preload' href='/logotextclear.webp' as='image' type='image/webp' />
+    <link rel='preconnect' href='https://res.cloudinary.com' />
+    <link rel='dns-prefetch' href='https://res.cloudinary.com' />
 
-      <!-- Preconnect to external domains -->
-      <link rel='preconnect' href='https://res.cloudinary.com' />
-      <link rel='dns-prefetch' href='https://res.cloudinary.com' />
+    <link rel='icon' type='image/x-icon' href='/favicon.ico' sizes='16x16 24x24 32x32 48x48 64x64' />
+    <link rel='icon' type='image/png' href='/og-image.png' sizes='192x192' />
+    <link rel='apple-touch-icon' href='/og-image.png' sizes='180x180' />
+    <link rel='manifest' href='/site.webmanifest' />
 
-      <!-- Icons optimizados con múltiples tamaños -->
-      <link rel='icon' type='image/x-icon' href='/favicon.ico' sizes='16x16 24x24 32x32 48x48 64x64' />
-      <link rel='icon' type='image/png' href='/og-image.png' sizes='192x192' />
-      <link rel='apple-touch-icon' href='/og-image.png' sizes='180x180' />
-      <link rel='apple-touch-icon' href='/og-image.png' sizes='152x152' />
-      <link rel='apple-touch-icon' href='/og-image.png' sizes='120x120' />
-      <link rel='manifest' href='/site.webmanifest' />
-
-      <!-- JSON-LD Structured Data -->
-      <script type='application/ld+json' set:html={jsonLD} />
-    </head>
-    <body class='flex flex-col min-h-screen overflow-x-hidden'>
-      <a href='#content-start' class='sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[999] focus:rounded-xl focus:bg-racing-dark focus:px-4 focus:py-3 focus:text-text-primary focus:ring-2 focus:ring-accent-orange'>Saltar al contenido</a>
-      <div class='flex-grow'>
-        <main id='content-start'>
-          <slot />
-        </main>
-        <Analytics />
-        <SpeedInsights />
-      </div>
-      <Footer role='contentinfo' />
-    </body>
-  </html>
+    <script type='application/ld+json' set:html={jsonLD} />
+  </head>
+  <body class='flex flex-col min-h-screen overflow-x-hidden bg-racing-black text-primary'>
+    <a href='#content-start' class='fixed -top-full left-4 z-[999] rounded-lg bg-accent-orange px-4 py-3 font-bold text-racing-black transition-all focus:top-4 focus:outline-none focus:ring-2 focus:ring-accent-cyan'>
+      Saltar al contenido
+    </a>
+    <div class='flex-grow'>
+      <main id='content-start'>
+        <slot />
+      </main>
+      <Analytics />
+      <SpeedInsights />
+    </div>
+    <Footer />
+  </body>
+</html>
